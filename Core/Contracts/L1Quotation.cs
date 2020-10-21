@@ -13,6 +13,7 @@ namespace QuantaBasket.Core.Contracts
         public decimal Bid { get; set; }
         public decimal Ask { get; set; }
         public decimal Last { get; set; }
+        public decimal Volume { get; set; }
         public L1QuotationChangedFlags Changes { get; set; }
         public L1Quotation Clone2()
         {
@@ -26,7 +27,7 @@ namespace QuantaBasket.Core.Contracts
         }
         public override string ToString()
         {
-            return $"{Security} {DateTime:yyMMdd HH:mm:ss} B:{Bid} A:{Ask} L:{Last} Changes:{Changes}";
+            return $"{Security} {DateTime:yyMMdd HH:mm:ss} B:{Bid} A:{Ask} L:{Last} V:{Volume} Changes:{Changes}";
         }
     }
 
@@ -36,6 +37,7 @@ namespace QuantaBasket.Core.Contracts
         None = 0,
         Bid = 1,
         Ask = 2,
-        Last = 4
+        Last = 4,
+        Volume = 8
     }
 }
