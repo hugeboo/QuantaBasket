@@ -8,8 +8,15 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.QLuaQuatationProvider
 {
-    public sealed class QLuaQuatationProvider : IL1QuotationProvider
+    public sealed class QLuaL1QuatationProvider : IL1QuotationProvider
     {
+        private readonly IL1QuotationStore _store;
+
+        public QLuaL1QuatationProvider(IL1QuotationStore store)
+        {
+            _store = store ?? throw new ArgumentNullException(nameof(store));
+        }
+
         public void OnNewQuotations(Action<IEnumerable<L1Quotation>> processQuotations)
         {
             throw new NotImplementedException();
