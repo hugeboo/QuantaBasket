@@ -13,7 +13,7 @@ namespace QuantaBasket.Core.Contracts
         public decimal Bid { get; set; }
         public decimal Ask { get; set; }
         public decimal Last { get; set; }
-        public decimal Volume { get; set; }
+        public long Volume { get; set; }
         public L1QuotationChangedFlags Changes { get; set; }
         public L1Quotation Clone2()
         {

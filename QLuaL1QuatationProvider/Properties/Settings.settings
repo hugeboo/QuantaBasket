@@ -9,7 +9,7 @@
       <Value Profile="(Default)">3585</Value>
     </Setting>
     <Setting Name="Securities" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">*#LKOH;TQBR#GAZP;SPBFUT#*</Value>
+      <Value Profile="(Default)">[{"c":"TQBR","s":"LKOH"},{"c":"*","s":"GAZP"}]</Value>
     </Setting>
   </Settings>
 </SettingsFile>

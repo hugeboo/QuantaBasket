@@ -25,7 +25,7 @@ namespace QuantaBasket.SQLiteL1QuotationStore
                     "Bid       DECIMAL    NOT NULL," +
                     "Ask       DECIMAL    NOT NULL," +
                     "Last      DECIMAL    NOT NULL," +
-                    "Volume    DECIMAL    NOT NULL," +
+                    "Volume    NUMERIC    NOT NULL," +
                     "Changes   INTEGER    NOT NULL)");
                 DoCommand(connection, "CREATE INDEX Security_Date_INDX ON Quatations ("+
                     "ClassCode,SecCode,DateTime ASC)");

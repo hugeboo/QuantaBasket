@@ -43,7 +43,7 @@ namespace QuantaBasket.QLuaL1QuatationProvider.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("*#LKOH;TQBR#GAZP;SPBFUT#*")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[{\"c\":\"TQBR\",\"s\":\"LKOH\"},{\"c\":\"*\",\"s\":\"GAZP\"}]")]
         public string Securities {
             get {
                 return ((string)(this["Securities"]));
