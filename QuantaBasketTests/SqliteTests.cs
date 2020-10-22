@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using QuantaBasket.SQLiteL1QuotationStore;
+using QuantaBasket.Components.SQLiteL1QuotationStore;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using QuantaBasket.QLuaL1QuotationProvider;
-using QuantaBasket.SQLiteL1QuotationStore;
+using QuantaBasket.Components.QLuaL1QuotationProvider;
+using QuantaBasket.Components.SQLiteL1QuotationStore;
 
 namespace QuantaBasketTestApp
 {

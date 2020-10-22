@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.SQLiteL1QuotationStore
+namespace QuantaBasket.Components.SQLiteL1QuotationStore
 {
     public sealed class SQLiteL1QuotationStore : IL1QuotationStore
     {

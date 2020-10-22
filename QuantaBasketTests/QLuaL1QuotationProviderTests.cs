@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using QuantaBasket.Core.Exceptions;
-using QuantaBasket.QLuaL1QuotationProvider;
+using QuantaBasket.Components.QLuaL1QuotationProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;

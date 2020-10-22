@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.QLuaL1QuotationProvider
+namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
     public static class ReceiverJsonString
     {

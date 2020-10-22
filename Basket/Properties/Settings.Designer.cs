@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace QuantaBasket.Components.QLuaL1QuotationProvider.Properties {
+namespace QuantaBasket.Basket.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,28 +25,19 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
-        public string QLuaAddr {
+        [global::System.Configuration.DefaultSettingValueAttribute("d:\\CSharp\\Quantas")]
+        public string DebugQuantasPath {
             get {
-                return ((string)(this["QLuaAddr"]));
+                return ((string)(this["DebugQuantasPath"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3585")]
-        public int QLuaPort {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ReleaseQuantrasPath {
             get {
-                return ((int)(this["QLuaPort"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[{\"c\":\"TQBR\",\"s\":\"LKOH\"},{\"c\":\"*\",\"s\":\"GAZP\"}]")]
-        public string Securities {
-            get {
-                return ((string)(this["Securities"]));
+                return ((string)(this["ReleaseQuantrasPath"]));
             }
         }
     }

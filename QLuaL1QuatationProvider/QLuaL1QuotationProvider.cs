@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NLog;
-using QuantaBasket.QLuaL1QuotationProvider.Properties;
+using QuantaBasket.Components.QLuaL1QuotationProvider.Properties;
 using System.Net.Sockets;
 using System.Threading;
 using QuantaBasket.Core.Exceptions;
@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 using QuantaBasket.Core.Utils;
 using System.Globalization;
 
-namespace QuantaBasket.QLuaL1QuotationProvider
+namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
     public sealed class QLuaL1QuotationProvider : IL1QuotationProvider, IDisposable
     {

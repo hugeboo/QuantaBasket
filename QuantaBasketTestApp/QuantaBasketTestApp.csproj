@@ -62,6 +62,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Basket\Basket.csproj">
+      <Project>{c582b70f-f31f-4e4c-9f3e-aa1292f98204}</Project>
+      <Name>Basket</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{d591b630-f0fb-4cbe-b0b3-388528da50da}</Project>
       <Name>Core</Name>

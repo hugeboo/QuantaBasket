@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace QuantaBasket.SQLiteL1QuotationStore.Properties {
+namespace QuantaBasket.Components.SQLiteL1QuotationStore.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
