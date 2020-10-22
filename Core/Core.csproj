@@ -72,14 +72,16 @@
     <Compile Include="Contracts\L1Quotation.cs" />
     <Compile Include="Contracts\L1QuotationFilter.cs" />
     <Compile Include="Contracts\SecurityId.cs" />
+    <Compile Include="Exceptions\BadMessageException.cs" />
+    <Compile Include="Exceptions\ConnectionLostException.cs" />
+    <Compile Include="Exceptions\TransportException.cs" />
     <Compile Include="Interfaces\IErrorReporter.cs" />
     <Compile Include="Interfaces\IL1QuotationProvider.cs" />
     <Compile Include="Interfaces\IL1QuotationStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\L1QuotationUpdater.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

@@ -38,6 +38,9 @@ namespace QuantaBasket.Core.Contracts
         Bid = 1,
         Ask = 2,
         Last = 4,
-        Volume = 8
+        Volume = 8,
+        Time = 16,
+
+        All = Bid | Ask | Last | Volume | Time
     }
 }

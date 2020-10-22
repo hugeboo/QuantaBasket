@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Componenets", "Componenets", "{F65E1865-255C-410B-BB03-5CC73438B9F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLuaL1QuatationProvider", "QLuaL1QuatationProvider\QLuaL1QuatationProvider.csproj", "{86CFBF47-0B1F-4257-9179-A16DC07688F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLuaL1QuotationProvider", "QLuaL1QuatationProvider\QLuaL1QuotationProvider.csproj", "{86CFBF47-0B1F-4257-9179-A16DC07688F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteL1QuotationStore", "SQLiteL1QuotationStore\SQLiteL1QuotationStore.csproj", "{1212E1E5-AE08-4C4E-A9DC-374577021F2A}"
 EndProject

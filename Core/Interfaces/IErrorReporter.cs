@@ -13,6 +13,8 @@ namespace QuantaBasket.Core.Interfaces
 
     public enum ErrorReportCode
     {
-        ConnectionLost
+        Unknown,
+        ConnectionLost,
+        TransportError
     }
 }
