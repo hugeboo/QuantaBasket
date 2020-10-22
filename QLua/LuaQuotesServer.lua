@@ -14,26 +14,36 @@ function OnInit(path)
 end;
 
 function OnStop(signal)
-    if client then client:close() end
+    if client then
+        client:send("{}")
+        sleep(1000) 
+        client:close() 
+    end
     stopped = true; -- Остановили исполнение кода 
 end;
   
   -- Функция вызывается перед закрытием квика
 function OnClose()
-    if client then client:close() end
+    if client then 
+        client:send("{}") 
+        sleep(1000) 
+        client:close() 
+    end
     stopped = true; -- закрыли квик, надо остановить исполнение кода
 end;
 
 function OnParam(class_code, sec_code)
-    if (CheckByQuoteFilter(class_code, sec_code) == 1) then
+    if (client and CheckByQuoteFilter(class_code, sec_code) == 1) then
         tlast = getParamEx(class_code, sec_code, "last").param_value
         task = getParamEx(class_code, sec_code, "offer").param_value
         tbid = getParamEx(class_code, sec_code, "bid").param_value
         tvoltoday = getParamEx(class_code, sec_code, "voltoday").param_value -- проторгованный объем в штуках
 
+        ttime = getInfoParam("SERVERTIME")
+
         -- сразу кидаем подключенному клиенту (если такого нет - улетает в воздух)
         client:send(json.encode({class = class_code, sec = sec_code, 
-            last = tlast, bid = tbid, ask = task, voltoday = tvoltoday}))
+            last = tlast, bid = tbid, ask = task, voltoday = tvoltoday, time = ttime}))
     end
 end
 
