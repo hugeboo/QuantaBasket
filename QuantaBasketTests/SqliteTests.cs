@@ -17,7 +17,7 @@ namespace QuantaBasketTests
         {
             var filename = Path.GetTempFileName();
             var cs = $"Data Source = {filename};Version=3;";
-            DbUtils.CreateDb(cs);
+            DbUtils.CreateDb(null, cs);
         }
     }
 }

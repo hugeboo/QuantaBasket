@@ -25,7 +25,7 @@ namespace QuantaBasket.SQLiteL1QuotationStore.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\r\nData Source=d:\\temp\\QuantaBasketL1.db;Version=3;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=d:\\temp\\QuantaBasketL1_v2.db;Version=3;")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));

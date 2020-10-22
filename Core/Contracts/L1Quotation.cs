@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,15 @@ namespace QuantaBasket.Core.Contracts
 {
     public sealed class L1Quotation :ICloneable
     {
+        private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("En-us");
+
         public SecurityId Security { get; set; }
         public DateTime DateTime { get; set; }
         public decimal Bid { get; set; }
         public decimal Ask { get; set; }
         public decimal Last { get; set; }
         public long Volume { get; set; }
+        public long DVolume { get; set; }
         public L1QuotationChangedFlags Changes { get; set; }
         public L1Quotation Clone2()
         {
@@ -27,7 +31,7 @@ namespace QuantaBasket.Core.Contracts
         }
         public override string ToString()
         {
-            return $"{Security} {DateTime:yyMMdd HH:mm:ss} B:{Bid} A:{Ask} L:{Last} V:{Volume} Changes:{Changes}";
+            return $"{Security} {DateTime:HH:mm:ss} B:{Bid.ToString(_culture)} A:{Ask.ToString(_culture)} L:{Last.ToString(_culture)} V:{Volume} DV:{DVolume} Changes:{Changes}";
         }
     }
 
@@ -40,7 +44,8 @@ namespace QuantaBasket.Core.Contracts
         Last = 4,
         Volume = 8,
         Time = 16,
+        DVolume = 32,
 
-        All = Bid | Ask | Last | Volume | Time
+        All = Bid | Ask | Last | Volume | Time | DVolume
     }
 }

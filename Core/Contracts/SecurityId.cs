@@ -28,7 +28,7 @@ namespace QuantaBasket.Core.Contracts
 
         public override string ToString()
         {
-            return $"{ClassCode}#{SecurityCode}";
+            return $"{ClassCode} {SecurityCode}";
         }
 
         public override int GetHashCode()

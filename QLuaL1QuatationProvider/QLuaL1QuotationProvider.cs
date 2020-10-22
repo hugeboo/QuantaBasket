@@ -13,6 +13,7 @@ using System.Threading;
 using QuantaBasket.Core.Exceptions;
 using Newtonsoft.Json;
 using QuantaBasket.Core.Utils;
+using System.Globalization;
 
 namespace QuantaBasket.QLuaL1QuotationProvider
 {
@@ -20,11 +21,13 @@ namespace QuantaBasket.QLuaL1QuotationProvider
     {
         private readonly IL1QuotationStore _store;
         private readonly Dictionary<SecurityId, L1Quotation> _dictQuotes = new Dictionary<SecurityId, L1Quotation>();
+        private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("En-us");
+
         private Action<ErrorReportCode, string> _onErrorAction;
         private Action<IEnumerable<L1Quotation>> _onNewQuotationsAction;
         private Socket _socket;
         private Thread _thread;
-        private ILogger _logger = LogManager.GetCurrentClassLogger();
+        private ILogger _logger = LogManager.GetLogger("QLuaL1QuotationProvider");
 
         public QLuaL1QuotationProvider(IL1QuotationStore store)
         {
@@ -62,7 +65,7 @@ namespace QuantaBasket.QLuaL1QuotationProvider
             var addr = Settings.Default.QLuaAddr;
             var port = Settings.Default.QLuaPort;
 
-            _logger.Debug($"Connectiong to {addr}:{port}");
+            _logger.Debug($"Connecting to {addr}:{port}");
 
             _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
             _socket.ReceiveBufferSize = 100 * 1024;
@@ -117,10 +120,10 @@ namespace QuantaBasket.QLuaL1QuotationProvider
                         {
                             Security = new SecurityId { ClassCode = d.@class, SecurityCode = d.sec },
                             DateTime = DateTime.Parse(d.time),
-                            Bid = decimal.Parse(d.bid),
-                            Ask = decimal.Parse(d.ask),
-                            Last = decimal.Parse(d.last),
-                            Volume = (long)decimal.Parse(d.voltoday),
+                            Bid = decimal.Parse(d.bid, _culture),
+                            Ask = decimal.Parse(d.ask, _culture),
+                            Last = decimal.Parse(d.last, _culture),
+                            Volume = (long)decimal.Parse(d.voltoday, _culture),
                             Changes = L1QuotationChangedFlags.None
                         };
                     }
@@ -159,6 +162,7 @@ namespace QuantaBasket.QLuaL1QuotationProvider
             byte[] buffer = new byte[2048];
             int i = 0;
             bool inMessage = false;
+            _socket.ReceiveTimeout = 0;
 
             while (true)
             {
@@ -182,6 +186,7 @@ namespace QuantaBasket.QLuaL1QuotationProvider
                         i = 0;
                         inMessage = true;
                         buffer[i++] = b[0];
+                        _socket.ReceiveTimeout = 100;
                     }
                     else if (inMessage && b[0] == 125) // '}'
                     {
@@ -202,23 +207,30 @@ namespace QuantaBasket.QLuaL1QuotationProvider
             }
         }
 
-        private void ProcessL1Quotation(L1Quotation q)
+        private void ProcessL1Quotation(L1Quotation newQuote)
         {
             L1Quotation updatedQuote = null;
 
-            if (!_dictQuotes.TryGetValue(q.Security, out L1Quotation oldQuote))
+            if (!_dictQuotes.TryGetValue(newQuote.Security, out L1Quotation quote))
             {
-                oldQuote = q;
-                oldQuote.Changes = L1QuotationChangedFlags.All;
-                _dictQuotes[oldQuote.Security] = oldQuote;
-                updatedQuote = oldQuote.Clone2();
+                quote = newQuote;
+                quote.Changes = L1QuotationChangedFlags.All;
+                _dictQuotes[quote.Security] = quote;
+                updatedQuote = quote.Clone2();
             }
             else
             {
-                if (L1QuotationUpdater.Update(oldQuote, q)) updatedQuote = oldQuote.Clone2();
+                if (L1QuotationUpdater.Update(quote, newQuote)) updatedQuote = quote.Clone2();
             }
 
-            //......
+            if (updatedQuote != null)
+            {
+                _logger.Debug($"Updated: {updatedQuote}");
+
+                var quotes = new[] { updatedQuote };
+                _onNewQuotationsAction?.Invoke(quotes);
+                _store?.Insert(quotes);
+            }
         }
      }
 }
