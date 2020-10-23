@@ -17,7 +17,7 @@ using System.Globalization;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
-    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider, IDisposable
+    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider
     {
         private readonly IL1QuotationStore _store;
         private readonly Dictionary<SecurityId, L1Quotation> _dictQuotes = new Dictionary<SecurityId, L1Quotation>();
@@ -42,7 +42,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                 "Error processor unassigned");
         }
 
-        public void OnNewQuotations(Action<IEnumerable<L1Quotation>> processQuotations)
+        public void RegisterQuotationProcessor(Action<IEnumerable<L1Quotation>> processQuotations)
         {
             _onNewQuotationsAction = processQuotations;
             _logger.Debug(processQuotations != null ? 
@@ -232,5 +232,5 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                 _store?.Insert(quotes);
             }
         }
-     }
+    }
 }

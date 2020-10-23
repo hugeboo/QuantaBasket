@@ -78,6 +78,8 @@
     <Compile Include="Exceptions\BadMessageException.cs" />
     <Compile Include="Exceptions\ConnectionLostException.cs" />
     <Compile Include="Exceptions\TransportException.cs" />
+    <Compile Include="Extensions\Enumerable.cs" />
+    <Compile Include="Interfaces\IBasketEngine.cs" />
     <Compile Include="Interfaces\IBasketService.cs" />
     <Compile Include="Interfaces\IErrorReporter.cs" />
     <Compile Include="Interfaces\IL1QuotationProvider.cs" />
@@ -86,6 +88,8 @@
     <Compile Include="Messages\AMessage.cs" />
     <Compile Include="Messages\ErrorMessage.cs" />
     <Compile Include="Messages\L1QuotationsMessage.cs" />
+    <Compile Include="Messages\StartMessage.cs" />
+    <Compile Include="Messages\StopMessage.cs" />
     <Compile Include="Messages\TimerMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\L1QuotationUpdater.cs" />

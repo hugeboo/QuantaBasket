@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Interfaces
 {
-    public interface IQuant
+    public interface IQuant : IDisposable
     {
         string Name { get; }
         HashSet<SecurityId> Securities { get; }

@@ -13,19 +13,12 @@ namespace QuantaBasketTests
     {
 #if DEBUG
         [Test]
-        public void BrowseQuantras()
+        public void BrowseQuantas()
         {
             var lst = QuantBrowser.Browse();
             Assert.GreaterOrEqual(1, lst.Count());
             var t = Activator.CreateInstance(lst.First());
             Assert.NotNull(t);
-        }
-
-        [Test]
-        public void InitBasket()
-        {
-            var basket = new BasketEngine();
-
         }
 #endif
     }
