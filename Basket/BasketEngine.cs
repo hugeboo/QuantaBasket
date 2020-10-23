@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace QuantaBasket.Basket
@@ -17,6 +18,7 @@ namespace QuantaBasket.Basket
     {
         private readonly Dictionary<string, QuantItem> _quantas = new Dictionary<string, QuantItem>();
         private readonly ILogger _logger = LogManager.GetLogger("BasketEngine");
+        private Timer _timer;
 
         private IL1QuotationProvider _quoteProvider;
         private IL1QuotationStore _quoteStore;
@@ -40,6 +42,9 @@ namespace QuantaBasket.Basket
 
                 RegisterQuantas();
                 InitQuantas();
+
+                _logger.Debug("Start timer for 1sec");
+                _timer = new Timer(TimerProc, null, 1000, 1000);
             }
             catch(Exception ex)
             {
@@ -50,7 +55,7 @@ namespace QuantaBasket.Basket
 
         private void ProcessError(ErrorReportCode errorCode, string message)
         {
-            _quantas.Values.ForEach(q => q.MessageProcessor?.Invoke(new ErrorMessage { ErrorCode = errorCode, Message = message}));
+            SendAllQuanas(new ErrorMessage { ErrorCode = errorCode, Message = message });
             Stop();
         }
 
@@ -85,6 +90,16 @@ namespace QuantaBasket.Basket
             _quantas.Values.ForEach(q => q.Quant.Init());
         }
 
+        private void TimerProc(object state)
+        {
+            SendAllQuanas(new TimerMessage { DateTime = DateTime.Now });
+        }
+
+        private void SendAllQuanas(AMessage m)
+        {
+            _quantas.Values.ForEach(q => q.SendMessage(m));
+        }
+
         public void Dispose()
         {
             Stop();
@@ -100,7 +115,7 @@ namespace QuantaBasket.Basket
             {
                 _logger.Debug("Starting");
                 _quoteProvider.Connect();
-                _quantas.Values.ForEach(q => q.MessageProcessor?.Invoke(new StartMessage()));
+                SendAllQuanas(new StartMessage());
             } 
             catch(Exception ex)
             {
@@ -112,7 +127,7 @@ namespace QuantaBasket.Basket
         public void Stop()
         {
             _logger.Debug("Stopping");
-            _quantas.Values.ForEach(q => q.MessageProcessor?.Invoke(new StopMessage()));
+            SendAllQuanas(new StopMessage());
         }
     }
 }
