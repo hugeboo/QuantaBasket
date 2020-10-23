@@ -1,4 +1,5 @@
-﻿using QuantaBasket.Core.Interfaces;
+﻿using NLog;
+using QuantaBasket.Core.Interfaces;
 using QuantaBasket.Core.Messages;
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QantaBasket.Basket
+namespace QuantaBasket.Basket
 {
-    public sealed class BasketEngine : IBasketService
+    public sealed class BasketEngine
     {
-        public void RegisterMessageProcessor(Action<AMessage> messageProcessor)
+        private readonly Dictionary<string, QuantItem> _quantas = new Dictionary<string, QuantItem>();
+
+        private readonly ILogger _logger = LogManager.GetLogger("BasketEngine");
+
+        public BasketEngine()
         {
-            throw new NotImplementedException();
+            RegisterQuantas();
+            InitQuantas(); //пока здесь временно
+        }
+
+        private void RegisterQuantas()
+        {
+            var types = QuantBrowser.Browse();
+            foreach(var t in types)
+            {
+                var q = Activator.CreateInstance(t) as IQuant;
+                var item = new QuantItem { Quant = q };
+                _quantas[item.Quant.Name] = item;
+                item.Quant.BasketService = item;
+            }
+        }
+
+        private void InitQuantas()
+        {
+            foreach(var q in _quantas.Values)
+            {
+                q.Quant.Init();
+            }
         }
     }
 }

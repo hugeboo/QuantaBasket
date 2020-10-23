@@ -12,5 +12,7 @@ namespace QuantaBasket.Core.Interfaces
         string Name { get; }
         HashSet<SecurityId> Securities { get; }
         IBasketService BasketService { set; }
+
+        void Init();
     }
 }

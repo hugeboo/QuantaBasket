@@ -20,6 +20,13 @@ namespace QuantaBasketTests
             var t = Activator.CreateInstance(lst.First());
             Assert.NotNull(t);
         }
+
+        [Test]
+        public void InitBasket()
+        {
+            var basket = new BasketEngine();
+
+        }
 #endif
     }
 }

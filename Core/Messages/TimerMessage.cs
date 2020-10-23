@@ -8,5 +8,6 @@ namespace QuantaBasket.Core.Messages
 {
     public sealed class TimerMessage : AMessage
     {
+        public DateTime DateTime { get; set; }
     }
 }

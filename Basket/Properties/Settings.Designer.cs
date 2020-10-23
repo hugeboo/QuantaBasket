@@ -34,7 +34,7 @@ namespace QuantaBasket.Basket.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("d:\\CSharp\\\\QuantaRealese")]
         public string ReleaseQuantrasPath {
             get {
                 return ((string)(this["ReleaseQuantrasPath"]));
