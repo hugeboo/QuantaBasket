@@ -3,7 +3,7 @@
 stopped = false -- Остановка файла
 socket = require("socket") -- Указатель для работы с sockets
 json = require( "json" ) -- Указатель для работы с json
-IPAddr = "127.0.0.1" --IP Адрес
+IPAddr = "*" --"127.0.0.1" --IP Адрес
 IPPort = 3585		 --IP Port	 
 client = nil
 quoteFilter = {}
@@ -14,21 +14,13 @@ function OnInit(path)
 end;
 
 function OnStop(signal)
-    if client then
-        client:send("{}")
-        sleep(1000) 
-        client:close() 
-    end
+    if client then client:close() end
     stopped = true; -- Остановили исполнение кода 
 end;
   
   -- Функция вызывается перед закрытием квика
 function OnClose()
-    if client then 
-        client:send("{}") 
-        sleep(1000) 
-        client:close() 
-    end
+    if client then client:close() end
     stopped = true; -- закрыли квик, надо остановить исполнение кода
 end;
 

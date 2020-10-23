@@ -28,30 +28,43 @@ namespace QuantaBasket.Basket
 
         private void Init()
         {
-            _logger.Info("Initialize BasketEngine");
-            _logger.Debug("Create L1QuotationStore");
-            _quoteStore = new SQLiteL1QuotationStore();
+            try
+            {
+                _logger.Info("Initialize BasketEngine");
+                _logger.Debug("Create L1QuotationStore");
+                _quoteStore = new SQLiteL1QuotationStore();
 
-            _logger.Debug("Create L1QuotationProvider");
-            _quoteProvider = new QLuaL1QuotationProvider(_quoteStore);
-            _quoteProvider.RegisterQuotationProcessor(ProcessQuotation);
+                _logger.Debug("Create L1QuotationProvider");
+                _quoteProvider = new QLuaL1QuotationProvider(_quoteStore);
+                _quoteProvider.RegisterQuotationProcessor(ProcessQuotation);
 
-            RegisterQuantas();
-            InitQuantas();
+                RegisterQuantas();
+                InitQuantas();
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
+        }
+
+        private void ProcessError(ErrorReportCode errorCode, string message)
+        {
+            _quantas.Values.ForEach(q => q.MessageProcessor?.Invoke(new ErrorMessage { ErrorCode = errorCode, Message = message}));
+            Stop();
         }
 
         private void ProcessQuotation(IEnumerable<L1Quotation> quotations)
         {
-            foreach(var q in quotations)
-            {
-                foreach(var item in _quantas.Values)
+            quotations.ForEach(q =>
+                _quantas.Values.ForEach(item =>
                 {
                     if (item.Quant.Securities.Contains(q.Security))
                     {
                         item.SendMessage(new L1QuotationsMessage() { Quotations = new[] { q } });
                     }
-                }
-            }
+                })
+            );
         }
 
         private void RegisterQuantas()
@@ -83,9 +96,17 @@ namespace QuantaBasket.Basket
 
         public void Start()
         {
-            _logger.Debug("Starting");
-            _quoteProvider.Connect();
-            _quantas.Values.ForEach(q => q.MessageProcessor?.Invoke(new StartMessage()));
+            try
+            {
+                _logger.Debug("Starting");
+                _quoteProvider.Connect();
+                _quantas.Values.ForEach(q => q.MessageProcessor?.Invoke(new StartMessage()));
+            } 
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
         }
 
         public void Stop()

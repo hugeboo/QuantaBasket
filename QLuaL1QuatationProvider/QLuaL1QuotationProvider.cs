@@ -34,7 +34,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
             _store = store;
         }
 
-        public void OnError(Action<ErrorReportCode, string> processError)
+        public void RegisterErrorProcessor(Action<ErrorReportCode, string> processError)
         {
             _onErrorAction = processError;
             _logger.Debug(processError != null ? 
@@ -97,6 +97,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 
         private void ProcessQuotesThreadProc(object state)
         {
+            string m = string.Empty;
             try
             {
                 _logger.Debug("ProcessQuotesThread started");
@@ -104,7 +105,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                 while (true)
                 {
                     dynamic d;
-                    string m = string.Empty;
+                    m = string.Empty;
                     L1Quotation q;
 
                     try
@@ -147,7 +148,9 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
             }
             catch(BadMessageException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, $"Message: {m}");
+                _onErrorAction?.Invoke(ErrorReportCode.TransportError, ex.Message);
+                Disconnect();
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@ namespace QuantaBasket.Core.Interfaces
 {
     public interface IErrorReporter
     {
-        void OnError(Action<ErrorReportCode, string> processError);
+        void RegisterErrorProcessor(Action<ErrorReportCode, string> processError);
     }
 
     public enum ErrorReportCode
