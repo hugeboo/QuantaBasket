@@ -1,10 +1,12 @@
 ﻿using NUnit.Framework;
 using QuantaBasket.Core.Contracts;
+using QuantaBasket.Core.Math;
 using QuantaBasket.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace QuantaBasketTests
@@ -59,6 +61,77 @@ namespace QuantaBasketTests
 
             Assert.True(L1QuotationUpdater.Update(q1, q2));
             Assert.AreEqual(L1QuotationChangedFlags.All, q1.Changes);
+        }
+
+        //[Test]
+        //public void RealTimeBarGenerator_EmptyBar()
+        //{
+        //    bool f = false;
+        //    var bg = new RealTimeBarGenerator2(BarInterval.Sec5, (bar) =>
+        //    {
+        //        Assert.AreEqual(BarInterval.Sec5, bar.IntervalSec);
+        //        Assert.IsTrue(bar.StartTime.TimeOfDay.TotalSeconds % 5 == 0);
+        //        Assert.IsTrue(bar.Open == 0m && bar.High == 0m && bar.Low == 0m && bar.Close == 0m);
+        //        Assert.IsTrue(bar.Volume == 0);
+        //        f = true;
+        //    });
+        //    Thread.Sleep(9999);
+        //    Assert.IsTrue(f);
+        //}
+
+        //[Test]
+        //public void RealTimeBarGenerator_NotEmptyBar()
+        //{
+        //    var q = new L1Quotation
+        //    {
+        //        DateTime = DateTime.Now.AddMinutes(-1),
+        //        Last = 100m,
+        //        DVolume = 99
+        //    };
+
+        //    while (DateTime.Now.TimeOfDay.TotalSeconds % 5 > 0.001) { }
+
+        //    bool f = false;
+        //    var bg = new RealTimeBarGenerator(BarInterval.Sec5, (bar) =>
+        //    {
+        //        Assert.AreEqual(BarInterval.Sec5, bar.IntervalSec);
+        //        Assert.IsTrue(bar.StartTime.TimeOfDay.TotalSeconds % 5 == 0);
+        //        Assert.IsTrue(bar.Open == 1000m && bar.High == 1000m && bar.Low == 1m && bar.Close == 66m);
+        //        Assert.IsTrue(bar.Volume == 396);
+        //        f = true;
+        //    });
+
+        //    bg.AddQuotation(q.Clone2());
+
+        //    Thread.Sleep(1000);
+
+        //    q.DateTime = DateTime.Now;
+        //    q.Last = 1000m;
+        //    bg.AddQuotation(q.Clone2());
+        //    q.DateTime = DateTime.Now;
+        //    q.Last = 1m;
+        //    bg.AddQuotation(q.Clone2());
+        //    q.DateTime = DateTime.Now;
+        //    q.Last = 100m;
+        //    bg.AddQuotation(q.Clone2());
+        //    q.DateTime = DateTime.Now;
+        //    q.Last = 66m;
+        //    bg.AddQuotation(q.Clone2());
+
+        //    Thread.Sleep(8000);
+        //    Assert.IsTrue(f);
+        //}
+
+        [Test]
+        public void CalculateSimpleMovingAverage()
+        {
+            var src = new decimal[] { 25m, 8m, 65m, 4m, 95m, 75m, 15m, 35m, 2m, 8m, 65m };
+            var lstDst = new List<decimal>();
+            var sma = new SMA(4, (d) => lstDst.Add(d));
+            foreach (var d in src) sma.Add(d);
+            var dst = lstDst.ToArray();
+            CollectionAssert.AreEqual(new decimal[] { 25.5m, 43m, 59.75m, 47.25m, 55m, 31.75m, 15m, 27.5m }, dst);
+            Assert.AreEqual(11, sma.TotalSourcePointCount);
         }
     }
 }

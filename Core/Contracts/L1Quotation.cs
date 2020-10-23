@@ -26,7 +26,7 @@ namespace QuantaBasket.Core.Contracts
         public object Clone()
         {
             var c = this.MemberwiseClone() as L1Quotation;
-            c.Security = Security.Clone2();
+            c.Security = Security?.Clone2();
             return c;
         }
         public override string ToString()

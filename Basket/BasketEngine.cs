@@ -39,12 +39,10 @@ namespace QuantaBasket.Basket
                 _logger.Debug("Create L1QuotationProvider");
                 _quoteProvider = new QLuaL1QuotationProvider(_quoteStore);
                 _quoteProvider.RegisterQuotationProcessor(ProcessQuotation);
+                _quoteProvider.RegisterErrorProcessor(ProcessError);
 
                 RegisterQuantas();
                 InitQuantas();
-
-                _logger.Debug("Start timer for 1sec");
-                _timer = new Timer(TimerProc, null, 1000, 1000);
             }
             catch(Exception ex)
             {
@@ -104,6 +102,7 @@ namespace QuantaBasket.Basket
         {
             Stop();
             _logger.Debug("Disposing");
+            _timer?.Dispose();
             _quoteProvider.Dispose();
             _logger.Debug("Disposing quantos");
             _quantas.Values.ForEach(q => q.Quant.Dispose());
@@ -116,8 +115,12 @@ namespace QuantaBasket.Basket
                 _logger.Debug("Starting");
                 _quoteProvider.Connect();
                 SendAllQuanas(new StartMessage());
-            } 
-            catch(Exception ex)
+                _logger.Debug("Start timer for 1sec");
+                _timer?.Dispose();
+                _timer = new Timer(TimerProc, null, 1000, 1000);
+
+            }
+            catch (Exception ex)
             {
                 _logger.Error(ex);
                 throw;
@@ -127,6 +130,7 @@ namespace QuantaBasket.Basket
         public void Stop()
         {
             _logger.Debug("Stopping");
+            _timer?.Dispose();
             SendAllQuanas(new StopMessage());
         }
     }

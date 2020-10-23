@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.Core.Utils
+namespace QuantaBasket.Core.Math
 {
     public static class L1QuotationUpdater
     {

@@ -12,7 +12,7 @@ using System.Net.Sockets;
 using System.Threading;
 using QuantaBasket.Core.Exceptions;
 using Newtonsoft.Json;
-using QuantaBasket.Core.Utils;
+using QuantaBasket.Core.Math;
 using System.Globalization;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
