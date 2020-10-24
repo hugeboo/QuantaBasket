@@ -10,7 +10,13 @@ namespace Trader
 {
     public sealed class TradingEngine : ITradingEngine
     {
-        private ILogger _logger = LogManager.GetLogger("TradingEngine");
+        private readonly ITradingStore _tradingStore;
+        private readonly ILogger _logger = LogManager.GetLogger("TradingEngine");
+
+        public TradingEngine(ITradingStore tradingStore)
+        {
+            _tradingStore = tradingStore;
+        }
 
         public IQuantSignal CreateSignal(string quantName)
         {
@@ -27,6 +33,8 @@ namespace Trader
             {
                 throw new InvalidOperationException(err);
             }
+
+            _tradingStore?.Insert(s.ToSignalDTO());
 
             //...
         }

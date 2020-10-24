@@ -1,6 +1,7 @@
 ﻿using NLog;
 using QuantaBasket.Components.QLuaL1QuotationProvider;
 using QuantaBasket.Components.SQLiteL1QuotationStore;
+using QuantaBasket.Components.SQLiteTradingStore;
 using QuantaBasket.Core.Contracts;
 using QuantaBasket.Core.Extensions;
 using QuantaBasket.Core.Interfaces;
@@ -23,6 +24,7 @@ namespace QuantaBasket.Basket
 
         private IL1QuotationProvider _quoteProvider;
         private IL1QuotationStore _quoteStore;
+        private ITradingStore _tradingStore;
 
         private ITradingEngine _trader;
 
@@ -46,6 +48,7 @@ namespace QuantaBasket.Basket
             try
             {
                 _logger.Info("Initialize BasketEngine");
+                
                 _logger.Debug("Create L1QuotationStore");
                 _quoteStore = new SQLiteL1QuotationStore();
 
@@ -54,8 +57,11 @@ namespace QuantaBasket.Basket
                 _quoteProvider.RegisterQuotationProcessor(ProcessQuotation);
                 _quoteProvider.RegisterErrorProcessor(ProcessError);
 
+                _logger.Debug("Create TradingStore");
+                _tradingStore = new SQLiteTradingStore();
+
                 _logger.Debug("Creaete TradingEngine");
-                _trader = new TradingEngine();
+                _trader = new TradingEngine(_tradingStore);
 
                 RegisterQuantas();
                 InitQuantas();

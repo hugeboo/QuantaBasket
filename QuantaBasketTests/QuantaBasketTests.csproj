@@ -102,6 +102,10 @@
       <Project>{1212e1e5-ae08-4c4e-a9dc-374577021f2a}</Project>
       <Name>SQLiteL1QuotationStore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SQLiteTradingStore\SQLiteTradingStore.csproj">
+      <Project>{54e970b6-6ff1-437d-8ab3-c33bd741044a}</Project>
+      <Name>SQLiteTradingStore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

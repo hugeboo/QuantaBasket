@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using QuantaBasket.Components.SQLiteL1QuotationStore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +12,19 @@ namespace QuantaBasketTests
     class SqliteTests
     {
         [Test]
-        public void OnCreateNewDatabase_Successfully()
+        public void OnCreateNewSQLiteL1QuotationStore_Successfully()
         {
             var filename = Path.GetTempFileName();
             var cs = $"Data Source = {filename};Version=3;";
-            DbUtils.CreateDb(null, cs);
+            QuantaBasket.Components.SQLiteL1QuotationStore.DbUtils.CreateDb(null, cs);
+        }
+
+        [Test]
+        public void OnCreateNewSQLiteTradingStore_Successfully()
+        {
+            var filename = Path.GetTempFileName();
+            var cs = $"Data Source = {filename};Version=3;";
+            QuantaBasket.Components.SQLiteTradingStore.DbUtils.CreateDb(null, cs);
         }
     }
 }
