@@ -48,7 +48,7 @@ namespace QuantaBasket.Core.Interfaces
         long Qtty { get; set; }
 
         /// <summary>
-        /// Цена сделки (не актуальна для сигналов типа Market)
+        /// Цена (не актуальна для сигналов типа Market)
         /// </summary>
         decimal Price { get; set; }
 

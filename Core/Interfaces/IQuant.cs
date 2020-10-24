@@ -33,9 +33,21 @@ namespace QuantaBasket.Core.Interfaces
         IBasketService BasketService { set; }
 
         /// <summary>
+        /// Текущий статус кванта
+        /// </summary>
+        QuantStatus Status { get; }
+
+        /// <summary>
         /// Инициализация кванта
         /// Вызывается движком после создания кванта
         /// </summary>
         void Init();
+    }
+
+    public enum QuantStatus
+    {
+        Idle,
+        Active,
+        Error
     }
 }

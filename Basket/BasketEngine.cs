@@ -1,7 +1,6 @@
 ﻿using NLog;
 using QuantaBasket.Components.QLuaL1QuotationProvider;
 using QuantaBasket.Components.SQLiteL1QuotationStore;
-using QuantaBasket.Components.SQLiteTradingStore;
 using QuantaBasket.Core.Contracts;
 using QuantaBasket.Core.Extensions;
 using QuantaBasket.Core.Interfaces;
@@ -24,23 +23,32 @@ namespace QuantaBasket.Basket
 
         private IL1QuotationProvider _quoteProvider;
         private IL1QuotationStore _quoteStore;
-        private ITradingStore _tradingStore;
 
-        private ITradingEngine _trader;
+        private ITradingEngine _tradingEngine;
 
         public BasketEngine()
         {
             Init();
         }
 
-        public IQuantSignal CreateSignal(string quantName)
+        /// <summary>
+        /// Создать новый торговый сигнал
+        /// У нового сигнала заполнены некоторые обязательные поля, остальные заполняет квант
+        /// </summary>
+        /// <param name="quantName">Имя кванта</param>
+        /// <returns>Сигнал для дальнейшего заполнения и отправки</returns>
+        internal IQuantSignal CreateSignal(string quantName)
         {
-            return _trader.CreateSignal(quantName);
+            return _tradingEngine.CreateSignal(quantName);
         }
 
-        public void SendSignal(IQuantSignal signal)
+        /// <summary>
+        /// Оправить сигнал в тороговую систему
+        /// </summary>
+        /// <param name="signal">Тороговый сигнал</param>
+        internal void SendSignal(IQuantSignal signal)
         {
-            _trader.SendSignal(signal);
+            _tradingEngine.SendSignal(signal);
         }
 
         private void Init()
@@ -48,7 +56,7 @@ namespace QuantaBasket.Basket
             try
             {
                 _logger.Info("Initialize BasketEngine");
-                
+
                 _logger.Debug("Create L1QuotationStore");
                 _quoteStore = new SQLiteL1QuotationStore();
 
@@ -57,16 +65,13 @@ namespace QuantaBasket.Basket
                 _quoteProvider.RegisterQuotationProcessor(ProcessQuotation);
                 _quoteProvider.RegisterErrorProcessor(ProcessError);
 
-                _logger.Debug("Create TradingStore");
-                _tradingStore = new SQLiteTradingStore();
-
                 _logger.Debug("Creaete TradingEngine");
-                _trader = new TradingEngine(_tradingStore);
+                _tradingEngine = new TradingEngine();
 
                 RegisterQuantas();
                 InitQuantas();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex);
                 throw;
@@ -122,12 +127,20 @@ namespace QuantaBasket.Basket
 
         public void Dispose()
         {
-            Stop();
-            _logger.Debug("Disposing");
-            _timer?.Dispose();
-            _quoteProvider.Dispose();
-            _logger.Debug("Disposing quantos");
-            _quantas.Values.ForEach(q => q.Quant.Dispose());
+            try
+            {
+                Stop();
+                _logger.Debug("Disposing");
+                _timer?.Dispose();
+                _quoteProvider.Dispose();
+                _tradingEngine.Dispose();
+                _logger.Debug("Disposing quantos");
+                _quantas.Values.ForEach(q => q.Quant.Dispose());
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+            }
         }
 
         public void Start()
@@ -136,6 +149,7 @@ namespace QuantaBasket.Basket
             {
                 _logger.Debug("Starting");
                 _quoteProvider.Connect();
+                _tradingEngine.Start();
                 SendAllQuanas(new StartMessage());
                 _logger.Debug("Start timer for 1sec");
                 _timer?.Dispose();
@@ -151,9 +165,18 @@ namespace QuantaBasket.Basket
 
         public void Stop()
         {
-            _logger.Debug("Stopping");
-            _timer?.Dispose();
-            SendAllQuanas(new StopMessage());
+            try
+            {
+                _logger.Debug("Stopping");
+                SendAllQuanas(new StopMessage());
+                _timer?.Dispose();
+                _tradingEngine.Stop();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
         }
     }
 }

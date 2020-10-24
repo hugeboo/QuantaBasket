@@ -32,7 +32,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                     "AvgPrice       DECIMAL  NOT NULL," +
                     "LastUpdateTime DATETIME NOT NULL," +
                     "QuantName      TEXT     NOT NULL)");
-                DoCommand(logger, connection, "CREATE INDEX Signal_DateTime_INDX ON Signals (CreatedTime ASC)");
+                DoCommand(logger, connection, "CREATE UNIQUE INDEX Signal_DateTime_INDX ON Signals (Id, CreatedTime ASC)");
             }
         }
 

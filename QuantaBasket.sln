@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{D591B630-F0FB-4CBE-B0B3-388528DA50DA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Componenets", "Componenets", "{F65E1865-255C-410B-BB03-5CC73438B9F7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{F65E1865-255C-410B-BB03-5CC73438B9F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLuaL1QuotationProvider", "QLuaL1QuatationProvider\QLuaL1QuotationProvider.csproj", "{86CFBF47-0B1F-4257-9179-A16DC07688F3}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{97E8D00F-FA52-4036-BCB8-BB2392B0BC46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteTradingStore", "SQLiteTradingStore\SQLiteTradingStore.csproj", "{54E970B6-6FF1-437D-8AB3-C33BD741044A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingSystemMock", "TradingSystemMock\TradingSystemMock.csproj", "{29468DD8-1DE9-48C6-A484-EDA0130E50DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,14 @@ Global
 		{54E970B6-6FF1-437D-8AB3-C33BD741044A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{54E970B6-6FF1-437D-8AB3-C33BD741044A}.Release|x64.ActiveCfg = Release|Any CPU
 		{54E970B6-6FF1-437D-8AB3-C33BD741044A}.Release|x64.Build.0 = Release|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Debug|x64.Build.0 = Debug|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Release|x64.ActiveCfg = Release|Any CPU
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +141,7 @@ Global
 		{732C4ADA-C3B7-476E-970B-E68F8CC888A9} = {353A01DE-E8B4-4C52-8478-1457F4F9185F}
 		{4ADACC80-433B-4917-A313-89D99EA7B460} = {AD56744B-EB7E-46ED-8503-E8DAB93376F0}
 		{54E970B6-6FF1-437D-8AB3-C33BD741044A} = {F65E1865-255C-410B-BB03-5CC73438B9F7}
+		{29468DD8-1DE9-48C6-A484-EDA0130E50DA} = {F65E1865-255C-410B-BB03-5CC73438B9F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB887CDC-BC16-437B-9C99-2C935E53BA2F}

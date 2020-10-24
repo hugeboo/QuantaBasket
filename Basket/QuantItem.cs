@@ -13,7 +13,7 @@ namespace QuantaBasket.Basket
     sealed class QuantItem : IBasketService, IDisposable
     {
         private Action<AMessage> _messageProcessor;
-        private readonly IBasketEngine _basketEngine;
+        private readonly BasketEngine _basketEngine;
         private readonly ILogger _logger = LogManager.GetLogger("QuantItem");
         private readonly object _syncObj = new object();
         private readonly List<AMessage> _messageQueue = new List<AMessage>();
@@ -22,9 +22,9 @@ namespace QuantaBasket.Basket
 
         public IQuant Quant { get; set; }
 
-        public QuantItem(IBasketEngine engine)
+        public QuantItem(BasketEngine basketEngine)
         {
-            _basketEngine = engine;
+            _basketEngine = basketEngine;
             _threadSender = new Thread(ThreadSenderProc);
             _threadSender.Start();
         }
@@ -44,11 +44,18 @@ namespace QuantaBasket.Basket
 
         public void SendMessage(AMessage message)
         {
-            _logger.Trace($"{Quant?.Name}: Send message: {message}");
-            lock (_syncObj) _messageQueue.Add(message);
-            _newMessageEvent.Set();
+            if (Quant.Status == QuantStatus.Active)
+            {
+                _logger.Trace($"{Quant?.Name}: Send message: {message}");
+                lock (_syncObj) _messageQueue.Add(message);
+                _newMessageEvent.Set();
+            }
+            else
+            {
+                _logger.Trace($"{Quant?.Name} has '{Quant.Status}' status. Cannot send message: {message}");
+            }
         }
-
+        
         private void ThreadSenderProc(object state)
         {
             try

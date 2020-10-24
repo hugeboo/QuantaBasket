@@ -58,6 +58,14 @@
       <Project>{d591b630-f0fb-4cbe-b0b3-388528da50da}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SQLiteTradingStore\SQLiteTradingStore.csproj">
+      <Project>{54E970B6-6FF1-437D-8AB3-C33BD741044A}</Project>
+      <Name>SQLiteTradingStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradingSystemMock\TradingSystemMock.csproj">
+      <Project>{29468DD8-1DE9-48C6-A484-EDA0130E50DA}</Project>
+      <Name>TradingSystemMock</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -27,5 +27,10 @@ namespace QuantaBasket.Core.Interfaces
         /// Отключиться от торговой системы
         /// </summary>
         void Disconnect();
+
+        /// <summary>
+        /// Статус подключения
+        /// </summary>
+        bool Connected { get; }
     }
 }

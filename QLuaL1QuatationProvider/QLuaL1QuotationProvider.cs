@@ -29,6 +29,8 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
         private Thread _thread;
         private ILogger _logger = LogManager.GetLogger("QLuaL1QuotationProvider");
 
+        public bool Connected => (_socket?.Connected ?? false) && (_thread?.IsAlive ?? false);
+
         public QLuaL1QuotationProvider(IL1QuotationStore store)
         {
             _store = store;

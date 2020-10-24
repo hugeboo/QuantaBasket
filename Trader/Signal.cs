@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Trader
 {
-    internal sealed class Signal : IQuantSignal
+    internal sealed class Signal : IQuantSignal, ITradeSignal
     {
         private readonly SecurityId _securityId = new SecurityId();
         private SignalSide _side;
@@ -91,9 +91,9 @@ namespace Trader
 
         public string QuantName => _quantName;
 
-        public Signal(string quantName)
+        public Signal(string id, string quantName)
         {
-            Id = Guid.NewGuid().ToString("N");
+            Id = id;
             Status = SignalStatus.New;
             CreatedTime = DateTime.Now;
             _quantName = quantName;
@@ -148,9 +148,8 @@ namespace Trader
 
         public static Signal FromSignalDTO(SignalDTO dto)
         {
-            var signal = new Signal(dto.QuantName)
+            var signal = new Signal(dto.Id, dto.QuantName)
             {
-                Id = dto.Id,
                 CreatedTime = dto.CreatedTime,
                 ClassCode = dto.ClassCode,
                 SecCode = dto.SecCode,

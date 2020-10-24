@@ -79,8 +79,10 @@
     <Compile Include="Contracts\L1Quotation.cs" />
     <Compile Include="Contracts\L1QuotationFilter.cs" />
     <Compile Include="Contracts\OHLCV.cs" />
+    <Compile Include="Contracts\OrderStatusDTO.cs" />
     <Compile Include="Contracts\SecurityId.cs" />
     <Compile Include="Contracts\SignalDTO.cs" />
+    <Compile Include="Contracts\TradeDTO.cs" />
     <Compile Include="Exceptions\BadMessageException.cs" />
     <Compile Include="Exceptions\ConnectionLostException.cs" />
     <Compile Include="Exceptions\TransportException.cs" />
@@ -92,8 +94,10 @@
     <Compile Include="Interfaces\IL1QuotationStore.cs" />
     <Compile Include="Interfaces\IQuant.cs" />
     <Compile Include="Interfaces\IQuantSignal.cs" />
+    <Compile Include="Interfaces\ITradeSignal.cs" />
     <Compile Include="Interfaces\ITradingEngine.cs" />
     <Compile Include="Interfaces\ITradingStore.cs" />
+    <Compile Include="Interfaces\ITradingSystem.cs" />
     <Compile Include="Math\SMA.cs" />
     <Compile Include="Messages\AMessage.cs" />
     <Compile Include="Messages\ErrorMessage.cs" />

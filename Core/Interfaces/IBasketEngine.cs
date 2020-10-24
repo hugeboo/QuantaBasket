@@ -12,7 +12,7 @@ namespace QuantaBasket.Core.Interfaces
     public interface IBasketEngine : IDisposable
     {
         /// <summary>
-        /// Старт системы (подклчение к ТСб подписка на котировки, включение таймеров и т.д.)
+        /// Старт системы (подклчение к ТС, подписка на котировки, включение таймеров и т.д.)
         /// </summary>
         void Start();
 
@@ -20,19 +20,5 @@ namespace QuantaBasket.Core.Interfaces
         /// Остановка системы
         /// </summary>
         void Stop();
-
-        /// <summary>
-        /// Создать новый торговый сигнал
-        /// У нового сигнала заполнены некоторые обязательные поля, остальные заполняет квант
-        /// </summary>
-        /// <param name="quantName">Имя кванта</param>
-        /// <returns>Сигнал для дальнейшего заполнения и отправки</returns>
-        IQuantSignal CreateSignal(string quantName);
-
-        /// <summary>
-        /// Оправить сигнал в тороговую систему
-        /// </summary>
-        /// <param name="signal">Тороговый сигнал</param>
-        void SendSignal(IQuantSignal signal);
     }
 }
