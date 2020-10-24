@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
-    public static class ReceiverJsonString
+    internal static class ReceiverJsonString
     {
         public static string Receive(ILogger logger, Func<byte[], int> receiveFunc)
         {

@@ -4,23 +4,23 @@ using System.Runtime.InteropServices;
 
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
-// связанные со сборкой.
-[assembly: AssemblyTitle("QLuaQuatationProvider")]
+// связанных со сборкой.
+[assembly: AssemblyTitle("QuantaBasketGUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("QLuaQuatationProvider")]
+[assembly: AssemblyProduct("QuantaBasketGUI")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
 // для компонентов COM. Если необходимо обратиться к типу в этой сборке через
-// COM, задайте атрибуту ComVisible значение TRUE для этого типа.
+// COM, следует установить атрибут ComVisible в TRUE для этого типа.
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("86cfbf47-0b1f-4257-9179-a16dc07688f3")]
+[assembly: Guid("4adacc80-433b-4917-a313-89d99ea7b460")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
@@ -34,5 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("QuantaBasketTests")]

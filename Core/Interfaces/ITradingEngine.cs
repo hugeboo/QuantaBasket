@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Interfaces
 {
-    public interface IBasketEngine : IDisposable
+    public interface ITradingEngine
     {
-        void Start();
-        void Stop();
         IQuantSignal CreateSignal(string quantName);
         void SendSignal(IQuantSignal signal);
     }

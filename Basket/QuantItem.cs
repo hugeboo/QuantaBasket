@@ -13,7 +13,7 @@ namespace QuantaBasket.Basket
     sealed class QuantItem : IBasketService, IDisposable
     {
         private Action<AMessage> _messageProcessor;
-        private readonly BasketEngine _engine;
+        private readonly IBasketEngine _basketEngine;
         private readonly ILogger _logger = LogManager.GetLogger("QuantItem");
         private readonly object _syncObj = new object();
         private readonly List<AMessage> _messageQueue = new List<AMessage>();
@@ -22,9 +22,9 @@ namespace QuantaBasket.Basket
 
         public IQuant Quant { get; set; }
 
-        public QuantItem(BasketEngine engine)
+        public QuantItem(IBasketEngine engine)
         {
-            _engine = engine;
+            _basketEngine = engine;
             _threadSender = new Thread(ThreadSenderProc);
             _threadSender.Start();
         }
@@ -82,6 +82,16 @@ namespace QuantaBasket.Basket
             {
                 _logger.Error(ex);
             }
+        }
+
+        public IQuantSignal CreateSignal()
+        {
+            return _basketEngine.CreateSignal(Quant?.Name);
+        }
+
+        public void SendSignal(IQuantSignal signal)
+        {
+            _basketEngine.SendSignal(signal);
         }
     }
 }

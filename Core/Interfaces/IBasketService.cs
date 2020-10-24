@@ -11,5 +11,7 @@ namespace QuantaBasket.Core.Interfaces
     public interface IBasketService
     {
         void RegisterMessageProcessor(Action<AMessage> messageProcessor);
+        IQuantSignal CreateSignal();
+        void SendSignal(IQuantSignal signal);
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Basket
 {
-    public static class QuantBrowser
+    internal static class QuantBrowser
     {
         public static IEnumerable<Type> Browse()
         {

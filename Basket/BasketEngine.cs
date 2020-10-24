@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Trader;
 
 namespace QuantaBasket.Basket
 {
@@ -23,9 +24,21 @@ namespace QuantaBasket.Basket
         private IL1QuotationProvider _quoteProvider;
         private IL1QuotationStore _quoteStore;
 
+        private ITradingEngine _trader;
+
         public BasketEngine()
         {
             Init();
+        }
+
+        public IQuantSignal CreateSignal(string quantName)
+        {
+            return _trader.CreateSignal(quantName);
+        }
+
+        public void SendSignal(IQuantSignal signal)
+        {
+            _trader.SendSignal(signal);
         }
 
         private void Init()
@@ -40,6 +53,9 @@ namespace QuantaBasket.Basket
                 _quoteProvider = new QLuaL1QuotationProvider(_quoteStore);
                 _quoteProvider.RegisterQuotationProcessor(ProcessQuotation);
                 _quoteProvider.RegisterErrorProcessor(ProcessError);
+
+                _logger.Debug("Creaete TradingEngine");
+                _trader = new TradingEngine();
 
                 RegisterQuantas();
                 InitQuantas();

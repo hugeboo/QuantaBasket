@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C582B70F-F31F-4E4C-9F3E-AA1292F98204}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QuantaBasket.Basket</RootNamespace>
-    <AssemblyName>Basket</AssemblyName>
+    <ProjectGuid>{4ADACC80-433B-4917-A313-89D99EA7B460}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>QuantaBasketGUI</RootNamespace>
+    <AssemblyName>QuantaBasketGUI</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,59 +33,48 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.5\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasketEngine.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="QuantBrowser.cs" />
-    <Compile Include="QuantItem.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{d591b630-f0fb-4cbe-b0b3-388528da50da}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\QLuaL1QuatationProvider\QLuaL1QuotationProvider.csproj">
-      <Project>{86cfbf47-0b1f-4257-9179-a16dc07688f3}</Project>
-      <Name>QLuaL1QuotationProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SQLiteL1QuotationStore\SQLiteL1QuotationStore.csproj">
-      <Project>{1212e1e5-ae08-4c4e-a9dc-374577021f2a}</Project>
-      <Name>SQLiteL1QuotationStore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Trader\Trader.csproj">
-      <Project>{84AD95A6-703B-4DC6-A894-552478E29FAB}</Project>
-      <Name>Trader</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

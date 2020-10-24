@@ -10,6 +10,16 @@ namespace QuantaBasket.Core.Contracts
         public string ClassCode { get; set; }
         public string SecurityCode { get; set; }
 
+        public SecurityId()
+        {
+        }
+
+        public SecurityId(string classCode, string secCode)
+        {
+            ClassCode = classCode;
+            SecurityCode = secCode;
+        }
+
         public SecurityId Clone2()
         {
             return Clone() as SecurityId;

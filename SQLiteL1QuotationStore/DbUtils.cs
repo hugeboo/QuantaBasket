@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.SQLiteL1QuotationStore
 {
-    public static class DbUtils
+    internal static class DbUtils
     {
         public static void CreateDb(ILogger logger, string connectionString)
         {
