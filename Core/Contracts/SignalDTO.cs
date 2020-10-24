@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Contracts
 {
+    /// <summary>
+    /// Торговый сигнал
+    /// Объект, содержащий исключительно данные
+    /// </summary>
     public sealed class SignalDTO : IQuantSignal
     {
         public string Id { get; set; }
         public DateTime CreatedTime { get; set; }
         public string ClassCode { get; set; }
         public string SecCode { get; set; }
+        public SignalStatus Status { get; set; }
         public SignalSide Side { get; set; }
         public long Qtty { get; set; }
         public decimal Price { get; set; }

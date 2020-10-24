@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Messages
 {
+    /// <summary>
+    /// Уведомление о старте системы
+    /// </summary>
     public sealed class StartMessage : AMessage
     {
     }

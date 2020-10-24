@@ -5,9 +5,19 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Contracts
 {
+    /// <summary>
+    /// Идентификатор ценной бумаги
+    /// </summary>
     public sealed class SecurityId : ICloneable
     {
+        /// <summary>
+        /// Код класса
+        /// </summary>
         public string ClassCode { get; set; }
+
+        /// <summary>
+        /// Код бумаги (тикер)
+        /// </summary>
         public string SecurityCode { get; set; }
 
         public SecurityId()
@@ -20,6 +30,9 @@ namespace QuantaBasket.Core.Contracts
             SecurityCode = secCode;
         }
 
+        /// <summary>
+        /// Клонирование с приведением типа
+        /// </summary>
         public SecurityId Clone2()
         {
             return Clone() as SecurityId;

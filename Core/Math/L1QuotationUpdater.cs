@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Math
 {
+    /// <summary>
+    /// "Обновлятор" котирвок L1
+    /// </summary>
     public static class L1QuotationUpdater
     {
+        /// <summary>
+        /// Обновить старую котировку более новой и выставить соответствующие флаги изменений
+        /// </summary>
+        /// <param name="quote">Старая котировка</param>
+        /// <param name="newQuote">Новая котировка</param>
+        /// <returns>Наличие изменений</returns>
         public static bool Update(L1Quotation quote, L1Quotation newQuote)
         {
             if (quote.DateTime > newQuote.DateTime) return false;

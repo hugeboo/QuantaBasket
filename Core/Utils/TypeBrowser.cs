@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Utils
 {
+    /// <summary>
+    /// Поиск типов, реализующих определенный интерфейс во всех сборках, загруженных в домен приложения
+    /// </summary>
     public static class TypeBrowser
     {
+        /// <summary>
+        /// Найтти тиипы, реализующие интерфейс
+        /// Типы должны быть не абстрактными публичными классами
+        /// </summary>
+        /// <param name="interfaceName">Имя интерфейса</param>
+        /// <returns></returns>
         public static IEnumerable<Type> Browse(string interfaceName)
         {
             var lst = new List<Type>();

@@ -17,11 +17,11 @@ namespace QuantaBasket.Components.SQLiteTradingStore
 
         private ILogger _logger = LogManager.GetLogger("SQLiteTradingStore");
 
-        private const string _sqlInsertSignal = "INSERT INTO Signals (Id,CreatedTime,ClassCode,SecCode,Side,Qtty,Price,PriceType,ExecQtty,AvgPrice,LastUpdateTime,QuantName) "+                   
-            "VALUES(@id,@createdTime,@classCode,@secCode,@side,@qtty,@price,@priceType,@execQtty,@avgPrice,@lastUpdateTime,@quantName)";
+        private const string _sqlInsertSignal = "INSERT INTO Signals (Id,CreatedTime,ClassCode,SecCode,Status,Side,Qtty,Price,PriceType,ExecQtty,AvgPrice,LastUpdateTime,QuantName) "+                   
+            "VALUES(@id,@createdTime,@classCode,@secCode,@status,@side,@qtty,@price,@priceType,@execQtty,@avgPrice,@lastUpdateTime,@quantName)";
 
         private const string _sqlUpdateSignal = "UPDATE Signals SET CreatedTime = @createdTime, " +
-            "ClassCode = @classCode, SecCode = @secCode, Side = @side, Qtty = @qtty, Price = @price, PriceType = @priceType, " +
+            "ClassCode = @classCode, SecCode = @secCode, Status = @status, Side = @side, Qtty = @qtty, Price = @price, PriceType = @priceType, " +
             "ExecQtty = @execQtty, AvgPrice = @avgPrice, LastUpdateTime = @lastUpdateTime, QuantName = @quantName " +
             " WHERE Id = @id";
 
@@ -86,6 +86,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                         new SQLiteParameter("@createdTime", signal.CreatedTime),
                         new SQLiteParameter("@classCode", signal.ClassCode),
                         new SQLiteParameter("@secCode", signal.SecCode),
+                        new SQLiteParameter("@status", signal.Status.ToString()),
                         new SQLiteParameter("@side", signal.Side.ToString()),
                         new SQLiteParameter("@qtty", signal.Qtty),
                         new SQLiteParameter("@price", signal.Price),

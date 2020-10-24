@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Messages
 {
+    /// <summary>
+    /// Сообщение об ошибке
+    /// </summary>
     public sealed class ErrorMessage : AMessage
     {
         public ErrorReportCode ErrorCode { get; set; }

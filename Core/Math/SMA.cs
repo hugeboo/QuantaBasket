@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Math
 {
-    public sealed class SMA // Simple Moving Average
+    /// <summary>
+    /// Калькулятор скоьзящего среднего в режиме реального времени
+    /// Simple Moving Average
+    /// </summary>
+    public sealed class SMA
     {
         private readonly Action<decimal> _smaProcessor;
         private readonly List<decimal> _buffer = new List<decimal>();
@@ -17,12 +21,20 @@ namespace QuantaBasket.Core.Math
 
         public long TotalSourcePointCount => _index;
 
+        /// <summary>
+        /// Конструктор калькулятора
+        /// </summary>
+        /// <param name="period">Период СС</param>
+        /// <param name="smaProcessor">Метод для обработки выходного потока данных СС</param>
         public SMA(int period, Action<decimal> smaProcessor)
         {
             _period = period;
             _smaProcessor = smaProcessor ?? throw new ArgumentNullException(nameof(smaProcessor));
         }
 
+        /// <summary>
+        /// Входной поток данных
+        /// </summary>
         public void Add(decimal pt)
         { 
             if (_index < _period - 1)

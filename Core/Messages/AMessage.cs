@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Messages
 {
+    /// <summary>
+    /// Сообщение для нотификации кванта о событиях в системе (базовый класс)
+    /// Раьота кванта построена по событийной модели
+    /// </summary>
     public abstract class AMessage
     {
         public override string ToString()
