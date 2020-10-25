@@ -1,0 +1,5 @@
+{
+  "QLuaAddr": "127.0.0.1",
+  "QLuaPort": 3585,
+  "Securities": "[{\"c\":\"TQBR\",\"s\":\"LKOH\"},{\"c\":\"*\",\"s\":\"RIZ0\"}]"
+}

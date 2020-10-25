@@ -107,6 +107,10 @@
       <Project>{c582b70f-f31f-4e4c-9f3e-aa1292f98204}</Project>
       <Name>Basket</Name>
     </ProjectReference>
+    <ProjectReference Include="..\QLuaL1QuatationProvider\QLuaL1QuotationProvider.csproj">
+      <Project>{86cfbf47-0b1f-4257-9179-a16dc07688f3}</Project>
+      <Name>QLuaL1QuotationProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

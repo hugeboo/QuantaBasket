@@ -90,6 +90,7 @@
     <Compile Include="Interfaces\IBasketEngine.cs" />
     <Compile Include="Interfaces\IBasketService.cs" />
     <Compile Include="Interfaces\IErrorReporter.cs" />
+    <Compile Include="Interfaces\IHaveConfiguration.cs" />
     <Compile Include="Interfaces\IL1QuotationProvider.cs" />
     <Compile Include="Interfaces\IL1QuotationStore.cs" />
     <Compile Include="Interfaces\IQuant.cs" />

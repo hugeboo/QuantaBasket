@@ -21,6 +21,8 @@ namespace QuantaBasketGUI
         {
             InitializeComponent();
             logControl.SetLogStore(LogStore.Default);
+            treeView.ExpandAll();
+            propertyGrid.SelectedObject = QuantaBasket.Components.QLuaL1QuotationProvider.Configuration.Default;
         }
 
         private void MainForm_Load(object sender, EventArgs e)

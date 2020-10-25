@@ -17,7 +17,7 @@ using System.Globalization;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
-    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider
+    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider, IHaveConfiguration
     {
         private readonly IL1QuotationStore _store;
         private readonly Dictionary<SecurityId, L1Quotation> _dictQuotes = new Dictionary<SecurityId, L1Quotation>();
@@ -64,8 +64,8 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 
         public void Connect()
         {
-            var addr = Settings.Default.QLuaAddr;
-            var port = Settings.Default.QLuaPort;
+            var addr = Configuration.Default.QLuaAddr;//Settings.Default.QLuaAddr;
+            var port = Configuration.Default.QLuaPort;//Settings.Default.QLuaPort;
 
             _logger.Debug($"Connecting to {addr}:{port}");
 
@@ -78,7 +78,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
             _thread = new Thread(ProcessQuotesThreadProc);
             _thread.Start();
 
-            var requestQuotes = Settings.Default.Securities;
+            var requestQuotes = Configuration.Default.Securities;//Settings.Default.Securities;
 
             _logger.Debug($"Requesting quotes {requestQuotes}");
 
@@ -236,6 +236,16 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                 _onNewQuotationsAction?.Invoke(quotes);
                 _store?.Insert(quotes);
             }
+        }
+
+        public object GetConfiguration()
+        {
+            return Configuration.Default;
+        }
+
+        public void SaveConfiguration()
+        {
+            Configuration.Default.Save();
         }
     }
 }
