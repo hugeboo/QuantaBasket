@@ -41,7 +41,7 @@ namespace QuantaBasketGUI
             _basketEngine?.Dispose();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void startBasketToolStripButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -50,7 +50,27 @@ namespace QuantaBasketGUI
             catch(Exception ex)
             {
                 _logger.Error(ex);
+                MessageBox.Show(this, $"{ex.Message}", "QuantaBasket", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void stopBasketToolStripButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _basketEngine?.Stop();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                MessageBox.Show(this, $"{ex.Message}", "QuantaBasket", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            startBasketToolStripButton.Enabled = !_basketEngine?.Started ?? false;
+            stopBasketToolStripButton.Enabled = _basketEngine?.Started ?? false;
         }
     }
 }

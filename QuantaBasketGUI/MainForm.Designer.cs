@@ -28,18 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeView = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.groupBox = new System.Windows.Forms.GroupBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.logTabPage = new System.Windows.Forms.TabPage();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.treeView = new System.Windows.Forms.TreeView();
             this.logControl = new QuantaBasketGUI.LogControl();
-            this.groupBox = new System.Windows.Forms.GroupBox();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.startBasketToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.stopBasketToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -48,16 +50,16 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.logTabPage.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -68,9 +70,17 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 379);
+            this.splitContainer1.Size = new System.Drawing.Size(800, 403);
             this.splitContainer1.SplitterDistance = 183;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // treeView
+            // 
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.Location = new System.Drawing.Point(2, 0);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(181, 401);
+            this.treeView.TabIndex = 0;
             // 
             // splitContainer2
             // 
@@ -88,35 +98,19 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tabControl);
-            this.splitContainer2.Size = new System.Drawing.Size(613, 379);
-            this.splitContainer2.SplitterDistance = 220;
+            this.splitContainer2.Size = new System.Drawing.Size(613, 403);
+            this.splitContainer2.SplitterDistance = 244;
             this.splitContainer2.TabIndex = 1;
             // 
-            // statusStrip
+            // groupBox
             // 
-            this.statusStrip.Location = new System.Drawing.Point(0, 428);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip.TabIndex = 2;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 3;
-            this.menuStrip1.Text = "menuStrip";
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
-            this.toolStrip1.TabIndex = 4;
-            this.toolStrip1.Text = "toolStrip";
+            this.groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox.Location = new System.Drawing.Point(0, 0);
+            this.groupBox.Name = "groupBox";
+            this.groupBox.Size = new System.Drawing.Size(610, 244);
+            this.groupBox.TabIndex = 0;
+            this.groupBox.TabStop = false;
+            this.groupBox.Text = "groupBox1";
             // 
             // tabControl
             // 
@@ -139,24 +133,6 @@
             this.logTabPage.Text = "Log";
             this.logTabPage.UseVisualStyleBackColor = true;
             // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // treeView
-            // 
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(2, 0);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(181, 377);
-            this.treeView.TabIndex = 0;
-            // 
             // logControl
             // 
             this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -165,15 +141,50 @@
             this.logControl.Size = new System.Drawing.Size(599, 123);
             this.logControl.TabIndex = 0;
             // 
-            // groupBox
+            // statusStrip
             // 
-            this.groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox.Location = new System.Drawing.Point(0, 0);
-            this.groupBox.Name = "groupBox";
-            this.groupBox.Size = new System.Drawing.Size(610, 220);
-            this.groupBox.TabIndex = 0;
-            this.groupBox.TabStop = false;
-            this.groupBox.Text = "groupBox1";
+            this.statusStrip.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip.TabIndex = 2;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startBasketToolStripButton,
+            this.stopBasketToolStripButton});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip1.TabIndex = 4;
+            this.toolStrip1.Text = "toolStrip";
+            // 
+            // startBasketToolStripButton
+            // 
+            this.startBasketToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.startBasketToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("startBasketToolStripButton.Image")));
+            this.startBasketToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.startBasketToolStripButton.Name = "startBasketToolStripButton";
+            this.startBasketToolStripButton.Size = new System.Drawing.Size(72, 22);
+            this.startBasketToolStripButton.Text = "Start Basket";
+            this.startBasketToolStripButton.Click += new System.EventHandler(this.startBasketToolStripButton_Click);
+            // 
+            // stopBasketToolStripButton
+            // 
+            this.stopBasketToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.stopBasketToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("stopBasketToolStripButton.Image")));
+            this.stopBasketToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.stopBasketToolStripButton.Name = "stopBasketToolStripButton";
+            this.stopBasketToolStripButton.Size = new System.Drawing.Size(72, 22);
+            this.stopBasketToolStripButton.Text = "Stop Basket";
+            this.stopBasketToolStripButton.Click += new System.EventHandler(this.stopBasketToolStripButton_Click);
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 200;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // MainForm
             // 
@@ -183,8 +194,6 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "QantaBasket";
@@ -198,10 +207,10 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.tabControl.ResumeLayout(false);
             this.logTabPage.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -215,11 +224,12 @@
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage logTabPage;
         private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton startBasketToolStripButton;
         private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.GroupBox groupBox;
+        private System.Windows.Forms.ToolStripButton stopBasketToolStripButton;
+        private System.Windows.Forms.Timer timer;
     }
 }
 
