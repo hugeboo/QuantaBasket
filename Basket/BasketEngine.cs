@@ -27,9 +27,16 @@ namespace QuantaBasket.Basket
 
         public bool Started { get; private set; }
 
+        public IL1QuotationProvider L1QuotationProvider => _quoteProvider;
+
         public BasketEngine()
         {
             Init();
+        }
+
+        public string[] GetQuantasNames()
+        {
+            return _quantas.Keys.ToArray();
         }
 
         /// <summary>

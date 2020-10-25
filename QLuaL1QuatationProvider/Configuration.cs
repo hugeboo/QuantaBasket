@@ -13,7 +13,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
     public sealed class Configuration
     {
-        private const string FileName = "QLuaL1QuotationProvider.dll.json";
+        private const string FileName = "QLuaL1QuotationProvider.json";
 
         #region Singleton
 

@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NLog;
-using QuantaBasket.Components.QLuaL1QuotationProvider.Properties;
 using System.Net.Sockets;
 using System.Threading;
 using QuantaBasket.Core.Exceptions;
@@ -17,7 +16,7 @@ using System.Globalization;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
-    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider, IHaveConfiguration
+    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider
     {
         private readonly IL1QuotationStore _store;
         private readonly Dictionary<SecurityId, L1Quotation> _dictQuotes = new Dictionary<SecurityId, L1Quotation>();

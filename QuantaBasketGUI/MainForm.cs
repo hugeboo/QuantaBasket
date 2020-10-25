@@ -20,9 +20,9 @@ namespace QuantaBasketGUI
         public MainForm()
         {
             InitializeComponent();
+
             logControl.SetLogStore(LogStore.Default);
-            treeView.ExpandAll();
-            propertyGrid.SelectedObject = QuantaBasket.Components.QLuaL1QuotationProvider.Configuration.Default;
+            basketTreeControl.NodeSelected += BasketTreeControl_NodeSelected;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -30,8 +30,9 @@ namespace QuantaBasketGUI
             try
             {
                 _basketEngine = new BasketEngine();
+                basketTreeControl.SetDataSource(_basketEngine);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(this, $"Fatal error:\n{ex.Message}", "QuantaBasket", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
@@ -73,6 +74,19 @@ namespace QuantaBasketGUI
         {
             startBasketToolStripButton.Enabled = !_basketEngine?.Started ?? false;
             stopBasketToolStripButton.Enabled = _basketEngine?.Started ?? false;
+        }
+
+        private void BasketTreeControl_NodeSelected(object sender, QuantaBasket.Core.Utils.EventArgs<string> e)
+        {
+            switch (e.Data)
+            {
+                case "L1QuotationProvider":
+                    propertyGrid.SelectedObject = _basketEngine?.L1QuotationProvider.GetConfiguration();
+                    break;
+                default:
+                    propertyGrid.SelectedObject = null;
+                    break;
+            }
         }
     }
 }

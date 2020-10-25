@@ -26,5 +26,15 @@ namespace QuantaBasket.Core.Interfaces
         /// При внутренних ошибках он может самопроизвольно останавливаться
         /// </summary>
         bool Started { get; }
+
+        /// <summary>
+        /// Возращает список имен квантов в системе
+        /// </summary>
+        string[] GetQuantasNames();
+
+        /// <summary>
+        /// Интерфейс провайдера котировок
+        /// </summary>
+        IL1QuotationProvider L1QuotationProvider { get; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuantaBasket.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace QuantaBasketGUI
     {
         private static LogStore defaultInstance = new LogStore();
 
-        public event EventHandler<LogStoreEventArgs> NewMessage;
+        public event EventHandler<EventArgs<string>> NewMessage;
 
         public static LogStore Default
         {
@@ -28,7 +29,7 @@ namespace QuantaBasketGUI
         {
             try
             {
-                NewMessage?.Invoke(this, new LogStoreEventArgs { LogMessage = logMessage });
+                NewMessage?.Invoke(this, new EventArgs<string>(logMessage));
             }
             catch { }
         }
@@ -36,11 +37,6 @@ namespace QuantaBasketGUI
 
     public interface ILogStore
     {
-        event EventHandler<LogStoreEventArgs> NewMessage;
-    }
-
-    public sealed class LogStoreEventArgs : EventArgs
-    {
-        public string LogMessage { get; set; }
+        event EventHandler<EventArgs<string>> NewMessage;
     }
 }
