@@ -12,7 +12,7 @@ namespace QuantaBasket.Core.Interfaces
     public interface IBasketEngine : IDisposable
     {
         /// <summary>
-        /// Старт системы (подклчение к ТС, подписка на котировки, включение таймеров и т.д.)
+        /// Старт системы (подклчение к ТС, подписка на котировки и т.д.)
         /// </summary>
         void Start();
 
@@ -20,5 +20,11 @@ namespace QuantaBasket.Core.Interfaces
         /// Остановка системы
         /// </summary>
         void Stop();
+
+        /// <summary>
+        /// Признак активности движка
+        /// При внутренних ошибках он может самопроизвольно останавливаться
+        /// </summary>
+        bool Started { get; }
     }
 }

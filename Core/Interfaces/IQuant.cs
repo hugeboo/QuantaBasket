@@ -46,6 +46,7 @@ namespace QuantaBasket.Core.Interfaces
 
     public enum QuantStatus
     {
+        Disabled,
         Idle,
         Active,
         Error

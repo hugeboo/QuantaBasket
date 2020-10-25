@@ -55,7 +55,7 @@ namespace Trader
             try
             {
                 _logger.Debug("Starting");
-                _tradingSystem.Connect();
+                if (!_tradingSystem.Connected)_tradingSystem.Connect();
             }
             catch (Exception ex)
             {
@@ -69,7 +69,7 @@ namespace Trader
             try
             {
                 _logger.Debug("Stopping");
-                _tradingSystem.Disconnect();
+                if(_tradingSystem.Connected) _tradingSystem.Disconnect();
             }
             catch (Exception ex)
             {

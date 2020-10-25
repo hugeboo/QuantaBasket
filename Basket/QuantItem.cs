@@ -31,9 +31,16 @@ namespace QuantaBasket.Basket
 
         public void Dispose()
         {
-            _logger.Debug($"{Quant?.Name}: Disposing");
-            _threadSender.Abort();
-            Quant?.Dispose();
+            try
+            {
+                _logger.Debug($"{Quant?.Name}: Disposing");
+                _threadSender.Abort();
+                Quant?.Dispose();
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+            }
         }
 
         public void RegisterMessageProcessor(Action<AMessage> messageProcessor)
@@ -62,7 +69,15 @@ namespace QuantaBasket.Basket
             {
                 while (true)
                 {
-                    _newMessageEvent.WaitOne();
+                    if (!_newMessageEvent.WaitOne(1000))
+                    {
+                        if (Quant?.Status == QuantStatus.Active)
+                        {
+                            SendMessage(new TimerMessage { DateTime = DateTime.Now });
+                            continue;
+                        }
+                    }
+
                     var lst = new List<AMessage>();
                     lock (_syncObj)
                     {

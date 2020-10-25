@@ -100,7 +100,6 @@
     <Compile Include="Interfaces\ITradingSystem.cs" />
     <Compile Include="Math\SMA.cs" />
     <Compile Include="Messages\AMessage.cs" />
-    <Compile Include="Messages\ErrorMessage.cs" />
     <Compile Include="Messages\L1QuotationsMessage.cs" />
     <Compile Include="Messages\StartMessage.cs" />
     <Compile Include="Messages\StopMessage.cs" />
