@@ -1,5 +1,6 @@
 ﻿using NLog;
 using QuantaBasket.Basket;
+using QuantaBasket.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -81,7 +82,8 @@ namespace QuantaBasketGUI
             switch (e.Data)
             {
                 case "L1QuotationProvider":
-                    propertyGrid.SelectedObject = _basketEngine?.L1QuotationProvider.GetConfiguration();
+                    var ihc = _basketEngine?.L1QuotationProvider as IHaveConfiguration;
+                    propertyGrid.SelectedObject = ihc != null ? ihc.GetConfiguration() : null;
                     break;
                 default:
                     propertyGrid.SelectedObject = null;

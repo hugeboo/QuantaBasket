@@ -87,13 +87,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="QLuaL1QuotationProvider.json">
+    <None Include="QLuaL1QuotationProvider.dll.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>attrib +a $(OutDir)*.*</PostBuildEvent>
   </PropertyGroup>
 </Project>

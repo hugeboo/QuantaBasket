@@ -122,4 +122,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>attrib +a $(OutDir)*.*</PostBuildEvent>
+  </PropertyGroup>
 </Project>

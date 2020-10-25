@@ -13,7 +13,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
     public sealed class Configuration
     {
-        private const string FileName = "QLuaL1QuotationProvider.json";
+        private const string FileName = "QLuaL1QuotationProvider.dll.json";
 
         #region Singleton
 
@@ -30,6 +30,10 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                     {
                         if (defaultInstance == null)
                         {
+#if DEBUG
+                            var json0 = JsonConvert.SerializeObject(new Configuration(), Formatting.Indented);
+                            File.WriteAllText(FileName, json0);
+#endif
                             var json = File.ReadAllText(FileName);
                             defaultInstance = JsonConvert.DeserializeObject<Configuration>(json);
                         }
@@ -49,16 +53,15 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 
         [Category("Basic")]
         [DefaultValue("127.0.0.1")]
-        [Description("Address of QUIL Lua Server")]
-        public string QLuaAddr { get; set; }
+        public string QLuaAddr { get; set; } = "127.0.0.1";
 
         [Category("Basic")]
         [DefaultValue(3585)]
-        public int QLuaPort { get; set; }
+        public int QLuaPort { get; set; } = 3585;
 
         [Category("Basic")]
         [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
-        public string Securities { get; set; }
+        public string Securities { get; set; } = "[{\"c\":\"TQBR\",\"s\":\"LKOH\"},{\"c\":\"*\",\"s\":\"RIZ0\"}]";
 
         [Category("Instance")]
         [JsonIgnore]

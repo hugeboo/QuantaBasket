@@ -16,7 +16,7 @@ using System.Globalization;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
-    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider
+    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider, IHaveConfiguration
     {
         private readonly IL1QuotationStore _store;
         private readonly Dictionary<SecurityId, L1Quotation> _dictQuotes = new Dictionary<SecurityId, L1Quotation>();
