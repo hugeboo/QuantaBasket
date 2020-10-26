@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.logTabPage = new System.Windows.Forms.TabPage();
+            this.logControl = new QuantaBasketGUI.LogControl();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.startBasketToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -40,10 +41,10 @@
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.basketTreeControl = new QuantaBasketGUI.BasketTreeControl();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.configTabPage = new System.Windows.Forms.TabPage();
-            this.basketTreeControl = new QuantaBasketGUI.BasketTreeControl();
-            this.logControl = new QuantaBasketGUI.LogControl();
+            this.saveConfigurationToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.tabControl.SuspendLayout();
             this.logTabPage.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -80,6 +81,14 @@
             this.logTabPage.Text = "Log";
             this.logTabPage.UseVisualStyleBackColor = true;
             // 
+            // logControl
+            // 
+            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logControl.Location = new System.Drawing.Point(3, 3);
+            this.logControl.Name = "logControl";
+            this.logControl.Size = new System.Drawing.Size(774, 122);
+            this.logControl.TabIndex = 0;
+            // 
             // statusStrip
             // 
             this.statusStrip.Location = new System.Drawing.Point(0, 421);
@@ -92,7 +101,8 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startBasketToolStripButton,
-            this.stopBasketToolStripButton});
+            this.stopBasketToolStripButton,
+            this.saveConfigurationToolStripButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(796, 25);
@@ -173,6 +183,14 @@
             this.splitContainer2.SplitterDistance = 197;
             this.splitContainer2.TabIndex = 0;
             // 
+            // basketTreeControl
+            // 
+            this.basketTreeControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.basketTreeControl.Location = new System.Drawing.Point(0, 0);
+            this.basketTreeControl.Name = "basketTreeControl";
+            this.basketTreeControl.Size = new System.Drawing.Size(197, 234);
+            this.basketTreeControl.TabIndex = 0;
+            // 
             // mainTabControl
             // 
             this.mainTabControl.Controls.Add(this.configTabPage);
@@ -193,21 +211,15 @@
             this.configTabPage.Text = "Configuration";
             this.configTabPage.UseVisualStyleBackColor = true;
             // 
-            // basketTreeControl
+            // saveConfigurationToolStripButton
             // 
-            this.basketTreeControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.basketTreeControl.Location = new System.Drawing.Point(0, 0);
-            this.basketTreeControl.Name = "basketTreeControl";
-            this.basketTreeControl.Size = new System.Drawing.Size(197, 234);
-            this.basketTreeControl.TabIndex = 0;
-            // 
-            // logControl
-            // 
-            this.logControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logControl.Location = new System.Drawing.Point(3, 3);
-            this.logControl.Name = "logControl";
-            this.logControl.Size = new System.Drawing.Size(774, 122);
-            this.logControl.TabIndex = 0;
+            this.saveConfigurationToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.saveConfigurationToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveConfigurationToolStripButton.Image")));
+            this.saveConfigurationToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveConfigurationToolStripButton.Name = "saveConfigurationToolStripButton";
+            this.saveConfigurationToolStripButton.Size = new System.Drawing.Size(112, 22);
+            this.saveConfigurationToolStripButton.Text = "Save Configuration";
+            this.saveConfigurationToolStripButton.Click += new System.EventHandler(this.saveConfigurationToolStripButton_Click);
             // 
             // MainForm
             // 
@@ -257,6 +269,7 @@
         private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage configTabPage;
         private BasketTreeControl basketTreeControl;
+        private System.Windows.Forms.ToolStripButton saveConfigurationToolStripButton;
     }
 }
 

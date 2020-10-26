@@ -16,8 +16,11 @@ namespace QuantaBasketGUI
     public partial class MainForm : Form
     {
         private BasketEngine _basketEngine;
+        private object _selectedBasketTreeObject = null;
+        private string _selectedBasketTreeNodeName = null;
 
         private readonly ILogger _logger = LogManager.GetLogger("MainForm");
+
         public MainForm()
         {
             InitializeComponent();
@@ -75,42 +78,52 @@ namespace QuantaBasketGUI
         {
             startBasketToolStripButton.Enabled = !_basketEngine?.Started ?? false;
             stopBasketToolStripButton.Enabled = _basketEngine?.Started ?? false;
+            saveConfigurationToolStripButton.Enabled = !_basketEngine.Started && (_selectedBasketTreeObject is IHaveConfiguration);
         }
 
         private void BasketTreeControl_NodeSelected(object sender, QuantaBasket.Core.Utils.EventArgs<string> e)
         {
-            IHaveConfiguration ihc = null;
-         
+            object selectedObject = null;
+
             switch (e.Data)
             {
                 case "Basket":
-                    ihc = _basketEngine as IHaveConfiguration;
+                    selectedObject = _basketEngine;
                     break;
                 case "L1QuotationProvider":
-                    ihc = _basketEngine?.L1QuotationProvider as IHaveConfiguration;
+                    selectedObject = _basketEngine?.L1QuotationProvider;
                     break;
                 case "L1QuotationStore":
-                    ihc = _basketEngine?.L1QuotationStore as IHaveConfiguration;
+                    selectedObject = _basketEngine?.L1QuotationStore;
                     break;
                 case "Trader":
-                    ihc = _basketEngine?.TradingEngine as IHaveConfiguration;
+                    selectedObject = _basketEngine?.TradingEngine;
                     break;
                 case "TradingSystem":
-                    ihc = _basketEngine?.TradingEngine?.TradingSystem as IHaveConfiguration;
+                    selectedObject = _basketEngine?.TradingEngine?.TradingSystem;
                     break;
                 case "TradingStore":
-                    ihc = _basketEngine?.TradingEngine?.TradingStore as IHaveConfiguration;
+                    selectedObject = _basketEngine?.TradingEngine?.TradingStore;
                     break;
                 default:
                     if (!string.IsNullOrEmpty(e.Data) && e.Data.StartsWith("Quant: ") && e.Data.Length > "Quant: ".Length)
                     {
                         var quantName = e.Data.Substring("Quant: ".Length);
-                        ihc = _basketEngine?.GetQuant(quantName) as IHaveConfiguration;
+                        selectedObject = _basketEngine?.GetQuant(quantName);
                     }
                     break;
             }
 
+            _selectedBasketTreeObject = selectedObject;
+            _selectedBasketTreeNodeName = e.Data;
+
+            var ihc = selectedObject as IHaveConfiguration;
             propertyGrid.SelectedObject = ihc != null ? ihc.GetConfiguration() : null;
+        }
+
+        private void saveConfigurationToolStripButton_Click(object sender, EventArgs e)
+        {
+            (_selectedBasketTreeObject as IHaveConfiguration)?.SaveConfiguration();
         }
     }
 }
