@@ -38,7 +38,13 @@ namespace QuantaBasket.Trader
         public INewSignal CreateSignal(string quantName)
         {
             var id = Interlocked.Increment(ref _nextId);
-            var signal = new SignalDTO { Id = id.ToString(), QuantName = quantName };
+            var signal = new SignalDTO 
+            { 
+                Id = id.ToString(), 
+                QuantName = quantName,
+                CreatedTime = DateTime.Now,
+                Status = SignalStatus.New
+            };
             _logger.Trace($"Signal created: {signal}");
             return signal;
         }
@@ -292,7 +298,7 @@ namespace QuantaBasket.Trader
             }
             catch(Exception ex)
             {
-                _logger.Error(ex, $"Cannot process object: {obj}");
+                _logger.Error(ex, $"Cannot process object: {obj}. Error: {ex.Message}");
             }
         }
     }

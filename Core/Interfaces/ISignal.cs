@@ -81,4 +81,101 @@ namespace QuantaBasket.Core.Interfaces
         /// </summary>
         SignalStatus Status { get; }
     }
+
+    /// <summary>
+    /// Тип цены
+    /// </summary>
+    public enum PriceType
+    {
+        /// <summary>
+        /// Текущая рыночная
+        /// </summary>
+        Market,
+
+        /// <summary>
+        /// Лимитированная
+        /// </summary>
+        Limit,
+
+        /// <summary>
+        /// Стоп-цена
+        /// Соответственно такой сигнал является стоп-сигналом
+        /// </summary>
+        Stop
+    }
+
+    /// <summary>
+    /// Сторона сделки
+    /// </summary>
+    public enum SignalSide
+    {
+        /// <summary>
+        /// Купить
+        /// </summary>
+        Buy,
+
+        /// <summary>
+        /// Продать
+        /// </summary>
+        Sell
+    }
+
+    /// <summary>
+    /// Статус сигнала
+    /// </summary>
+    public enum SignalStatus
+    {
+        /// <summary>
+        /// Новый
+        /// В процессе редактирования
+        /// </summary>
+        New,
+
+        /// <summary>
+        /// Отправлен в тороговую систему
+        /// </summary>
+        Sent,
+
+        /// <summary>
+        /// Принят торговой системой и выставлен на рынок
+        /// </summary>
+        Open,
+
+        /// <summary>
+        /// Частично исполнен
+        /// </summary>
+        Partial,
+
+        /// <summary>
+        /// Завершен, полность исполнен
+        /// </summary>
+        Completed,
+
+        /// <summary>
+        /// Отменен
+        /// </summary>
+        Canceled,
+
+        /// <summary>
+        /// Отвергнут
+        /// </summary>
+        Rejected
+    }
+
+    public static class SignalStatusExtension
+    {
+        public static bool IsFinished(this SignalStatus status)
+        {
+            return status == SignalStatus.Rejected ||
+                status == SignalStatus.Canceled ||
+                status == SignalStatus.Completed;
+        }
+
+        public static bool IsActive(this SignalStatus status)
+        {
+            return status == SignalStatus.Sent ||
+                status == SignalStatus.Open ||
+                status == SignalStatus.Partial;
+        }
+    }
 }

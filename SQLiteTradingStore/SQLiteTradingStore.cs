@@ -17,7 +17,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
 
         private ILogger _logger = LogManager.GetLogger("SQLiteTradingStore");
 
-        private const string _sqlInsertSignal = "INSERT INTO Signals (Id,CreatedTime,ClassCode,SecCode,Status,Side,Qtty,Price,PriceType,ExecQtty,AvgPrice,LastUpdateTime,QuantName) " +
+        private const string _sqlInsertSignal = "INSERT INTO Signals (Id,CreatedTime,ClassCode,SecCode,Status,Side,Qtty,Price,PriceType,ExecQtty,AvgPrice,LastUpdateTime,QuantName,MarketOrderId) " +
             "VALUES(@id,@createdTime,@classCode,@secCode,@status,@side,@qtty,@price,@priceType,@execQtty,@avgPrice,@lastUpdateTime,@quantName,@marketOrderId)";
 
         private const string _sqlUpdateSignal = "UPDATE Signals SET Status = @status, " +
@@ -26,7 +26,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
 
         private const string _sqlSelectSignalByIdAndDate = "SELECT Id,CreatedTime,ClassCode,SecCode,Status,Side,Qtty,Price," +
             "PriceType,ExecQtty,AvgPrice,LastUpdateTime,QuantName,MarketOrderId FROM Signals " +
-            "WHERE Id = @id AND CreateTime>=@startTime AND CreateTime<@endTime";
+            "WHERE Id = @id AND CreatedTime>=@startTime AND CreatedTime<@endTime";
 
         private const string _sqlInsertTrade = "INSERT INTO Trades (SignalId,MarketOrderId,MarketTradeId,MarketDateTime," +
                        "ClassCode,SecCode,Side,Qtty,Price) VALUES(" +
@@ -102,7 +102,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                         new SQLiteParameter("@avgPrice", signal.AvgPrice),
                         new SQLiteParameter("@lastUpdateTime", signal.LastUpdateTime),
                         new SQLiteParameter("@quantName", signal.QuantName),
-                        new SQLiteParameter("@marketOrderId", signal.MarketOrderId),
+                        new SQLiteParameter("@marketOrderId", signal.MarketOrderId ?? string.Empty),
                     };
         }
 
@@ -114,7 +114,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                         new SQLiteParameter("@execQtty", signal.ExecQtty),
                         new SQLiteParameter("@avgPrice", signal.AvgPrice),
                         new SQLiteParameter("@lastUpdateTime", signal.LastUpdateTime),
-                        new SQLiteParameter("@marketOrderId", signal.MarketOrderId),
+                        new SQLiteParameter("@marketOrderId", signal.MarketOrderId ?? string.Empty),
                     };
         }
 
@@ -139,7 +139,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                     };
 
                 var com = connection.CreateCommand();
-                com.CommandText = _sqlInsertSignal;
+                com.CommandText = _sqlInsertTrade;
                 com.Parameters.AddRange(parameters);
                 com.Prepare();
 
@@ -163,7 +163,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                 };
 
                 var com = connection.CreateCommand();
-                com.CommandText = _sqlUpdateSignal;
+                com.CommandText = _sqlSelectSignalByIdAndDate;
                 com.Parameters.AddRange(parameters);
 
                 using (var r = com.ExecuteReader())
