@@ -21,6 +21,7 @@ namespace QuantaBasket.Trader
 
         private int _nextId;
 
+
         public bool TradingSystemConnected => _tradingSystem?.Connected ?? false;
 
         public ITradingSystem TradingSystem => _tradingSystem;
@@ -122,6 +123,7 @@ namespace QuantaBasket.Trader
 
         private void ProcessError(ErrorReportCode errorCode, string message)
         {
+            _logger.Error($"Trading System error. {errorCode}: {message}");
             Stop();
         }
 

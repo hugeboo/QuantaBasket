@@ -60,7 +60,7 @@ namespace QuantaBasket.Components.TradingSystemMock
 
         public void SendSignal(ITradeSignal signal)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

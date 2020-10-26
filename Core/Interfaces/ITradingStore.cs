@@ -23,5 +23,11 @@ namespace QuantaBasket.Core.Interfaces
         /// </summary>
         /// <param name="signal">Торговый сигнал содержащий все актуальные данные</param>
         void Update(SignalDTO signal);
+
+        /// <summary>
+        /// Сохранить сделку по сигналу
+        /// </summary>
+        /// <param name="trade">Трейд с рынка</param>
+        void Insert(TradeDTO trade);
     }
 }

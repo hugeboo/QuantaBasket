@@ -31,8 +31,25 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                     "ExecQtty       NUMERIC  NOT NULL," +
                     "AvgPrice       DECIMAL  NOT NULL," +
                     "LastUpdateTime DATETIME NOT NULL," +
-                    "QuantName      TEXT     NOT NULL)");
+                    "QuantName      TEXT     NOT NULL," +
+                    "MarketOrderId  TEXT     NOT NULL)");
                 DoCommand(logger, connection, "CREATE UNIQUE INDEX Signal_DateTime_INDX ON Signals (Id, CreatedTime ASC)");
+
+                DoCommand(logger, connection, "DROP INDEX IF EXISTS Trades_SignalId_INDX");
+                DoCommand(logger, connection, "DROP INDEX IF EXISTS Trades_ClassCode_SecCode_Time_INDX");
+                DoCommand(logger, connection, "DROP TABLE IF EXISTS Trades");
+                DoCommand(logger, connection, "CREATE TABLE Trades (" +
+                    "SignalId       TEXT     NOT NULL," +
+                    "MarketOrderId  TEXT     NOT NULL," +
+                    "MarketTradeId  TEXT     NOT NULL," +
+                    "MarketDateTime DATETIME NOT NULL," +
+                    "ClassCode      TEXT     NOT NULL," +
+                    "SecCode        TEXT     NOT NULL," +
+                    "Side           TEXT     NOT NULL," +
+                    "Size           NUMERIC  NOT NULL," +
+                    "Price          DECIMAL  NOT NULL)");
+                DoCommand(logger, connection, "CREATE INDEX Trades_SignalId_INDX ON Trades (SignalId)");
+                DoCommand(logger, connection, "CREATE INDEX Trades_ClassCode_SecCode_Time_INDX ON Trades (MarketDateTime,ClassCode,SecCode)");
             }
         }
 

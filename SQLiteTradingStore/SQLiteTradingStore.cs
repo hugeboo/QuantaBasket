@@ -18,12 +18,11 @@ namespace QuantaBasket.Components.SQLiteTradingStore
         private ILogger _logger = LogManager.GetLogger("SQLiteTradingStore");
 
         private const string _sqlInsertSignal = "INSERT INTO Signals (Id,CreatedTime,ClassCode,SecCode,Status,Side,Qtty,Price,PriceType,ExecQtty,AvgPrice,LastUpdateTime,QuantName) "+                   
-            "VALUES(@id,@createdTime,@classCode,@secCode,@status,@side,@qtty,@price,@priceType,@execQtty,@avgPrice,@lastUpdateTime,@quantName)";
+            "VALUES(@id,@createdTime,@classCode,@secCode,@status,@side,@qtty,@price,@priceType,@execQtty,@avgPrice,@lastUpdateTime,@quantName,@marketOrderId)";
 
-        private const string _sqlUpdateSignal = "UPDATE Signals SET CreatedTime = @createdTime, " +
-            "ClassCode = @classCode, SecCode = @secCode, Status = @status, Side = @side, Qtty = @qtty, Price = @price, PriceType = @priceType, " +
-            "ExecQtty = @execQtty, AvgPrice = @avgPrice, LastUpdateTime = @lastUpdateTime, QuantName = @quantName " +
-            " WHERE Id = @id";
+        private const string _sqlUpdateSignal = "UPDATE Signals SET Status = @status, " +
+            "ExecQtty = @execQtty, AvgPrice = @avgPrice, LastUpdateTime = @lastUpdateTime " +
+            "WHERE Id = @id";
 
         public SQLiteTradingStore() : this(true)
         {
@@ -95,7 +94,25 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                         new SQLiteParameter("@avgPrice", signal.AvgPrice),
                         new SQLiteParameter("@lastUpdateTime", signal.LastUpdateTime),
                         new SQLiteParameter("@quantName", signal.QuantName),
+                        new SQLiteParameter("@marketOrderId", signal.MarketOrderId),
                     };
+        }
+
+        private SQLiteParameter[] MakeParametersForUpdate(SignalDTO signal)
+        {
+            return new[] {
+                        new SQLiteParameter("@id", signal.Id),
+                        new SQLiteParameter("@status", signal.Status.ToString()),
+                        new SQLiteParameter("@execQtty", signal.ExecQtty),
+                        new SQLiteParameter("@avgPrice", signal.AvgPrice),
+                        new SQLiteParameter("@lastUpdateTime", signal.LastUpdateTime),
+                        new SQLiteParameter("@marketOrderId", signal.MarketOrderId),
+                    };
+        }
+
+        public void Insert(TradeDTO trade)
+        {
+            throw new NotImplementedException();
         }
 
         private void CreateIfNotExists()

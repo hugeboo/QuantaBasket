@@ -26,6 +26,7 @@ namespace QuantaBasket.Core.Contracts
         public decimal AvgPrice { get; set; }
         public DateTime LastUpdateTime { get; set; }
         public string QuantName { get; set; }
+        public string MarketOrderId { get; set; }
 
         public override string ToString()
         {

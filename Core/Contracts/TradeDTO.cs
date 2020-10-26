@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuantaBasket.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,11 @@ namespace QuantaBasket.Core.Contracts
         /// Уникальный идентификатор сигнала
         /// </summary>
         public string SignalId { get; set; }
+
+        /// <summary>
+        /// Рыночный идентификатор ордера
+        /// </summary>
+        public string MarketOrderId { get; set; }
 
         /// <summary>
         /// Рыночный идентификатор трейда
@@ -38,9 +44,14 @@ namespace QuantaBasket.Core.Contracts
         public string SecCode { get; set; }
 
         /// <summary>
-        /// Объем сделки в штуках
+        /// Сторона сделки (купля/продажа)
         /// </summary>
-        long Qtty { get; set; }
+        SignalSide Side { get; set; }
+
+        /// <summary>
+        /// Размер сделки в штуках со знаком
+        /// </summary>
+        long Size { get; set; }
 
         /// <summary>
         /// Цена 
