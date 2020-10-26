@@ -51,16 +51,9 @@ namespace QuantaBasket.Basket
 
         public void SendMessage(AMessage message)
         {
-            if (Quant.Status == QuantStatus.Active)
-            {
-                _logger.Trace($"{Quant?.Name}: Send message: {message}");
-                lock (_syncObj) _messageQueue.Add(message);
-                _newMessageEvent.Set();
-            }
-            else
-            {
-                _logger.Trace($"{Quant?.Name} has '{Quant.Status}' status. Cannot send message: {message}");
-            }
+            _logger.Trace($"{Quant?.Name}: Send message: {message}");
+            lock (_syncObj) _messageQueue.Add(message);
+            _newMessageEvent.Set();
         }
         
         private void ThreadSenderProc(object state)
@@ -71,11 +64,8 @@ namespace QuantaBasket.Basket
                 {
                     if (!_newMessageEvent.WaitOne(1000))
                     {
-                        if (Quant?.Status == QuantStatus.Active)
-                        {
-                            SendMessage(new TimerMessage { DateTime = DateTime.Now });
-                            continue;
-                        }
+                        SendMessage(new TimerMessage { DateTime = DateTime.Now });
+                        continue;
                     }
 
                     var lst = new List<AMessage>();

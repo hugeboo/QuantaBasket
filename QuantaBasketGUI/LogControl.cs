@@ -27,15 +27,18 @@ namespace QuantaBasketGUI
 
         private void LogStore_NewMessage(object sender, EventArgs<string> e)
         {
-            var lines = textBox.Lines;
-            if (textBox.Lines.Length > MAX_LINE_COUNT)
+            this.BeginInvoke(new Action(() =>
             {
-                var lst = lines.ToList();
-                lst.RemoveRange(0, lines.Length - MAX_LINE_COUNT);
-                textBox.Lines = lst.ToArray();
-            }
+                var lines = textBox.Lines;
+                if (textBox.Lines.Length > MAX_LINE_COUNT)
+                {
+                    var lst = lines.ToList();
+                    lst.RemoveRange(0, lines.Length - MAX_LINE_COUNT);
+                    textBox.Lines = lst.ToArray();
+                }
 
-            textBox.AppendText(e.Data + "\r\n\r\n");
+                textBox.AppendText(e.Data + "\r\n\r\n");
+            }));
         }
 
         private void textBox_TextChanged(object sender, EventArgs e)

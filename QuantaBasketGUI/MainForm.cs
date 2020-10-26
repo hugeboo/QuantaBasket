@@ -79,16 +79,38 @@ namespace QuantaBasketGUI
 
         private void BasketTreeControl_NodeSelected(object sender, QuantaBasket.Core.Utils.EventArgs<string> e)
         {
+            IHaveConfiguration ihc = null;
+         
             switch (e.Data)
             {
+                case "Basket":
+                    ihc = _basketEngine as IHaveConfiguration;
+                    break;
                 case "L1QuotationProvider":
-                    var ihc = _basketEngine?.L1QuotationProvider as IHaveConfiguration;
-                    propertyGrid.SelectedObject = ihc != null ? ihc.GetConfiguration() : null;
+                    ihc = _basketEngine?.L1QuotationProvider as IHaveConfiguration;
+                    break;
+                case "L1QuotationStore":
+                    ihc = _basketEngine?.L1QuotationStore as IHaveConfiguration;
+                    break;
+                case "Trader":
+                    ihc = _basketEngine?.TradingEngine as IHaveConfiguration;
+                    break;
+                case "TradingSystem":
+                    ihc = _basketEngine?.TradingEngine?.TradingSystem as IHaveConfiguration;
+                    break;
+                case "TradingStore":
+                    ihc = _basketEngine?.TradingEngine?.TradingStore as IHaveConfiguration;
                     break;
                 default:
-                    propertyGrid.SelectedObject = null;
+                    if (!string.IsNullOrEmpty(e.Data) && e.Data.StartsWith("Quant: ") && e.Data.Length > "Quant: ".Length)
+                    {
+                        var quantName = e.Data.Substring("Quant: ".Length);
+                        ihc = _basketEngine?.GetQuant(quantName) as IHaveConfiguration;
+                    }
                     break;
             }
+
+            propertyGrid.SelectedObject = ihc != null ? ihc.GetConfiguration() : null;
         }
     }
 }

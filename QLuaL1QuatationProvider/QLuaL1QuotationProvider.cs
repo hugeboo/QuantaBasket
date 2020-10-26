@@ -232,8 +232,8 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                 _logger.Debug($"Updated: {updatedQuote}");
 
                 var quotes = new[] { updatedQuote };
-                _onNewQuotationsAction?.Invoke(quotes);
                 _store?.Insert(quotes);
+                _onNewQuotationsAction?.Invoke(quotes);
             }
         }
 

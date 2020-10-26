@@ -33,8 +33,24 @@ namespace QuantaBasket.Core.Interfaces
         string[] GetQuantasNames();
 
         /// <summary>
-        /// Интерфейс провайдера котировок
+        /// Возвращает квант по имени
+        /// </summary>
+        /// <param name="quantName">Имя кванта в системе</param>
+        IQuant GetQuant(string quantName);
+
+        /// <summary>
+        /// Интерфейс инстанса провайдера котировок
         /// </summary>
         IL1QuotationProvider L1QuotationProvider { get; }
+
+        /// <summary>
+        /// Интерфейс инстанса хранилища котировок
+        /// </summary>
+        IL1QuotationStore L1QuotationStore { get; }
+
+        /// <summary>
+        /// Интерфейс инстанса торгового движка
+        /// </summary>
+        ITradingEngine TradingEngine { get; }
     }
 }

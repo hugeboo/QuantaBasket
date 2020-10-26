@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.SQLiteTradingStore
 {
-    public sealed class SQLiteTradingStore : ITradingStore
+    public sealed class SQLiteTradingStore : ITradingStore, IHaveConfiguration
     {
         private readonly string _connectionString;
 
@@ -108,6 +108,16 @@ namespace QuantaBasket.Components.SQLiteTradingStore
             {
                 DbUtils.CreateDb(_logger, _connectionString);
             }
+        }
+
+        public object GetConfiguration()
+        {
+            return Configuration.Default;
+        }
+
+        public void SaveConfiguration()
+        {
+            Configuration.Default.Save();
         }
     }
 }

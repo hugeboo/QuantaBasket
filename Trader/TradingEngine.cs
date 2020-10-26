@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Trader
+namespace QuantaBasket.Trader
 {
-    public sealed class TradingEngine : ITradingEngine
+    public sealed class TradingEngine : ITradingEngine, IHaveConfiguration
     {
         private readonly ILogger _logger = LogManager.GetLogger("TradingEngine");
 
@@ -22,6 +22,10 @@ namespace Trader
         private int _nextId;
 
         public bool TradingSystemConnected => _tradingSystem?.Connected ?? false;
+
+        public ITradingSystem TradingSystem => _tradingSystem;
+
+        public ITradingStore TradingStore => _tradingStore;
 
         public TradingEngine()
         {
@@ -129,6 +133,16 @@ namespace Trader
         private void ProcessOrderStatus(OrderStatusDTO orderStatus)
         {
 
+        }
+
+        public object GetConfiguration()
+        {
+            return Configuration.Default;
+        }
+
+        public void SaveConfiguration()
+        {
+            Configuration.Default.Save();
         }
     }
 }

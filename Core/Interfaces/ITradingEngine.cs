@@ -23,6 +23,10 @@ namespace QuantaBasket.Core.Interfaces
 
         bool TradingSystemConnected { get; }
 
+        ITradingSystem TradingSystem { get; }
+
+        ITradingStore TradingStore { get; }
+
         /// <summary>
         /// Создать новый торговый сигнал
         /// У нового сигнала заполнены некоторые обязательные поля, остальные заполняет квант

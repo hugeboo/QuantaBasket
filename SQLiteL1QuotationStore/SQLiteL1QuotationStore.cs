@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.SQLiteL1QuotationStore
 {
-    public sealed class SQLiteL1QuotationStore : IL1QuotationStore
+    public sealed class SQLiteL1QuotationStore : IL1QuotationStore, IHaveConfiguration
     {
         private readonly string _connectionString;
 
@@ -28,9 +28,9 @@ namespace QuantaBasket.Components.SQLiteL1QuotationStore
         {
         }
 
-        public SQLiteL1QuotationStore( bool createIfNotExist)
+        public SQLiteL1QuotationStore(bool createIfNotExist)
         {
-            _connectionString = Properties.Settings.Default.ConnectionString;
+            _connectionString = Configuration.Default.ConnectionString;
 
             if (createIfNotExist)
                 CreateIfNotExists();
@@ -85,6 +85,16 @@ namespace QuantaBasket.Components.SQLiteL1QuotationStore
             {
                 DbUtils.CreateDb(_logger, _connectionString);
             }
+        }
+
+        public object GetConfiguration()
+        {
+            return Configuration.Default;
+        }
+
+        public void SaveConfiguration()
+        {
+            Configuration.Default.Save();
         }
     }
 }

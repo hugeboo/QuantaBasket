@@ -5,17 +5,17 @@ using QuantaBasket.Core.Contracts;
 using QuantaBasket.Core.Extensions;
 using QuantaBasket.Core.Interfaces;
 using QuantaBasket.Core.Messages;
+using QuantaBasket.Trader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Trader;
 
 namespace QuantaBasket.Basket
 {
-    public sealed class BasketEngine : IBasketEngine
+    public sealed class BasketEngine : IBasketEngine, IHaveConfiguration
     {
         private readonly Dictionary<string, QuantItem> _quantas = new Dictionary<string, QuantItem>();
         private readonly ILogger _logger = LogManager.GetLogger("BasketEngine");
@@ -28,6 +28,10 @@ namespace QuantaBasket.Basket
         public bool Started { get; private set; }
 
         public IL1QuotationProvider L1QuotationProvider => _quoteProvider;
+
+        public IL1QuotationStore L1QuotationStore => _quoteStore;
+
+        public ITradingEngine TradingEngine => _tradingEngine;
 
         public BasketEngine()
         {
@@ -179,6 +183,7 @@ namespace QuantaBasket.Basket
             {
                 _logger.Debug("Stopping");
                 SendAllQuantas(new StopMessage());
+                if (_quoteProvider.Connected) _quoteProvider.Disconnect();
                 _tradingEngine.Stop();
             }
             catch (Exception ex)
@@ -191,5 +196,22 @@ namespace QuantaBasket.Basket
                 Started = false;
             }
         }
+
+        public object GetConfiguration()
+        {
+            return Configuration.Default;
+        }
+
+        public void SaveConfiguration()
+        {
+            Configuration.Default.Save();
+        }
+
+        public IQuant GetQuant(string quantName)
+        {
+            _quantas.TryGetValue(quantName, out QuantItem item);
+            return item?.Quant;
+        }
+
     }
 }

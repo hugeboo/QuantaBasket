@@ -16,9 +16,9 @@ namespace QuantaBasket.Basket
             var lst = new List<Type>();
             string quantasPath;
 #if DEBUG
-            quantasPath = Properties.Settings.Default.DebugQuantasPath;
+            quantasPath = Configuration.Default.DebugQuantasPath;
 #else
-            quantasPath = Properties.Settings.Default.ReleaseQuantasPath;
+            quantasPath = Configuration.Default.ReleaseQuantasPath;
 #endif
 
             var files = Directory.GetFiles(quantasPath, "*Quant.dll", SearchOption.AllDirectories);

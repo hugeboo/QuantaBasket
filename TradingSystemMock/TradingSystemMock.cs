@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.TradingSystemMock
 {
-    public sealed class TradingSystemMock : ITradingSystem
+    public sealed class TradingSystemMock : ITradingSystem, IHaveConfiguration
     {
         private bool _connected;
 
@@ -33,6 +33,11 @@ namespace QuantaBasket.Components.TradingSystemMock
             Disconnect();
         }
 
+        public object GetConfiguration()
+        {
+            return Configuration.Default;
+        }
+
         public void RegisterErrorProcessor(Action<ErrorReportCode, string> processError)
         {
             _onErrorAction = processError;
@@ -46,6 +51,11 @@ namespace QuantaBasket.Components.TradingSystemMock
         public void RegisterTradeProcessor(Action<TradeDTO> processTrade)
         {
             _onTradeAction = processTrade;
+        }
+
+        public void SaveConfiguration()
+        {
+            Configuration.Default.Save();
         }
 
         public void SendSignal(ITradeSignal signal)

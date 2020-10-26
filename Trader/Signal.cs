@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trader
+namespace QuantaBasket.Trader
 {
     internal sealed class Signal : IQuantSignal, ITradeSignal
     {
