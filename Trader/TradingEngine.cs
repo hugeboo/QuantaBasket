@@ -254,6 +254,7 @@ namespace QuantaBasket.Trader
             try
             {
                 signal.Status = SignalStatus.Sent;
+                signal.LastUpdateTime = DateTime.Now;
                 _tradingStore.Insert(signal);
                 _tradingSystem.SendSignal(signal);
             } 
