@@ -49,7 +49,7 @@ namespace QuantaBasket.Basket
         /// </summary>
         /// <param name="quantName">Имя кванта</param>
         /// <returns>Сигнал для дальнейшего заполнения и отправки</returns>
-        internal IQuantSignal CreateSignal(string quantName)
+        internal INewSignal CreateSignal(string quantName)
         {
             return _tradingEngine.CreateSignal(quantName);
         }
@@ -58,7 +58,7 @@ namespace QuantaBasket.Basket
         /// Оправить сигнал в тороговую систему
         /// </summary>
         /// <param name="signal">Тороговый сигнал</param>
-        internal void SendSignal(IQuantSignal signal)
+        internal void SendSignal(INewSignal signal)
         {
             _tradingEngine.SendSignal(signal);
         }

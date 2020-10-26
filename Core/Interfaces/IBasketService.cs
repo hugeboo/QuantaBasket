@@ -24,11 +24,12 @@ namespace QuantaBasket.Core.Interfaces
         /// У нового сигнала заполнены некоторые обязательные поля, остальные заполняет квант
         /// </summary>
         /// <returns>Сигнал для дальнейшего заполнения и отправки</returns>
-        IQuantSignal CreateSignal();
+        INewSignal CreateSignal();
 
         /// <summary>
         /// Оправить сигнал в тороговую систему
         /// </summary>
-        void SendSignal(IQuantSignal signal);
+        /// <returns>False означает, что сигнал не прошел внутреннюю валидацию. Это явный признак ошибки в кванте</returns>
+        bool SendSignal(INewSignal signal);
     }
 }

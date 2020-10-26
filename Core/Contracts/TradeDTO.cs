@@ -46,16 +46,16 @@ namespace QuantaBasket.Core.Contracts
         /// <summary>
         /// Сторона сделки (купля/продажа)
         /// </summary>
-        SignalSide Side { get; set; }
+        public SignalSide Side { get; set; }
 
         /// <summary>
-        /// Размер сделки в штуках со знаком
+        /// Размер сделки в штуках
         /// </summary>
-        long Size { get; set; }
+        public long Qtty { get; set; }
 
         /// <summary>
         /// Цена 
         /// </summary>
-        decimal Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

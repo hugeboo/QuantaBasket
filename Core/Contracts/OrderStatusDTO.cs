@@ -42,11 +42,11 @@ namespace QuantaBasket.Core.Contracts
         /// Текущий статус ордера
         /// В терминах статуса сигнала
         /// </summary>
-        SignalStatus Status { get; set; }
+        public SignalStatus Status { get; set; }
 
         /// <summary>
         /// Комментарии к статусу ордера от торговой системы
         /// </summary>
-        string Text { get; set; }
+        public string Text { get; set; }
     }
 }

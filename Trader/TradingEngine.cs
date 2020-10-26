@@ -3,6 +3,7 @@ using QuantaBasket.Components.SQLiteTradingStore;
 using QuantaBasket.Components.TradingSystemMock;
 using QuantaBasket.Core.Contracts;
 using QuantaBasket.Core.Interfaces;
+using QuantaBasket.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Trader
 {
-    public sealed class TradingEngine : ITradingEngine, IHaveConfiguration
+    internal sealed class TradingEngine : ITradingEngine, IHaveConfiguration
     {
         private readonly ILogger _logger = LogManager.GetLogger("TradingEngine");
 
@@ -20,7 +21,8 @@ namespace QuantaBasket.Trader
         private ITradingSystem _tradingSystem;
 
         private int _nextId;
-
+        private AsyncWorker<SignalDTO> _sendOrderWorker;
+        private AsyncWorker<object> _reportOrderWorker;
 
         public bool TradingSystemConnected => _tradingSystem?.Connected ?? false;
 
@@ -33,26 +35,23 @@ namespace QuantaBasket.Trader
             Init();
         }
 
-        public IQuantSignal CreateSignal(string quantName)
+        public INewSignal CreateSignal(string quantName)
         {
             var id = Interlocked.Increment(ref _nextId);
-            var signal = new Signal(id.ToString(), quantName);
+            var signal = new SignalDTO { Id = id.ToString(), QuantName = quantName };
             _logger.Trace($"Signal created: {signal}");
             return signal;
         }
 
-        public void SendSignal(IQuantSignal signal)
+        public void SendSignal(INewSignal signal)
         {
-            var s = signal as Signal;
+            var s = signal as SignalDTO;
             if (s == null) throw new InvalidCastException("Invalid Type for the IQuantSignal");
-            if (!s.PrimaryValidate(out string err))
+            if (!ValidateNewSignal(s, out string err))
             {
                 throw new InvalidOperationException(err);
             }
-
-            _tradingStore?.Insert(s.ToSignalDTO());
-
-            //...
+            _sendOrderWorker.AddItem(s);
         }
 
         public void Start()
@@ -89,12 +88,24 @@ namespace QuantaBasket.Trader
             {
                 Stop();
                 _logger.Debug("Disposing");
-                _tradingSystem.Dispose();
+                _sendOrderWorker?.Dispose();
+                _reportOrderWorker?.Dispose();
+                _tradingSystem?.Dispose();
             }
             catch (Exception ex)
             {
                 _logger.Error(ex);
             }
+        }
+
+        public object GetConfiguration()
+        {
+            return Configuration.Default;
+        }
+
+        public void SaveConfiguration()
+        {
+            Configuration.Default.Save();
         }
 
         private void Init()
@@ -113,12 +124,107 @@ namespace QuantaBasket.Trader
                 _tradingSystem.RegisterErrorProcessor(ProcessError);
                 _tradingSystem.RegisterTradeProcessor(ProcessTrade);
                 _tradingSystem.RegisterOrderStatusProcessor(ProcessOrderStatus);
+
+                _logger.Debug("Start ReportOrderWorker");
+                _reportOrderWorker = new AsyncWorker<object>("ReportOrder", ReportOrderWorkerProc);
+
+                _logger.Debug("Start SendOrderWorker");
+                _sendOrderWorker = new AsyncWorker<SignalDTO>("SendSignal", SendSignalWorkerProc);
             }
             catch (Exception ex)
             {
                 _logger.Error(ex);
                 throw;
             }
+        }
+
+        private static bool ValidateNewSignal(SignalDTO signal, out string errorMessage)
+        {
+            var lstErrors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(signal.ClassCode)) lstErrors.Add("ClassCode must be filled");
+            if (string.IsNullOrWhiteSpace(signal.SecCode)) lstErrors.Add("SecCode must be filled");
+            if (signal.Qtty <= 0) lstErrors.Add("Qtty must be > 0");
+            if (signal.Price < 0m) lstErrors.Add(signal.PriceType == PriceType.Market ? "Price must be = 0" : "Price must be > 0");
+            if (signal.Price == 0m && signal.PriceType != PriceType.Market) lstErrors.Add("Price must be > 0");
+
+            if (lstErrors.Count > 0)
+            {
+                errorMessage = string.Join(", ", lstErrors);
+                return false;
+            }
+            else
+            {
+                errorMessage = null;
+                return true;
+            }
+        }
+
+        private static OrderStatusDTO MakeOrderStatusDTO(SignalDTO signal)
+        {
+            return new OrderStatusDTO
+            {
+                SignalId = signal.Id,
+                ClassCode = signal.ClassCode,
+                SecCode = signal.SecCode,
+                MarketOrderId = signal.MarketOrderId,
+                Status = signal.Status
+            };
+        }
+
+        public static bool UpdateSignal(SignalDTO signal, OrderStatusDTO orderStatus)
+        {
+            if (orderStatus.SignalId != signal.Id)
+                throw new InvalidOperationException($"orderStatus.SignalId({orderStatus.SignalId}) != Id({signal.Id})");
+            if (orderStatus.ClassCode != signal.ClassCode)
+                throw new InvalidOperationException($"orderStatus.ClassCode({orderStatus.ClassCode}) != Id({signal.ClassCode})");
+            if (orderStatus.SecCode != signal.SecCode)
+                throw new InvalidOperationException($"orderStatus.SecCode({orderStatus.SecCode}) != Id({signal.SecCode})");
+
+            bool updated = false;
+
+            if (!string.IsNullOrWhiteSpace(orderStatus.MarketOrderId))
+            {
+                signal.MarketOrderId = orderStatus.MarketOrderId;
+                updated = true;
+            }
+            if (!signal.Status.IsFinished() && orderStatus.Status != signal.Status)
+            {
+                signal.Status = orderStatus.Status;
+                updated = true;
+            }
+            if (updated)
+            {
+                signal.LastUpdateTime = DateTime.Now;
+            }
+
+            return updated;
+        }
+
+        public static void UpdateSignal(SignalDTO signal, TradeDTO trade)
+        {
+            if (trade.SignalId != signal.Id)
+                throw new InvalidOperationException($"trade.SignalId({trade.SignalId}) != Id({signal.Id})");
+            if (trade.ClassCode != signal.ClassCode)
+                throw new InvalidOperationException($"trade.ClassCode({trade.ClassCode}) != Id({signal.ClassCode})");
+            if (trade.SecCode != signal.SecCode)
+                throw new InvalidOperationException($"trade.SecCode({trade.SecCode}) != Id({signal.SecCode})");
+
+            if (signal.ExecQtty == 0)
+            {
+                signal.AvgPrice = trade.Price;
+                signal.ExecQtty = trade.Qtty;
+            }
+            else
+            {
+                var avgPrice = (signal.AvgPrice * signal.ExecQtty + trade.Price * trade.Qtty) / 
+                    (signal.ExecQtty + trade.Qtty);
+
+                signal.AvgPrice = avgPrice;
+                signal.ExecQtty += trade.Qtty;
+            }
+
+            signal.LastUpdateTime = DateTime.Now;
         }
 
         private void ProcessError(ErrorReportCode errorCode, string message)
@@ -129,22 +235,65 @@ namespace QuantaBasket.Trader
 
         private void ProcessTrade(TradeDTO trade)
         {
-
+            _reportOrderWorker.AddItem(trade);
         }
 
         private void ProcessOrderStatus(OrderStatusDTO orderStatus)
         {
-
+            _reportOrderWorker.AddItem(orderStatus);
         }
 
-        public object GetConfiguration()
+        private void SendSignalWorkerProc(SignalDTO signal)
         {
-            return Configuration.Default;
+            try
+            {
+                signal.Status = SignalStatus.Sent;
+                _tradingStore.Insert(signal);
+                _tradingSystem.SendSignal(signal);
+            } 
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+
+                var os = MakeOrderStatusDTO(signal);
+                os.Status = SignalStatus.Rejected;
+                os.Text = $"Rejected by TradingEngine. Error: {ex.Message}";
+                _reportOrderWorker.AddItem(os);
+            }
         }
 
-        public void SaveConfiguration()
+        private void ReportOrderWorkerProc(object obj)
         {
-            Configuration.Default.Save();
+            try
+            {
+                switch(obj)
+                {
+                    case TradeDTO trade:
+                        {
+                            _tradingStore.Insert(trade);
+                            var signal = _tradingStore.GetSignalByIdAndDate(trade.SignalId, DateTime.Today) as SignalDTO;
+                            if (signal == null)
+                                throw new InvalidOperationException($"Update by trade - Cannot find signal with Id {trade.SignalId}");
+                            UpdateSignal(signal, trade);
+                            _tradingStore.Update(signal);
+                        }
+                        break;
+
+                    case OrderStatusDTO orderStatus:
+                        {
+                            var signal = _tradingStore.GetSignalByIdAndDate(orderStatus.SignalId, DateTime.Today) as SignalDTO;
+                            if (signal == null)
+                                throw new InvalidOperationException($"Update by orderStatus - Cannot find signal with Id {orderStatus.SignalId}");
+                            UpdateSignal(signal, orderStatus);
+                            _tradingStore.Update(signal);
+                        }
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex, $"Cannot process object: {obj}");
+            }
         }
     }
 }

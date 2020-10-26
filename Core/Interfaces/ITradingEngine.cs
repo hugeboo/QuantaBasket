@@ -33,12 +33,12 @@ namespace QuantaBasket.Core.Interfaces
         /// </summary>
         /// <param name="quantName">Имя кванта</param>
         /// <returns>Сигнал для дальнейшего заполнения и отправки</returns>
-        IQuantSignal CreateSignal(string quantName);
+        INewSignal CreateSignal(string quantName);
 
         /// <summary>
         /// Оправить сигнал в тороговую систему
         /// </summary>
         /// <param name="signal">Тороговый сигнал</param>
-        void SendSignal(IQuantSignal signal);
+        void SendSignal(INewSignal signal);
     }
 }

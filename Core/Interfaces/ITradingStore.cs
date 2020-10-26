@@ -16,18 +16,23 @@ namespace QuantaBasket.Core.Interfaces
         /// Сохранить сигнал
         /// </summary>
         /// <param name="signal">Торговый сигнал</param>
-        void Insert(SignalDTO signal);
+        void Insert(ISignal signal);
 
         /// <summary>
         /// Обновить сигнал
         /// </summary>
         /// <param name="signal">Торговый сигнал содержащий все актуальные данные</param>
-        void Update(SignalDTO signal);
+        void Update(ISignal signal);
 
         /// <summary>
         /// Сохранить сделку по сигналу
         /// </summary>
         /// <param name="trade">Трейд с рынка</param>
         void Insert(TradeDTO trade);
+
+        /// <summary>
+        /// Найти сигнал по идентификатору и дате
+        /// </summary>
+         ISignal GetSignalByIdAndDate(string signalId, DateTime date);
     }
 }

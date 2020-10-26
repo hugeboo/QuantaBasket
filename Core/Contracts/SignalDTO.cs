@@ -9,9 +9,8 @@ namespace QuantaBasket.Core.Contracts
 {
     /// <summary>
     /// Торговый сигнал
-    /// Объект, содержащий исключительно данные
     /// </summary>
-    public sealed class SignalDTO : IQuantSignal, ITradeSignal
+    internal sealed class SignalDTO : INewSignal, ITradeSignal, ISignal
     {
         public string Id { get; set; }
         public DateTime CreatedTime { get; set; }

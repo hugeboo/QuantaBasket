@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace QuantaBasket.Core.Interfaces
 {
     /// <summary>
-    /// Интерфейс сигнала для взаимодействия с квантом
+    /// Интерфейс вновь созданного сигнала
     /// </summary>
-    public interface IQuantSignal
+    public interface INewSignal
     {
         /// <summary>
         /// Уникальный идентификатор
@@ -141,5 +141,21 @@ namespace QuantaBasket.Core.Interfaces
         /// Отвергнут
         /// </summary>
         Rejected
+    }
+
+    public static class SignalStatusExtension
+    {
+        public static bool IsFinished(this SignalStatus status)
+        {
+            return status == SignalStatus.Rejected ||
+                status == SignalStatus.Canceled ||
+                status == SignalStatus.Completed;
+        }
+
+        public static bool IsActive(this SignalStatus status)
+        {
+            return status == SignalStatus.Sent ||
+                status == SignalStatus.Partial;
+        }
     }
 }

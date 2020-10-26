@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace QuantaBasket.Core.Interfaces
 {
     /// <summary>
-    /// Интерфейс сигнала для взаимодействия с торговой системой
+    /// Интерфейс сигнала для передачи в торговую систему
     /// </summary>
     public interface ITradeSignal
     {

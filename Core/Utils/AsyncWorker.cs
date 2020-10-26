@@ -50,6 +50,7 @@ namespace QuantaBasket.Core.Utils
         {
             _bStopSignal = true;
             if (!_thread.Join(2000)) _thread.Abort();
+            _newItemEvent.Dispose();
         }
 
         private void ThreadWorkerProc(object state)

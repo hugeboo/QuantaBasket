@@ -46,7 +46,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                     "ClassCode      TEXT     NOT NULL," +
                     "SecCode        TEXT     NOT NULL," +
                     "Side           TEXT     NOT NULL," +
-                    "Size           NUMERIC  NOT NULL," +
+                    "Qtty           NUMERIC  NOT NULL," +
                     "Price          DECIMAL  NOT NULL)");
                 DoCommand(logger, connection, "CREATE INDEX Trades_SignalId_INDX ON Trades (SignalId)");
                 DoCommand(logger, connection, "CREATE INDEX Trades_ClassCode_SecCode_Time_INDX ON Trades (MarketDateTime,ClassCode,SecCode)");
