@@ -63,8 +63,8 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 
         public void Connect()
         {
-            var addr = Configuration.Default.QLuaAddr;//Settings.Default.QLuaAddr;
-            var port = Configuration.Default.QLuaPort;//Settings.Default.QLuaPort;
+            var addr = Configuration.Instance.QLuaAddr;//Settings.Default.QLuaAddr;
+            var port = Configuration.Instance.QLuaPort;//Settings.Default.QLuaPort;
 
             _logger.Debug($"Connecting to {addr}:{port}");
 
@@ -77,7 +77,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
             _thread = new Thread(ProcessQuotesThreadProc);
             _thread.Start();
 
-            var requestQuotes = Configuration.Default.Securities;//Settings.Default.Securities;
+            var requestQuotes = Configuration.Instance.Securities;//Settings.Default.Securities;
 
             _logger.Debug($"Requesting quotes {requestQuotes}");
 
@@ -239,12 +239,12 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 
         public object GetConfiguration()
         {
-            return Configuration.Default;
+            return Configuration.Instance;
         }
 
         public void SaveConfiguration()
         {
-            Configuration.Default.Save();
+            Configuration.Instance.Save();
         }
     }
 }

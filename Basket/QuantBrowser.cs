@@ -16,7 +16,7 @@ namespace QuantaBasket.Basket
             var lst = new List<Type>();
             string quantasPath;
 #if DEBUG
-            quantasPath = Configuration.Default.DebugQuantasPath;
+            quantasPath = Configuration.Instance.DebugQuantasPath;
 #else
             quantasPath = Configuration.Default.ReleaseQuantasPath;
 #endif

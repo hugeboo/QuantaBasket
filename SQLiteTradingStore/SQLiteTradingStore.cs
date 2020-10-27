@@ -38,7 +38,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
 
         public SQLiteTradingStore(bool createIfNotExist)
         {
-            _connectionString = Configuration.Default.ConnectionString;
+            _connectionString = Configuration.Instance.ConnectionString;
 
             if (createIfNotExist)
                 CreateIfNotExists();
@@ -208,12 +208,12 @@ namespace QuantaBasket.Components.SQLiteTradingStore
 
         public object GetConfiguration()
         {
-            return Configuration.Default;
+            return Configuration.Instance;
         }
 
         public void SaveConfiguration()
         {
-            Configuration.Default.Save();
+            Configuration.Instance.Save();
         }
     }
 }

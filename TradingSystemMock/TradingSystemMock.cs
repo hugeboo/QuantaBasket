@@ -43,7 +43,7 @@ namespace QuantaBasket.Components.TradingSystemMock
         public object GetConfiguration()
         {
             _logger.Info("GetConfiguration");
-            return Configuration.Default;
+            return Configuration.Instance;
         }
 
         public void RegisterErrorProcessor(Action<ErrorReportCode, string> processError)
@@ -67,7 +67,7 @@ namespace QuantaBasket.Components.TradingSystemMock
         public void SaveConfiguration()
         {
             _logger.Info("SaveConfiguration");
-            Configuration.Default.Save();
+            Configuration.Instance.Save();
         }
 
         public void SendSignal(ITradeSignal signal)

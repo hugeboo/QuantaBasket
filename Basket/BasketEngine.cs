@@ -199,12 +199,12 @@ namespace QuantaBasket.Basket
 
         public object GetConfiguration()
         {
-            return Configuration.Default;
+            return Configuration.Instance;
         }
 
         public void SaveConfiguration()
         {
-            Configuration.Default.Save();
+            Configuration.Instance.Save();
         }
 
         public IQuant GetQuant(string quantName)

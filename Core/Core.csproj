@@ -110,6 +110,7 @@
     <Compile Include="Math\L1QuotationUpdater.cs" />
     <Compile Include="Math\BarGenerator.cs" />
     <Compile Include="Utils\AsyncWorker.cs" />
+    <Compile Include="Utils\ConfigurationSingleton.cs" />
     <Compile Include="Utils\EventArgs.cs" />
     <Compile Include="Utils\TypeBrowser.cs" />
   </ItemGroup>
