@@ -82,6 +82,7 @@
     <Compile Include="Contracts\OrderStatusDTO.cs" />
     <Compile Include="Contracts\SecurityId.cs" />
     <Compile Include="Contracts\SignalDTO.cs" />
+    <Compile Include="Contracts\TimePoint.cs" />
     <Compile Include="Contracts\TradeDTO.cs" />
     <Compile Include="Exceptions\BadMessageException.cs" />
     <Compile Include="Exceptions\ConnectionLostException.cs" />
@@ -102,7 +103,8 @@
     <Compile Include="Interfaces\ITradingEngine.cs" />
     <Compile Include="Interfaces\ITradingStore.cs" />
     <Compile Include="Interfaces\ITradingSystem.cs" />
-    <Compile Include="Math\SMA.cs" />
+    <Compile Include="Mathx\MovingTimeArray.cs" />
+    <Compile Include="Mathx\SMA.cs" />
     <Compile Include="Messages\AMessage.cs" />
     <Compile Include="Messages\L1QuotationsMessage.cs" />
     <Compile Include="Messages\SignalChangedMessage.cs" />
@@ -110,8 +112,8 @@
     <Compile Include="Messages\StopMessage.cs" />
     <Compile Include="Messages\TimerMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Math\L1QuotationUpdater.cs" />
-    <Compile Include="Math\BarGenerator.cs" />
+    <Compile Include="Mathx\L1QuotationUpdater.cs" />
+    <Compile Include="Mathx\BarGenerator.cs" />
     <Compile Include="Utils\AsyncWorker.cs" />
     <Compile Include="Utils\ConfigurationSingleton.cs" />
     <Compile Include="Utils\EventArgs.cs" />

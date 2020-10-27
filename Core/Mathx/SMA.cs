@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.Core.Math
+namespace QuantaBasket.Core.Mathx
 {
     /// <summary>
     /// Калькулятор скоьзящего среднего в режиме реального времени
@@ -21,6 +21,8 @@ namespace QuantaBasket.Core.Math
 
         public long TotalSourcePointCount => _index;
 
+        public decimal FirstPoint => _buffer.FirstOrDefault();
+
         /// <summary>
         /// Конструктор калькулятора
         /// </summary>
@@ -30,6 +32,16 @@ namespace QuantaBasket.Core.Math
         {
             _period = period;
             _smaProcessor = smaProcessor ?? throw new ArgumentNullException(nameof(smaProcessor));
+        }
+
+        /// <summary>
+        /// Очистка внутреннего буфера
+        /// </summary>
+        public void Reset()
+        {
+            _buffer.Clear();
+            _index = 0;
+            _sum = 0m;
         }
 
         /// <summary>

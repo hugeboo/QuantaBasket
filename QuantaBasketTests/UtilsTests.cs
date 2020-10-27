@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using QuantaBasket.Core.Contracts;
-using QuantaBasket.Core.Math;
+using QuantaBasket.Core.Mathx;
 using QuantaBasket.Core.Utils;
 using System;
 using System.Collections.Generic;

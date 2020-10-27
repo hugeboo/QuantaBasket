@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.Core.Math
+namespace QuantaBasket.Core.Mathx
 {
     /// <summary>
     /// Генератор баров (свечей) в реальном времени
@@ -47,6 +47,14 @@ namespace QuantaBasket.Core.Math
                 Last = pt,
                 DVolume = volume
             });
+        }
+
+        /// <summary>
+        /// Очистка внутреннего буфера
+        /// </summary>
+        public void Reset()
+        {
+            _currentBar = null;
         }
 
         /// <summary>

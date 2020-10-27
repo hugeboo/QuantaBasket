@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.Core.Math
+namespace QuantaBasket.Core.Mathx
 {
     /// <summary>
     /// "Обновлятор" котирвок L1
