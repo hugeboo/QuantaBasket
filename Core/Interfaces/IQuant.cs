@@ -27,12 +27,6 @@ namespace QuantaBasket.Core.Interfaces
         HashSet<SecurityId> Securities { get; }
 
         /// <summary>
-        /// Интерфейс для взаимодействия кванта с основным движком
-        /// Передается кванту на этапе создания
-        /// </summary>
-        IBasketService BasketService { set; }
-
-        /// <summary>
         /// Текущий статус кванта
         /// </summary>
         QuantStatus Status { get; }
@@ -41,7 +35,7 @@ namespace QuantaBasket.Core.Interfaces
         /// Инициализация кванта
         /// Вызывается движком после создания кванта
         /// </summary>
-        void Init();
+        void Init(IBasketService basketService);
     }
 
     public enum QuantStatus

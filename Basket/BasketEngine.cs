@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Basket
 {
-    public sealed class BasketEngine : IBasketEngine, IHaveConfiguration
+    public sealed class BasketEngine : IBasketEngine, IHaveConfiguration, IToQuantMessageSender
     {
         private readonly Dictionary<string, QuantItem> _quantas = new Dictionary<string, QuantItem>();
         private readonly ILogger _logger = LogManager.GetLogger("BasketEngine");
@@ -63,6 +63,11 @@ namespace QuantaBasket.Basket
             _tradingEngine.SendSignal(signal);
         }
 
+        internal ISignal GetTodaySignal(string signalId)
+        {
+            return _tradingEngine.GetTodaySignal(signalId);
+        }
+
         private void Init()
         {
             try
@@ -78,7 +83,7 @@ namespace QuantaBasket.Basket
                 _quoteProvider.RegisterErrorProcessor(ProcessQuotationProviderError);
 
                 _logger.Debug("Creaete TradingEngine");
-                _tradingEngine = new TradingEngine();
+                _tradingEngine = new TradingEngine(this);
 
                 RegisterQuantas();
                 InitQuantas();
@@ -120,7 +125,6 @@ namespace QuantaBasket.Basket
                     }
                     var item = new QuantItem(this) { Quant = q };
                     _quantas[item.Quant.Name] = item;
-                    item.Quant.BasketService = item;
                     _logger.Info($"Quant '{item.Quant.Name}' registered");
                 });
         }
@@ -128,13 +132,8 @@ namespace QuantaBasket.Basket
         private void InitQuantas()
         {
             _logger.Debug("Initializing quantos");
-            _quantas.Values.ForEach(q => q.Quant.Init());
+            _quantas.Values.ForEach(q => q.Quant.Init(q));
         }
-
-        //private void TimerProc(object state)
-        //{
-         //   SendAllQuantas(new TimerMessage { DateTime = DateTime.Now });
-        //}
 
         private void SendAllQuantas(AMessage m)
         {
@@ -213,5 +212,12 @@ namespace QuantaBasket.Basket
             return item?.Quant;
         }
 
+        public void SendMessage(string quantName, AMessage message)
+        {
+            if (_quantas.TryGetValue(quantName, out QuantItem item))
+            {
+                item.SendMessage(message);
+            }
+        }
     }
 }

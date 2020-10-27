@@ -83,5 +83,18 @@ namespace QuantaBasket.Basket
                 return false;
             }
         }
+
+        public ISignal GetTodaySignal(string signalId)
+        {
+            try
+            {
+                return _basketEngine.GetTodaySignal(signalId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                return null;
+            }
+        }
     }
 }

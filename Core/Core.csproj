@@ -86,7 +86,8 @@
     <Compile Include="Exceptions\BadMessageException.cs" />
     <Compile Include="Exceptions\ConnectionLostException.cs" />
     <Compile Include="Exceptions\TransportException.cs" />
-    <Compile Include="Extensions\Enumerable.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\SignalStatusExtensions.cs" />
     <Compile Include="Interfaces\IBasketEngine.cs" />
     <Compile Include="Interfaces\IBasketService.cs" />
     <Compile Include="Interfaces\IErrorReporter.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Interfaces\IQuant.cs" />
     <Compile Include="Interfaces\INewSignal.cs" />
     <Compile Include="Interfaces\ISignal.cs" />
+    <Compile Include="Interfaces\IToQuantMessageSender.cs" />
     <Compile Include="Interfaces\ITradeSignal.cs" />
     <Compile Include="Interfaces\ITradingEngine.cs" />
     <Compile Include="Interfaces\ITradingStore.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Math\SMA.cs" />
     <Compile Include="Messages\AMessage.cs" />
     <Compile Include="Messages\L1QuotationsMessage.cs" />
+    <Compile Include="Messages\SignalChangedMessage.cs" />
     <Compile Include="Messages\StartMessage.cs" />
     <Compile Include="Messages\StopMessage.cs" />
     <Compile Include="Messages\TimerMessage.cs" />

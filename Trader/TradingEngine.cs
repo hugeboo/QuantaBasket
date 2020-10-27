@@ -2,7 +2,9 @@
 using QuantaBasket.Components.SQLiteTradingStore;
 using QuantaBasket.Components.TradingSystemMock;
 using QuantaBasket.Core.Contracts;
+using QuantaBasket.Core.Extensions;
 using QuantaBasket.Core.Interfaces;
+using QuantaBasket.Core.Messages;
 using QuantaBasket.Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,7 @@ namespace QuantaBasket.Trader
     {
         private readonly ILogger _logger = LogManager.GetLogger("TradingEngine");
 
+        private readonly IToQuantMessageSender _toQuantMessageSender;
         private ITradingStore _tradingStore;
         private ITradingSystem _tradingSystem;
 
@@ -30,8 +33,9 @@ namespace QuantaBasket.Trader
 
         public ITradingStore TradingStore => _tradingStore;
 
-        public TradingEngine()
+        public TradingEngine(IToQuantMessageSender toQuantMessageSender)
         {
+            _toQuantMessageSender = toQuantMessageSender ?? throw new ArgumentNullException(nameof(toQuantMessageSender));
             Init();
         }
 
@@ -283,6 +287,11 @@ namespace QuantaBasket.Trader
                                 throw new InvalidOperationException($"Update by trade - Cannot find signal with Id {trade.SignalId}");
                             UpdateSignal(signal, trade);
                             _tradingStore.Update(signal);
+                            _toQuantMessageSender.SendMessage(signal.QuantName, new SignalChangedMessage 
+                            {
+                                Signal = signal,
+                                TradeDTO = trade
+                            });
                         }
                         break;
 
@@ -293,6 +302,11 @@ namespace QuantaBasket.Trader
                                 throw new InvalidOperationException($"Update by orderStatus - Cannot find signal with Id {orderStatus.SignalId}");
                             UpdateSignal(signal, orderStatus);
                             _tradingStore.Update(signal);
+                            _toQuantMessageSender.SendMessage(signal.QuantName, new SignalChangedMessage
+                            {
+                                Signal = signal,
+                                OrderStatusDTO = orderStatus
+                            });
                         }
                         break;
                 }
@@ -301,6 +315,11 @@ namespace QuantaBasket.Trader
             {
                 _logger.Error(ex, $"Cannot process object: {obj}. Error: {ex.Message}");
             }
+        }
+
+        public ISignal GetTodaySignal(string signalId)
+        {
+            return _tradingStore?.GetSignalByIdAndDate(signalId, DateTime.Now);
         }
     }
 }

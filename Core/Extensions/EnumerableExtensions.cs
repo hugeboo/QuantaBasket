@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Extensions
 {
-    public static class Enumerable
+    public static class EnumerableExtensions
     {
         public static void ForEach<T>(this IEnumerable<T> lst, Action<T> action)
         {

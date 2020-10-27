@@ -40,5 +40,7 @@ namespace QuantaBasket.Core.Interfaces
         /// </summary>
         /// <param name="signal">Тороговый сигнал</param>
         void SendSignal(INewSignal signal);
+
+        ISignal GetTodaySignal(string signalId);
     }
 }

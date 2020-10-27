@@ -31,5 +31,7 @@ namespace QuantaBasket.Core.Interfaces
         /// </summary>
         /// <returns>False означает, что сигнал не прошел внутреннюю валидацию. Это явный признак ошибки в кванте</returns>
         bool SendSignal(INewSignal signal);
+
+        ISignal GetTodaySignal(string signalId);
     }
 }
