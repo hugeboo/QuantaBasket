@@ -20,6 +20,8 @@ namespace QuantaBasket.Components.TradingSystemMock
 
         private readonly ILogger _logger = LogManager.GetLogger("TradingSystemMock");
 
+        private ITradeSignal _currentSignal;
+
         public bool Connected => _connected;
 
         public void Connect()
@@ -72,7 +74,57 @@ namespace QuantaBasket.Components.TradingSystemMock
 
         public void SendSignal(ITradeSignal signal)
         {
-            Task.Factory.StartNew(() => SimpleSignalExecutor(signal));
+            _logger.Info($"SendSignal '{signal}'");
+            if (signal.SecCode == "GAZP")
+            {
+                if (_currentSignal == null)
+                {
+                    _currentSignal = signal;
+                    var marketOrderId = new Random(Environment.TickCount).Next(1000, (int)Math.Pow(2, 30));
+                    _onOrderStatusAction(new OrderStatusDTO
+                    {
+                        MarketOrderId = marketOrderId.ToString(),
+                        MarketDateTime = DateTime.Now,
+                        ClassCode = signal.ClassCode,
+                        SecCode = signal.SecCode,
+                        SignalId = signal.Id,
+                        Status = SignalStatus.Open,
+                    });
+                }
+                else
+                {
+                    _onOrderStatusAction(new OrderStatusDTO
+                    {
+                        MarketDateTime = DateTime.Now,
+                        ClassCode = signal.ClassCode,
+                        SecCode = signal.SecCode,
+                        SignalId = signal.Id,
+                        Status = SignalStatus.Rejected,
+                        Text = $"Mock: First you need to cancel the signal with id '{_currentSignal.Id}'"
+                    });
+                }
+            }
+            else
+            {
+                Task.Factory.StartNew(() => SimpleSignalExecutor(signal));
+            }
+        }
+
+        public void CancelSignal(ITradeSignal signal)
+        {
+            _logger.Info($"CancelSignal '{signal}'");
+            if (_currentSignal != null && _currentSignal.Id == signal.Id)
+            {
+                _onOrderStatusAction(new OrderStatusDTO
+                {
+                    MarketDateTime = DateTime.Now,
+                    ClassCode = signal.ClassCode,
+                    SecCode = signal.SecCode,
+                    SignalId = signal.Id,
+                    Status = SignalStatus.Canceled,
+                });
+                _currentSignal = null;
+            }
         }
 
         private void SimpleSignalExecutor(ITradeSignal signal)

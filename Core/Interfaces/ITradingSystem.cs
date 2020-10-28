@@ -40,5 +40,7 @@ namespace QuantaBasket.Core.Interfaces
         /// Сгенерить по сигналу рыночный ордер и отправить его в тороговую систему
         /// </summary>
         void SendSignal(ITradeSignal signal);
+
+        void CancelSignal(ITradeSignal signal);
     }
 }

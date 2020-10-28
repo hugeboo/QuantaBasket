@@ -42,5 +42,7 @@ namespace QuantaBasket.Core.Interfaces
         void SendSignal(INewSignal signal);
 
         ISignal GetTodaySignal(string signalId);
+
+        void CancelSignal(string signalId);
     }
 }

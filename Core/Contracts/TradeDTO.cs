@@ -1,4 +1,5 @@
-﻿using QuantaBasket.Core.Interfaces;
+﻿using Newtonsoft.Json;
+using QuantaBasket.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,5 +58,10 @@ namespace QuantaBasket.Core.Contracts
         /// Цена 
         /// </summary>
         public decimal Price { get; set; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
     }
 }

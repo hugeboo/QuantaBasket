@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,15 @@ namespace QuantaBasket.Core.Messages
     /// </summary>
     public abstract class AMessage
     {
+        private static JsonSerializerSettings _jsonSettngs = new JsonSerializerSettings
+        {
+            Converters = new[] { new StringEnumConverter() },
+            Formatting = Formatting.Indented
+        };
+
         public override string ToString()
         {
-            return $"{this.GetType().Name}: {JsonConvert.SerializeObject(this)}";
+            return $"{this.GetType().Name}: {JsonConvert.SerializeObject(this, _jsonSettngs)}";
         }
     }
 }

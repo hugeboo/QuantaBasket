@@ -63,6 +63,11 @@ namespace QuantaBasket.Basket
             _tradingEngine.SendSignal(signal);
         }
 
+        internal void CancelSignal(string signalId)
+        {
+            _tradingEngine.CancelSignal(signalId);
+        }
+
         internal ISignal GetTodaySignal(string signalId)
         {
             return _tradingEngine.GetTodaySignal(signalId);
@@ -135,9 +140,11 @@ namespace QuantaBasket.Basket
             _quantas.Values.ForEach(q => q.Quant.Init(q));
         }
 
-        private void SendAllQuantas(AMessage m)
+        private void SendAllQuantas(AMessage m, bool onlyActive)
         {
-            _quantas.Values.ForEach(q => q.SendMessage(m));
+            _quantas.Values.
+                Where(q => !onlyActive || q.Quant.Status == QuantStatus.Active).
+                ForEach(q => q.SendMessage(m));
         }
 
         public void Dispose()
@@ -165,7 +172,7 @@ namespace QuantaBasket.Basket
                 _logger.Debug("Starting");
                 if(!_quoteProvider.Connected) _quoteProvider.Connect();
                 _tradingEngine.Start();
-                SendAllQuantas(new StartMessage());
+                SendAllQuantas(new StartMessage(), false);
                 Started = true;
             }
             catch (Exception ex)
@@ -181,7 +188,7 @@ namespace QuantaBasket.Basket
             try
             {
                 _logger.Debug("Stopping");
-                SendAllQuantas(new StopMessage());
+                SendAllQuantas(new StopMessage(), true);
                 if (_quoteProvider.Connected) _quoteProvider.Disconnect();
                 _tradingEngine.Stop();
             }

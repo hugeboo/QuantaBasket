@@ -61,7 +61,7 @@ namespace QuantaBasket.Basket
 
         public void SendMessage(AMessage message)
         {
-            _logger.Trace($"{Quant?.Name}: Send message: {message}");
+            _logger.Trace($"Send message to quant '{Quant?.Name}': {message} ");
             _worker.AddItem(message);
         }
 
@@ -95,6 +95,11 @@ namespace QuantaBasket.Basket
                 _logger.Error(ex);
                 return null;
             }
+        }
+
+        public void CancelSignal(string signalId)
+        {
+            _basketEngine.CancelSignal(signalId);
         }
     }
 }

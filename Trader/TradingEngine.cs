@@ -24,7 +24,7 @@ namespace QuantaBasket.Trader
         private ITradingSystem _tradingSystem;
 
         private int _nextId;
-        private AsyncWorker<SignalDTO> _sendOrderWorker;
+        private AsyncWorker<object> _sendOrderWorker;
         private AsyncWorker<object> _reportOrderWorker;
 
         public bool TradingSystemConnected => _tradingSystem?.Connected ?? false;
@@ -62,6 +62,11 @@ namespace QuantaBasket.Trader
                 throw new InvalidOperationException(err);
             }
             _sendOrderWorker.AddItem(s);
+        }
+
+        public void CancelSignal(string signalId)
+        {
+            _sendOrderWorker.AddItem(new CancelSignalAction { SignalId = signalId });
         }
 
         public void Start()
@@ -139,7 +144,7 @@ namespace QuantaBasket.Trader
                 _reportOrderWorker = new AsyncWorker<object>("ReportOrder", ReportOrderWorkerProc);
 
                 _logger.Debug("Start SendOrderWorker");
-                _sendOrderWorker = new AsyncWorker<SignalDTO>("SendSignal", SendSignalWorkerProc);
+                _sendOrderWorker = new AsyncWorker<object>("SendSignal", SendSignalWorkerProc);
             }
             catch (Exception ex)
             {
@@ -245,15 +250,49 @@ namespace QuantaBasket.Trader
 
         private void ProcessTrade(TradeDTO trade)
         {
+            _logger.Debug($"Received trade: {trade}");
             _reportOrderWorker.AddItem(trade);
         }
 
         private void ProcessOrderStatus(OrderStatusDTO orderStatus)
         {
+            _logger.Debug($"Received order status: {orderStatus}");
             _reportOrderWorker.AddItem(orderStatus);
         }
 
-        private void SendSignalWorkerProc(SignalDTO signal)
+        private void SendSignalWorkerProc(object obj)
+        {
+            switch (obj)
+            {
+                case SignalDTO signal:
+                    SendSignalProc(signal);
+                    break;
+                case CancelSignalAction csa:
+                    CancelSignalProc(csa.SignalId);
+                    break;
+            }
+        }
+
+        private void CancelSignalProc(string signalId)
+        {
+            try
+            {
+                var signal = _tradingStore.GetSignalByIdAndDate(signalId, DateTime.Now) as SignalDTO;
+
+                if (signal == null) 
+                    throw new InvalidOperationException($"Cannot cancel. Signal with id '{signalId}' not found in store");
+                if (signal.Status.IsFinished())
+                    throw new InvalidOperationException($"Cannot cancel. Signal with id '{signalId}' is already finished. Signal status is '{signal.Status.ToString()}'");
+
+                _tradingSystem.CancelSignal(signal);
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+            }
+        }
+
+        private void SendSignalProc(SignalDTO signal)
         {
             try
             {
@@ -287,11 +326,13 @@ namespace QuantaBasket.Trader
                                 throw new InvalidOperationException($"Update by trade - Cannot find signal with Id {trade.SignalId}");
                             UpdateSignal(signal, trade);
                             _tradingStore.Update(signal);
-                            _toQuantMessageSender.SendMessage(signal.QuantName, new SignalChangedMessage 
+                            var message = new SignalChangedMessage
                             {
                                 Signal = signal,
                                 TradeDTO = trade
-                            });
+                            };
+                            _logger.Debug($"Send trading message to quant '{signal.QuantName}': {message}");
+                            _toQuantMessageSender.SendMessage(signal.QuantName, message);
                         }
                         break;
 
@@ -302,11 +343,13 @@ namespace QuantaBasket.Trader
                                 throw new InvalidOperationException($"Update by orderStatus - Cannot find signal with Id {orderStatus.SignalId}");
                             UpdateSignal(signal, orderStatus);
                             _tradingStore.Update(signal);
-                            _toQuantMessageSender.SendMessage(signal.QuantName, new SignalChangedMessage
+                            var message = new SignalChangedMessage
                             {
                                 Signal = signal,
                                 OrderStatusDTO = orderStatus
-                            });
+                            };
+                            _logger.Debug($"Send trading message to quant '{signal.QuantName}': {message}");
+                            _toQuantMessageSender.SendMessage(signal.QuantName, message);
                         }
                         break;
                 }
@@ -320,6 +363,11 @@ namespace QuantaBasket.Trader
         public ISignal GetTodaySignal(string signalId)
         {
             return _tradingStore?.GetSignalByIdAndDate(signalId, DateTime.Now);
+        }
+
+        private sealed class CancelSignalAction
+        {
+            public string SignalId { get; set; }
         }
     }
 }
