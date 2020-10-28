@@ -126,4 +126,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rem cd "$(ProjectDir)"
+rem nuget pack -OutputDirectory "$(TargetDir)"  -SkipDuplicate
+rem cd "$(TargetDir)"
+rem nuget push QuantaBasket.Core.1.0.0.nupkg oy2myp6k2wyduekwzecqvgthpydfq44uvijeakkqnnn3zu -Source https://api.nuget.org/v3/index.json
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

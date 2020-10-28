@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("QuantaBasket.Core")]
 [assembly: AssemblyDescription("Interfaces and contracts for project QuantaBasket")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Sergey Slepov")]
 [assembly: AssemblyProduct("QuantaBasket")]
 [assembly: AssemblyCopyright("Copyright © Sergey Slepov 2020")]
 [assembly: AssemblyTrademark("")]
@@ -40,3 +40,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("SQLiteTradingStore")]
 [assembly: InternalsVisibleTo("QuantaBasket.Basket")]
 [assembly: InternalsVisibleTo("QuantaBasket.Trader")]
+[assembly: AssemblyFileVersion("1.0.0")]
