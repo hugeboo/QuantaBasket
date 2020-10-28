@@ -120,7 +120,7 @@
     <Compile Include="Mathx\L1QuotationUpdater.cs" />
     <Compile Include="Mathx\BarGenerator.cs" />
     <Compile Include="Quant\AQuant.cs" />
-    <Compile Include="Quant\QuantConfigurationSingleton.cs" />
+    <Compile Include="Quant\AQuantConfigurationSingleton.cs" />
     <Compile Include="Utils\AsyncWorker.cs" />
     <Compile Include="Utils\ConfigurationSingleton.cs" />
     <Compile Include="Utils\EventArgs.cs" />
