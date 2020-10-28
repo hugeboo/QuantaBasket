@@ -14,7 +14,7 @@ namespace QuantaBasket.Core.Interfaces
         /// <summary>
         /// Зарешистрировать обработчик сообщений об ошибках
         /// </summary>
-        void RegisterErrorProcessor(Action<ErrorReportCode, string> processError);
+        void RegisterCallback(Action<ErrorReportCode, string> processError);
     }
 
     /// <summary>

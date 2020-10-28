@@ -35,7 +35,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
             _store = store;
         }
 
-        public void RegisterErrorProcessor(Action<ErrorReportCode, string> processError)
+        public void RegisterCallback(Action<ErrorReportCode, string> processError)
         {
             _onErrorAction = processError;
             _logger.Debug(processError != null ? 
@@ -43,7 +43,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                 "Error processor unassigned");
         }
 
-        public void RegisterQuotationProcessor(Action<IEnumerable<L1Quotation>> processQuotations)
+        public void RegisterCallback(Action<IEnumerable<L1Quotation>> processQuotations)
         {
             _onNewQuotationsAction = processQuotations;
             _logger.Debug(processQuotations != null ? 

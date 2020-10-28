@@ -53,7 +53,7 @@ namespace QuantaBasket.Basket
             }
         }
 
-        public void RegisterMessageProcessor(Action<AMessage> messageProcessor)
+        public void RegisterCallback(Action<AMessage> messageProcessor)
         {
             _messageProcessor = messageProcessor;
             _logger.Debug($"{Quant?.Name} Message processor registered");

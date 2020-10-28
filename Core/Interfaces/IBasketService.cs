@@ -17,7 +17,7 @@ namespace QuantaBasket.Core.Interfaces
         /// Зарегистрировать обработчик сообщений, поступающих кванту
         /// </summary>
         /// <param name="messageProcessor"></param>
-        void RegisterMessageProcessor(Action<AMessage> messageProcessor);
+        void RegisterCallback(Action<AMessage> messageProcessor);
 
         /// <summary>
         /// Создать новый торговый сигнал

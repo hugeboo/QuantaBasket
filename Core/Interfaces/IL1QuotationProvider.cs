@@ -16,7 +16,7 @@ namespace QuantaBasket.Core.Interfaces
         /// Зарегистрировать обработчик потока котировок
         /// </summary>
         /// <param name="processQuotations"></param>
-        void RegisterQuotationProcessor(Action<IEnumerable<L1Quotation>> processQuotations);
+        void RegisterCallback(Action<IEnumerable<L1Quotation>> processQuotations);
 
         /// <summary>
         /// Подключиться к тороговой системе

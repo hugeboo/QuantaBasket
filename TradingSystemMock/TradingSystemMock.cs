@@ -46,19 +46,19 @@ namespace QuantaBasket.Components.TradingSystemMock
             return Configuration.Instance;
         }
 
-        public void RegisterErrorProcessor(Action<ErrorReportCode, string> processError)
+        public void RegisterCallback(Action<ErrorReportCode, string> processError)
         {
             _logger.Info("RegisterErrorProcessor");
             _onErrorAction = processError;
         }
 
-        public void RegisterOrderStatusProcessor(Action<OrderStatusDTO> processOrderStatus)
+        public void RegisterCallcback(Action<OrderStatusDTO> processOrderStatus)
         {
             _logger.Info("RegisterOrderStatusProcessor");
             _onOrderStatusAction = processOrderStatus;
         }
 
-        public void RegisterTradeProcessor(Action<TradeDTO> processTrade)
+        public void RegisterCallback(Action<TradeDTO> processTrade)
         {
             _logger.Info("RegisterTradeProcessor");
             _onTradeAction = processTrade;

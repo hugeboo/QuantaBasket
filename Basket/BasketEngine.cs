@@ -79,8 +79,8 @@ namespace QuantaBasket.Basket
 
                 _logger.Debug("Create L1QuotationProvider");
                 _quoteProvider = new QLuaL1QuotationProvider(_quoteStore);
-                _quoteProvider.RegisterQuotationProcessor(ProcessQuotation);
-                _quoteProvider.RegisterErrorProcessor(ProcessQuotationProviderError);
+                _quoteProvider.RegisterCallback(ProcessQuotation);
+                _quoteProvider.RegisterCallback(ProcessQuotationProviderError);
 
                 _logger.Debug("Creaete TradingEngine");
                 _tradingEngine = new TradingEngine(this);

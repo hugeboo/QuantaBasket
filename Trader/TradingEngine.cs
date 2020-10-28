@@ -131,9 +131,9 @@ namespace QuantaBasket.Trader
 
                 _logger.Debug("Create TradingSystem");
                 _tradingSystem = new TradingSystemMock();
-                _tradingSystem.RegisterErrorProcessor(ProcessError);
-                _tradingSystem.RegisterTradeProcessor(ProcessTrade);
-                _tradingSystem.RegisterOrderStatusProcessor(ProcessOrderStatus);
+                _tradingSystem.RegisterCallback(ProcessError);
+                _tradingSystem.RegisterCallback(ProcessTrade);
+                _tradingSystem.RegisterCallcback(ProcessOrderStatus);
 
                 _logger.Debug("Start ReportOrderWorker");
                 _reportOrderWorker = new AsyncWorker<object>("ReportOrder", ReportOrderWorkerProc);

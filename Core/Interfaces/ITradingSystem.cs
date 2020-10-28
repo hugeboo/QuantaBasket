@@ -13,13 +13,13 @@ namespace QuantaBasket.Core.Interfaces
         /// Зарегистрировать обработчик трейдов
         /// </summary>
         /// <param name="processTrade"></param>
-        void RegisterTradeProcessor(Action<TradeDTO> processTrade);
+        void RegisterCallback(Action<TradeDTO> processTrade);
 
         /// <summary>
         /// Зарегистрировать обработчик статусов ордеров
         /// </summary>
         /// <param name="processOrderStatus"></param>
-        void RegisterOrderStatusProcessor(Action<OrderStatusDTO> processOrderStatus);
+        void RegisterCallcback(Action<OrderStatusDTO> processOrderStatus);
 
         /// <summary>
         /// Подключиться к тороговой системе
