@@ -44,6 +44,6 @@ namespace QuantaBasket.Core.Interfaces
         /// <summary>
         /// Тип цены сделки (Market, Limit, Stop)
         /// </summary>
-        PriceType PriceType { get; set; }
+        PriceType PriceType { get; }
     }
 }

@@ -73,7 +73,7 @@
       <Name>SQLiteL1QuotationStore</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trader\Trader.csproj">
-      <Project>{84AD95A6-703B-4DC6-A894-552478E29FAB}</Project>
+      <Project>{84ad95a6-703b-4dc6-a894-552478e29fab}</Project>
       <Name>Trader</Name>
     </ProjectReference>
   </ItemGroup>

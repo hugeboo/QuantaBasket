@@ -18,11 +18,6 @@ namespace QuantaBasket.Core.Interfaces
         string Id { get; }
 
         /// <summary>
-        /// Дата/время создания сигнала
-        /// </summary>
-        DateTime CreatedTime { get; }
-
-        /// <summary>
         /// Код класса бумаги
         /// </summary>
         string ClassCode { get; set; }
@@ -31,11 +26,6 @@ namespace QuantaBasket.Core.Interfaces
         /// Код бумагт (тикер)
         /// </summary>
         string SecCode { get; set; }
-
-        /// <summary>
-        /// Текущий статус сигнала
-        /// </summary>
-        SignalStatus Status { get; }
 
         /// <summary>
         /// Сторона сделки (купля/продажа)
@@ -56,15 +46,5 @@ namespace QuantaBasket.Core.Interfaces
         /// Тип цены сделки (Market, Limit, Stop)
         /// </summary>
         PriceType PriceType { get; set; }
-
-        /// <summary>
-        /// Исполненная часть сигнала
-        /// </summary>
-        long ExecQtty { get; }
-
-        /// <summary>
-        /// Средняя цена исполнения
-        /// </summary>
-        decimal AvgPrice { get; }
     }
 }

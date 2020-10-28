@@ -140,24 +140,23 @@ namespace QuantaBasket.Basket
             _quantas.Values.ForEach(q => q.Quant.Init(q));
         }
 
-        private void SendAllQuantas(AMessage m, bool onlyActive)
+        private void SendAllQuantas(AMessage m)
         {
-            _quantas.Values.
-                Where(q => !onlyActive || q.Quant.Status == QuantStatus.Active).
-                ForEach(q => q.SendMessage(m));
+            _quantas.Values.ForEach(q => q.SendMessage(m));
         }
 
         public void Dispose()
         {
             try
             {
-                Stop();
-                _logger.Debug("Disposing");
-                //_timer?.Dispose();
-                _quoteProvider.Dispose();
-                _tradingEngine.Dispose();
                 _logger.Debug("Disposing quantos");
                 _quantas.Values.ForEach(q => q.Dispose());
+                _logger.Debug("Disposing quotePrider");
+                //if (_quoteProvider.Connected) _quoteProvider.Disconnect();
+                _quoteProvider.Dispose();
+                _logger.Debug("Disposing tradingEngine");
+                //_tradingEngine.Stop();
+                _tradingEngine.Dispose();
             }
             catch(Exception ex)
             {
@@ -172,7 +171,7 @@ namespace QuantaBasket.Basket
                 _logger.Debug("Starting");
                 if(!_quoteProvider.Connected) _quoteProvider.Connect();
                 _tradingEngine.Start();
-                SendAllQuantas(new StartMessage(), false);
+                SendAllQuantas(new StartMessage());
                 Started = true;
             }
             catch (Exception ex)
@@ -188,7 +187,7 @@ namespace QuantaBasket.Basket
             try
             {
                 _logger.Debug("Stopping");
-                SendAllQuantas(new StopMessage(), true);
+                SendAllQuantas(new StopMessage());
                 if (_quoteProvider.Connected) _quoteProvider.Disconnect();
                 _tradingEngine.Stop();
             }
