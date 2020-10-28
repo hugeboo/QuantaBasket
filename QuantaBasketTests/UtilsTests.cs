@@ -126,11 +126,13 @@ namespace QuantaBasketTests
         public void CalculateSimpleMovingAverage()
         {
             var src = new decimal[] { 25m, 8m, 65m, 4m, 95m, 75m, 15m, 35m, 2m, 8m, 65m };
-            var lstDst = new List<decimal>();
-            var sma = new SMA(4, (d) => lstDst.Add(d));
-            foreach (var d in src) sma.Add(d);
+            var lstDst = new List<TimePoint>();
+            var sma = new SMA(4);
+            sma.RegisterCallback((d) => lstDst.Add(d));
+            foreach (var d in src) sma.Add(new TimePoint(DateTime.Now, d));
             var dst = lstDst.ToArray();
-            CollectionAssert.AreEqual(new decimal[] { 25.5m, 43m, 59.75m, 47.25m, 55m, 31.75m, 15m, 27.5m }, dst);
+            CollectionAssert.AreEqual(new decimal[] { 25.5m, 43m, 59.75m, 47.25m, 55m, 31.75m, 15m, 27.5m }, 
+                dst.Select(pt=>pt.Value).ToArray());
             Assert.AreEqual(11, sma.TotalSourcePointCount);
         }
     }

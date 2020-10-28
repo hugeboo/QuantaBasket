@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.Core.Contracts
+namespace QuantaBasket.Core.Mathx
 {
     public struct TimePoint
     {

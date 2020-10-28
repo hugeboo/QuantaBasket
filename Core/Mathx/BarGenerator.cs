@@ -1,5 +1,6 @@
 ﻿using NLog;
 using QuantaBasket.Core.Contracts;
+using QuantaBasket.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,11 @@ namespace QuantaBasket.Core.Mathx
     /// Генератор баров (свечей) в реальном времени
     /// Время берется из потока поступающих на вход котировок (т.е. рыночное)
     /// </summary>
-    public sealed class BarGenerator
+    public sealed class BarGenerator : IStreamDataFunction<L1Quotation, OHLCV>
     {
         private readonly BarInterval _intervalSec;
         private readonly TimeSpan _intervalTs;
-        private readonly Action<OHLCV> _barProcessor;
+        private Action<OHLCV> _barProcessor;
 
         private OHLCV _currentBar;
 
@@ -25,12 +26,15 @@ namespace QuantaBasket.Core.Mathx
         /// Конструктор генератора
         /// </summary>
         /// <param name="intervalSec">Ширина бара в секундах</param>
-        /// <param name="barProcessor">Метод для обработки генерируемых баров</param>
-        public BarGenerator(BarInterval intervalSec, Action<OHLCV> barProcessor)
+        public BarGenerator(BarInterval intervalSec)
         {
             _intervalSec = intervalSec;
             _intervalTs = TimeSpan.FromSeconds((int)_intervalSec);
-            _barProcessor = barProcessor ?? throw new ArgumentNullException(nameof(barProcessor));
+        }
+
+        public void RegisterCallback(Action<OHLCV> processOutputData)
+        {
+            _barProcessor = processOutputData;
         }
 
         /// <summary>

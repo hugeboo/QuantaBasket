@@ -82,7 +82,7 @@
     <Compile Include="Contracts\OrderStatusDTO.cs" />
     <Compile Include="Contracts\SecurityId.cs" />
     <Compile Include="Contracts\SignalDTO.cs" />
-    <Compile Include="Contracts\TimePoint.cs" />
+    <Compile Include="Mathx\TimePoint.cs" />
     <Compile Include="Contracts\TradeDTO.cs" />
     <Compile Include="Exceptions\BadMessageException.cs" />
     <Compile Include="Exceptions\ConnectionLostException.cs" />
@@ -98,6 +98,7 @@
     <Compile Include="Interfaces\IQuant.cs" />
     <Compile Include="Interfaces\INewSignal.cs" />
     <Compile Include="Interfaces\ISignal.cs" />
+    <Compile Include="Interfaces\IStreamDataFunction.cs" />
     <Compile Include="Interfaces\IToQuantMessageSender.cs" />
     <Compile Include="Interfaces\ITradeSignal.cs" />
     <Compile Include="Interfaces\ITradingEngine.cs" />
