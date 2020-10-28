@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QuantaBasket.Core</RootNamespace>
-    <AssemblyName>Core</AssemblyName>
+    <AssemblyName>QuantaBasket.Core</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Core.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

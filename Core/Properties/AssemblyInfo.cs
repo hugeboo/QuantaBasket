@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("QuantaBasket.Core")]
+[assembly: AssemblyDescription("Interfaces and contracts for project QuantaBasket")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Core")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyProduct("QuantaBasket")]
+[assembly: AssemblyCopyright("Copyright © Sergey Slepov 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,11 +32,11 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0")]
+//[assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("QLuaL1QuotationProvider")]
 [assembly: InternalsVisibleTo("SQLiteL1QuotationStore")]
 [assembly: InternalsVisibleTo("SQLiteTradingStore")]
-[assembly: InternalsVisibleTo("Basket")]
-[assembly: InternalsVisibleTo("Trader")]
+[assembly: InternalsVisibleTo("QuantaBasket.Basket")]
+[assembly: InternalsVisibleTo("QuantaBasket.Trader")]
