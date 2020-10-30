@@ -123,14 +123,21 @@ namespace QuantaBasket.Basket
         {
             QuantBrowser.Browse().ForEach(t =>
                 {
-                    var q = Activator.CreateInstance(t) as IQuant;
-                    if (_quantas.ContainsKey(q.Name))
+                    try
                     {
-                        throw new InvalidOperationException($"Duplicate Quants name: {q.Name}");
+                        var q = Activator.CreateInstance(t) as IQuant;
+                        if (_quantas.ContainsKey(q.Name))
+                        {
+                            throw new InvalidOperationException($"Duplicate Quants name: {q.Name}");
+                        }
+                        var item = new QuantItem(this) { Quant = q };
+                        _quantas[item.Quant.Name] = item;
+                        _logger.Info($"Quant '{item.Quant.Name}' registered");
+                    } 
+                    catch (Exception ex)
+                    {
+                        _logger.Error(ex);
                     }
-                    var item = new QuantItem(this) { Quant = q };
-                    _quantas[item.Quant.Name] = item;
-                    _logger.Info($"Quant '{item.Quant.Name}' registered");
                 });
         }
 
@@ -149,14 +156,16 @@ namespace QuantaBasket.Basket
         {
             try
             {
-                _logger.Debug("Disposing quantos");
-                _quantas.Values.ForEach(q => q.Dispose());
                 _logger.Debug("Disposing quotePrider");
                 //if (_quoteProvider.Connected) _quoteProvider.Disconnect();
                 _quoteProvider.Dispose();
+
                 _logger.Debug("Disposing tradingEngine");
                 //_tradingEngine.Stop();
                 _tradingEngine.Dispose();
+
+                _logger.Debug("Disposing quantos");
+                _quantas.Values.ForEach(q => { try { q.Dispose(); } catch { } });
             }
             catch(Exception ex)
             {

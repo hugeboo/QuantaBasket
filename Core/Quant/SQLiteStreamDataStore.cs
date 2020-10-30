@@ -1,8 +1,10 @@
 ﻿using QuantaBasket.Core.Interfaces;
+using QuantaBasket.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -13,12 +15,14 @@ namespace QuantaBasket.Core.Quant
     public sealed class SQLiteStreamDataStore : IStreamDataStore
     {
         private readonly SQLiteConnection _connection;
+        private readonly string _connectionString;
 
         private const string _sqlCreateTableIfNotExists = "CREATE TABLE IF NOT EXISTS {0} (" +
             "Id INTEGER PRIMARY KEY AUTOINCREMENT, {1})";
 
         public SQLiteStreamDataStore(string connectionString)
         {
+            _connectionString = connectionString;
             _connection = new SQLiteConnection(connectionString);
             _connection.Open();
         }
@@ -30,6 +34,15 @@ namespace QuantaBasket.Core.Quant
 
         public IStreamDataChannel<T> OpenOrCreateChannel<T>(string channelName)
         {
+            var i1 = _connectionString.IndexOf("Data Source=");
+            var i2 = _connectionString.IndexOf(';', i1 + 12);
+            var fileName = _connectionString.Substring(i1 + 12, i2 - i1 - 12);
+            var dirName = Path.GetDirectoryName(fileName);
+            if (!Directory.Exists(dirName))
+            {
+                Directory.CreateDirectory(dirName);
+            }
+
             var fields = GetTableFields<T>();
 
             using (var com = _connection.CreateCommand())
@@ -47,13 +60,13 @@ namespace QuantaBasket.Core.Quant
         {
             var dict = new Dictionary<string, string>();
 
-            var properties = typeof(T).GetProperties(BindingFlags.Public);
+            var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach(var p in properties.Where(p=>p.CanRead))
             {
-                var typeName = p.GetType().Name;
+                var typeName = p.PropertyType.Name;
                 switch (typeName)
                 {
-                    case "DateType":
+                    case "DateTime":
                         dict[p.Name] = "DATETIME";
                         break;
                     case "Int64":
@@ -66,7 +79,8 @@ namespace QuantaBasket.Core.Quant
                         dict[p.Name] = "DECIMAL";
                         break;
                     default:
-                        throw new InvalidOperationException($"Invalid property type: '{typeName}'");
+                        dict[p.Name] = "TEXT";
+                        break;
                 }
             }
 
@@ -79,6 +93,8 @@ namespace QuantaBasket.Core.Quant
         private readonly SQLiteConnection _connection;
         private readonly string _name;
         private readonly Dictionary<string, string> _fields;
+        private readonly AsyncWorker<T> _worker;
+
         private static CultureInfo _culture = new CultureInfo("En-us");
 
         private const string _sqlInsert = "INSERT INTO {0} ({1}) VALUES({2})";
@@ -88,13 +104,20 @@ namespace QuantaBasket.Core.Quant
             _connection = connection;
             _name = name;
             _fields = fields;
+            _worker = new AsyncWorker<T>($"SQLiteStreamDataChannel:{name}", WorkerProc);
         }
 
         public void Dispose()
         {
+            _worker.Dispose();
         }
 
         public void Write(T data)
+        {
+            _worker.AddItem(data);
+        }
+
+        private void WorkerProc(T data)
         {
             var properties = typeof(T).GetProperties();
             var lstFieldName = new List<string>();
@@ -106,8 +129,27 @@ namespace QuantaBasket.Core.Quant
                 {
                     lstFieldName.Add(p.Name);
                     var val = p.GetValue(data);
-                    var s = val is decimal ? ((decimal)val).ToString(_culture) : val.ToString();
-                    lstFieldValue.Add($"'s'");
+
+                    string s;
+                    if (val is decimal)
+                    {
+                        s = ((decimal)val).ToString(_culture);
+                    }
+                    else if (val is DateTime)
+                    {
+                        var d = ((DateTime)val).ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        s = $"'{d}'";
+                    }
+                    else if (val is long)
+                    {
+                        s = val.ToString();
+                    }
+                    else
+                    {
+                        s = $"'{val.ToString()}'";
+                    }
+
+                    lstFieldValue.Add(s);
                 }
             }
 

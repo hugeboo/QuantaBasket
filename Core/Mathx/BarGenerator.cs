@@ -49,7 +49,8 @@ namespace QuantaBasket.Core.Mathx
             {
                 DateTime = time,
                 Last = pt,
-                DVolume = volume
+                LastSize = volume,
+                Changes = L1QuotationChangedFlags.Trade
             });
         }
 
@@ -68,6 +69,8 @@ namespace QuantaBasket.Core.Mathx
         /// <param name="q">Котировка L1</param>
         public void Add(L1Quotation q)
         {
+            if ((q.Changes & L1QuotationChangedFlags.Trade) == 0) return;
+
             if (_currentBar == null)
             {
                 var currentSec = q.DateTime.TimeOfDay.TotalSeconds;
@@ -80,12 +83,12 @@ namespace QuantaBasket.Core.Mathx
                     High = q.Last,
                     Low = q.Last,
                     Close = q.Last,
-                    Volume = q.DVolume
+                    Volume = q.LastSize
                 };
             }
             else if (q.DateTime<_currentBar.StartTime + _intervalTs)
             {
-                _currentBar.Volume += q.DVolume;
+                _currentBar.Volume += q.LastSize;
                 if (q.Last > _currentBar.High) _currentBar.High = q.Last;
                 if (q.Last < _currentBar.Low) _currentBar.Low = q.Last;
                 _currentBar.Close = q.Last;
@@ -96,31 +99,31 @@ namespace QuantaBasket.Core.Mathx
 
                 var nextStartTime = _currentBar.StartTime + _intervalTs;
 
-                while(nextStartTime < q.DateTime)
-                {
-                    var emptyBar = new OHLCV 
-                    {
-                        IntervalSec = _intervalSec,
-                        StartTime = nextStartTime,
-                        Open = _currentBar.Close,
-                        High = _currentBar.Close,
-                        Low = _currentBar.Close,
-                        Close = _currentBar.Close,
-                        Volume = 0
-                    };
-                    _barProcessor(emptyBar);
-                    nextStartTime += _intervalTs;
-                }
+                //while(nextStartTime < q.DateTime)
+                //{
+                //    var emptyBar = new OHLCV 
+                //    {
+                //        IntervalSec = _intervalSec,
+                //        StartTime = nextStartTime,
+                //        Open = _currentBar.Close,
+                //        High = _currentBar.Close,
+                //        Low = _currentBar.Close,
+                //        Close = _currentBar.Close,
+                //        Volume = 0
+                //    };
+                //    _barProcessor(emptyBar);
+                //    nextStartTime += _intervalTs;
+                //}
 
                 _currentBar = new OHLCV
                 {
                     IntervalSec = _intervalSec,
-                    StartTime = nextStartTime - _intervalTs,
+                    StartTime = nextStartTime,
                     Open = q.Last,
                     High = q.Last,
                     Low = q.Last,
                     Close = q.Last,
-                    Volume = q.DVolume
+                    Volume = q.LastSize
                 };
             }
         }

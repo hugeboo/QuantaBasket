@@ -26,6 +26,7 @@ namespace QuantaBasket.Components.SQLiteL1QuotationStore
                     "Bid       DECIMAL    NOT NULL," +
                     "Ask       DECIMAL    NOT NULL," +
                     "Last      DECIMAL    NOT NULL," +
+                    "LastSize  NUMERIC    NOT NULL," +
                     "Volume    NUMERIC    NOT NULL," +
                     "DVolume   NUMERIC    NOT NULL," +
                     "Changes   INTEGER    NOT NULL)");

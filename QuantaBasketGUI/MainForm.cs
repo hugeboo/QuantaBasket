@@ -78,7 +78,9 @@ namespace QuantaBasketGUI
         {
             startBasketToolStripButton.Enabled = !_basketEngine?.Started ?? false;
             stopBasketToolStripButton.Enabled = _basketEngine?.Started ?? false;
-            saveConfigurationToolStripButton.Enabled = !_basketEngine.Started && (_selectedBasketTreeObject is IHaveConfiguration);
+            
+            saveConfigurationToolStripButton.Enabled = !(_basketEngine?.Started ?? false) && 
+                (_selectedBasketTreeObject is IHaveConfiguration);
         }
 
         private void BasketTreeControl_NodeSelected(object sender, QuantaBasket.Core.Utils.EventArgs<string> e)

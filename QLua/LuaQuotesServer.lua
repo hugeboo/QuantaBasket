@@ -26,7 +26,7 @@ end;
 
 function OnParam(class_code, sec_code)
     if (client and CheckByQuoteFilter(class_code, sec_code) == 1) then
-        tlast = getParamEx(class_code, sec_code, "last").param_value
+        -- tlast = getParamEx(class_code, sec_code, "last").param_value
         task = getParamEx(class_code, sec_code, "offer").param_value
         tbid = getParamEx(class_code, sec_code, "bid").param_value
         tvoltoday = getParamEx(class_code, sec_code, "voltoday").param_value -- проторгованный объем в штуках
@@ -35,7 +35,25 @@ function OnParam(class_code, sec_code)
 
         -- сразу кидаем подключенному клиенту (если такого нет - улетает в воздух)
         client:send(json.encode({class = class_code, sec = sec_code, 
-            last = tlast, bid = tbid, ask = task, voltoday = tvoltoday, time = ttime}))
+            last = "0", lastqty = "0",
+            bid = tbid, ask = task, voltoday = tvoltoday, time = ttime}))
+    end
+end
+
+function OnAllTrade(alltrade)
+    if (client and CheckByQuoteFilter(alltrade.class_code, alltrade.sec_code)) then
+
+    ttime = tostring(alltrade.datetime.year) .. "-" .. 
+        tostring(alltrade.datetime.month) .. "-" ..
+        tostring(alltrade.datetime.day) .. " " ..
+        tostring(alltrade.datetime.hour) .. ":" .. 
+        tostring(alltrade.datetime.min) .. ":" ..
+        tostring(alltrade.datetime.sec) .. "." ..
+        tostring(alltrade.datetime.ms);
+
+    client:send(json.encode({class = alltrade.class_code, sec = alltrade.sec_code,
+        bid = "0", ask = "0", voltoday = "0",
+        last = alltrade.price, lastqty = alltrade.qty, time = ttime}))
     end
 end
 

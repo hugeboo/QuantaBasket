@@ -18,10 +18,10 @@ namespace QuantaBasket.Components.SQLiteL1QuotationStore
 
         private ILogger _logger = LogManager.GetLogger("SQLiteL1QuotationStore");
 
-        private const string _sqlInsert = "INSERT INTO Quatations (ClassCode,SecCode,DateTime,Bid,Ask,Last,Volume,DVolume,Changes) " +
-            "VALUES(@classCode,@secCode,@dateTime,@bid,@ask,@last,@volume,@dVolume,@changes)";
+        private const string _sqlInsert = "INSERT INTO Quatations (ClassCode,SecCode,DateTime,Bid,Ask,Last,LastSize,Volume,DVolume,Changes) " +
+            "VALUES(@classCode,@secCode,@dateTime,@bid,@ask,@last,@lastSize,@volume,@dVolume,@changes)";
 
-        private const string _sqlSelect = "SELECT Id,ClassCode,SecCode,DateTime,Bid,Ask,Last,Volume,DVolume,Changes FROM Quatations " +
+        private const string _sqlSelect = "SELECT Id,ClassCode,SecCode,DateTime,Bid,Ask,Last,LastSize,Volume,DVolume,Changes FROM Quatations " +
             "WHERE ClassCode=@classCode AND SecCode=@secCode AND DateTime>=@dateTimeFrom AND DateTime<=@dateTimeTo ORDER BY DateTime,Id";
 
         public SQLiteL1QuotationStore() : this(true)
@@ -53,6 +53,7 @@ namespace QuantaBasket.Components.SQLiteL1QuotationStore
                         new SQLiteParameter("@bid", q.Bid),
                         new SQLiteParameter("@ask", q.Ask),
                         new SQLiteParameter("@last", q.Last),
+                        new SQLiteParameter("@lastSize", q.LastSize),
                         new SQLiteParameter("@volume", q.Volume),
                         new SQLiteParameter("@dVolume", q.DVolume),
                         new SQLiteParameter("@changes", q.Changes),

@@ -119,17 +119,18 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 
                         d = JsonConvert.DeserializeAnonymousType(m, new 
                         {
-                            @class = "", sec = "", last = "", bid = "", ask = "", voltoday = "", time = ""
+                            @class = "", sec = "", last = "", lastqty = "", bid = "", ask = "", voltoday = "", time = ""
                         });
 
                         q = new L1Quotation()
                         {
                             Security = new SecurityId { ClassCode = d.@class, SecurityCode = d.sec },
                             DateTime = DateTime.Parse(d.time),
-                            Bid = decimal.Parse(d.bid, _culture),
-                            Ask = decimal.Parse(d.ask, _culture),
-                            Last = decimal.Parse(d.last, _culture),
-                            Volume = (long)decimal.Parse(d.voltoday, _culture),
+                            Bid = decimal.Parse(d.bid ?? "0", _culture),
+                            Ask = decimal.Parse(d.ask ?? "0", _culture),
+                            Last = decimal.Parse(d.last ?? "0", _culture),
+                            LastSize = long.Parse(d.lastqty ?? "0", _culture),
+                            Volume = (long)decimal.Parse(d.voltoday ?? "0", _culture),
                             Changes = L1QuotationChangedFlags.None
                         };
                     }

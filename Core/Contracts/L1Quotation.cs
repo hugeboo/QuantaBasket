@@ -40,6 +40,8 @@ namespace QuantaBasket.Core.Contracts
         /// </summary>
         public decimal Last { get; set; }
 
+        public long LastSize { get; set; }
+
         /// <summary>
         /// Объем проторгованный за день
         /// </summary>
@@ -74,7 +76,7 @@ namespace QuantaBasket.Core.Contracts
 
         public override string ToString()
         {
-            return $"{Security} {DateTime:HH:mm:ss} B:{Bid.ToString(_culture)} A:{Ask.ToString(_culture)} L:{Last.ToString(_culture)} V:{Volume} DV:{DVolume} Changes:{Changes}";
+            return $"{Security} {DateTime:HH:mm:ss} B:{Bid.ToString(_culture)} A:{Ask.ToString(_culture)} L:{Last.ToString(_culture)} LS:{LastSize} V:{Volume} DV:{DVolume} Changes:{Changes}";
         }
     }
 
@@ -92,7 +94,10 @@ namespace QuantaBasket.Core.Contracts
         Volume = 8,
         Time = 16,
         DVolume = 32,
+        LastSize = 64,
 
-        All = Bid | Ask | Last | Volume | Time | DVolume
+        Trade = 65536,
+
+        All = Bid | Ask | Last | Volume | Time | DVolume | LastSize
     }
 }

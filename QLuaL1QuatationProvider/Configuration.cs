@@ -26,7 +26,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
 
         [Category("Basic")]
         [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
-        public string Securities { get; set; } = "[{\"c\":\"TQBR\",\"s\":\"LKOH\"},{\"c\":\"*\",\"s\":\"RIZ0\"}]";
+        public string Securities { get; set; } = "[{\"c\":\"TQBR\",\"s\":\"GAZP\"}]";
 
         [Category("Instance")]
         [JsonIgnore]

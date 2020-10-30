@@ -64,7 +64,8 @@ namespace QuantaBasket.Core.Quant
 
         [Category("Basic")]
         [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
-        public string Securities { get; set; } = "[{\"c\":\"TQBR\",\"s\":\"LKOH\"},{\"c\":\"SPBFUT\",\"s\":\"RIZ0\"}]";
+        [ReadOnly(true)]
+        public string Securities { get; set; } = "[{\"c\":\"TQBR\",\"s\":\"GAZP\"}]";
 
         [Category("Instance")]
         [JsonIgnore]

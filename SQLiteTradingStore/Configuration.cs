@@ -16,7 +16,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
     [Configuration("SQLiteTradingStore.dll.json")]
     public sealed class Configuration : ConfigurationSingleton<Configuration>
     {
-       [Category("Basic")]
+        [Category("Basic")]
         [DefaultValue("Data Source=d:\\temp\\QuantaBasketTrading.db;Version=3;")]
         public string ConnectionString { get; set; } = "Data Source=d:\\temp\\QuantaBasketTrading.db;Version=3;";
 
