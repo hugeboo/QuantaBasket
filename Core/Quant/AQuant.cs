@@ -14,6 +14,7 @@ namespace QuantaBasket.Core.Quant
     public abstract class AQuant<TConf> : IQuant, IHaveConfiguration where TConf : AQuantConfigurationSingleton<TConf>, new()
     {
         private QuantStatus _status = QuantStatus.Idle;
+        private IBasketService _basketService;
 
         protected ILogger Logger { get; private set; }
 
@@ -44,8 +45,6 @@ namespace QuantaBasket.Core.Quant
 
         protected abstract TConf Configuration { get; }
 
-        protected IBasketService BasketService { get; private set; }
-
         public AQuant()
         {
             var dsec = JsonConvert.DeserializeAnonymousType(Configuration.Securities, new[] { new { c = "", s = "" } });
@@ -67,8 +66,8 @@ namespace QuantaBasket.Core.Quant
 
         public virtual void Init(IBasketService basketService)
         {
-            BasketService = basketService;
-            BasketService.RegisterCallback(MessageProcessor);
+            _basketService = basketService;
+            _basketService.RegisterCallback(MessageProcessor);
         }
 
         public void SaveConfiguration()

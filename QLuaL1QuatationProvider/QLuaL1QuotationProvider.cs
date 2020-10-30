@@ -13,6 +13,7 @@ using QuantaBasket.Core.Exceptions;
 using Newtonsoft.Json;
 using QuantaBasket.Core.Mathx;
 using System.Globalization;
+using QuantaBasket.Core.Utils;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
@@ -21,6 +22,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
         private readonly IL1QuotationStore _store;
         private readonly Dictionary<SecurityId, L1Quotation> _dictQuotes = new Dictionary<SecurityId, L1Quotation>();
         private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("En-us");
+        private readonly AsyncWorker<IEnumerable<L1Quotation>> _storeWorker;
 
         private Action<ErrorReportCode, string> _onErrorAction;
         private Action<IEnumerable<L1Quotation>> _onNewQuotationsAction;
@@ -33,6 +35,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
         public QLuaL1QuotationProvider(IL1QuotationStore store)
         {
             _store = store;
+            _storeWorker = new AsyncWorker<IEnumerable<L1Quotation>>("QuatationsStore", StoreQuotationsProc);
         }
 
         public void RegisterCallback(Action<ErrorReportCode, string> processError)
@@ -56,6 +59,7 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
             _logger.Debug("Disposing");
             try
             {
+                _storeWorker.Dispose();
                 Disconnect();
             }
             catch { }
@@ -232,9 +236,14 @@ namespace QuantaBasket.Components.QLuaL1QuotationProvider
                 _logger.Debug($"Updated: {updatedQuote}");
 
                 var quotes = new[] { updatedQuote };
-                _store?.Insert(quotes);
+                _storeWorker.AddItem(quotes);
                 _onNewQuotationsAction?.Invoke(quotes);
             }
+        }
+
+        private void StoreQuotationsProc(IEnumerable<L1Quotation> quatations)
+        {
+            _store?.Insert(quatations);
         }
 
         public object GetConfiguration()

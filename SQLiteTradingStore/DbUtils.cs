@@ -19,7 +19,7 @@ namespace QuantaBasket.Components.SQLiteTradingStore
                 DoCommand(logger, connection, "DROP INDEX IF EXISTS Signal_DateTime_INDX");
                 DoCommand(logger, connection, "DROP TABLE IF EXISTS Signals");
                 DoCommand(logger, connection, "CREATE TABLE Signals (" +
-                    "Id             TEXT     PRIMARY KEY NOT NULL UNIQUE," +
+                    "Id             TEXT     PRIMARY KEY UNIQUE," +
                     "CreatedTime    DATETIME NOT NULL," +
                     "ClassCode      TEXT     NOT NULL," +
                     "SecCode        TEXT     NOT NULL," +
