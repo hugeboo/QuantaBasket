@@ -1,5 +1,4 @@
-﻿using QuantaBasket.Core.Messages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Interfaces
 {
-    public interface IToQuantMessageSender
+    public interface IClock
     {
-        void SendMessage(string quantName, AMessage message);
+        DateTime? Now { get; }
     }
 }

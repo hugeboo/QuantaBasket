@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Trader
 {
-    [Configuration("Trader.dll.json")]
+    [Configuration("Config\\Trader.dll.json")]
     public sealed class Configuration : ConfigurationSingleton<Configuration>
     {
         [Category("Instance")]

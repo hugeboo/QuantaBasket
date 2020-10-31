@@ -98,12 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\L1Quotation.cs" />
-    <Compile Include="Contracts\L1QuotationFilter.cs" />
     <Compile Include="Contracts\OHLCV.cs" />
     <Compile Include="Contracts\OrderStatusDTO.cs" />
     <Compile Include="Contracts\SecurityId.cs" />
     <Compile Include="Contracts\SignalDTO.cs" />
     <Compile Include="Extensions\SignalExtensions.cs" />
+    <Compile Include="Interfaces\IClock.cs" />
     <Compile Include="Interfaces\IStreamDataStore.cs" />
     <Compile Include="Mathx\DoubleSMA.cs" />
     <Compile Include="Mathx\TimePoint.cs" />
@@ -123,7 +123,7 @@
     <Compile Include="Interfaces\INewSignal.cs" />
     <Compile Include="Interfaces\ISignal.cs" />
     <Compile Include="Interfaces\IStreamDataFunction.cs" />
-    <Compile Include="Interfaces\IToQuantMessageSender.cs" />
+    <Compile Include="Interfaces\IMessageSender.cs" />
     <Compile Include="Interfaces\ITradeSignal.cs" />
     <Compile Include="Interfaces\ITradingEngine.cs" />
     <Compile Include="Interfaces\ITradingStore.cs" />

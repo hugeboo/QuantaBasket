@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.TradingSystemMock
 {
-    public sealed class TradingSystemMock : ITradingSystem, IHaveConfiguration
+    public sealed class TradingSystemMock : ITradingSystem
     {
         private bool _connected;
 
@@ -19,10 +19,15 @@ namespace QuantaBasket.Components.TradingSystemMock
         private Action<OrderStatusDTO> _onOrderStatusAction;
 
         private readonly ILogger _logger = LogManager.GetLogger("TradingSystemMock");
-
+        private readonly IClock _clock;
         private ITradeSignal _currentSignal;
 
         public bool Connected => _connected;
+
+        public TradingSystemMock(IClock clock)
+        {
+            _clock = clock ?? throw new ArgumentNullException(nameof(clock));
+        }
 
         public void Connect()
         {
@@ -84,7 +89,7 @@ namespace QuantaBasket.Components.TradingSystemMock
                     _onOrderStatusAction(new OrderStatusDTO
                     {
                         MarketOrderId = marketOrderId.ToString(),
-                        MarketDateTime = DateTime.Now,
+                        MarketDateTime = _clock.Now.Value,
                         ClassCode = signal.ClassCode,
                         SecCode = signal.SecCode,
                         SignalId = signal.Id,
@@ -95,7 +100,7 @@ namespace QuantaBasket.Components.TradingSystemMock
                 {
                     _onOrderStatusAction(new OrderStatusDTO
                     {
-                        MarketDateTime = DateTime.Now,
+                        MarketDateTime = _clock.Now.Value,
                         ClassCode = signal.ClassCode,
                         SecCode = signal.SecCode,
                         SignalId = signal.Id,
@@ -117,7 +122,7 @@ namespace QuantaBasket.Components.TradingSystemMock
             {
                 _onOrderStatusAction(new OrderStatusDTO
                 {
-                    MarketDateTime = DateTime.Now,
+                    MarketDateTime = _clock.Now.Value,
                     ClassCode = signal.ClassCode,
                     SecCode = signal.SecCode,
                     SignalId = signal.Id,
@@ -137,7 +142,7 @@ namespace QuantaBasket.Components.TradingSystemMock
             _onOrderStatusAction(new OrderStatusDTO
             {
                 MarketOrderId = marketOrderId.ToString(),
-                MarketDateTime = DateTime.Now,
+                MarketDateTime = _clock.Now.Value,
                 ClassCode = signal.ClassCode,
                 SecCode = signal.SecCode,
                 SignalId = signal.Id,
@@ -149,7 +154,7 @@ namespace QuantaBasket.Components.TradingSystemMock
             {
                 MarketTradeId = (marketOrderId + 1).ToString(),
                 MarketOrderId = marketOrderId.ToString(),
-                MarketDateTime = DateTime.Now,
+                MarketDateTime = _clock.Now.Value,
                 ClassCode = signal.ClassCode,
                 SecCode = signal.SecCode,
                 Side = signal.Side,
@@ -162,7 +167,7 @@ namespace QuantaBasket.Components.TradingSystemMock
             _onOrderStatusAction(new OrderStatusDTO
             {
                 MarketOrderId = marketOrderId.ToString(),
-                MarketDateTime = DateTime.Now,
+                MarketDateTime = _clock.Now.Value,
                 ClassCode = signal.ClassCode,
                 SecCode = signal.SecCode,
                 SignalId = signal.Id,

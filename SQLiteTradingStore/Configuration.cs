@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.SQLiteTradingStore
 {
-    [Configuration("SQLiteTradingStore.dll.json")]
+    [Configuration("Config\\SQLiteTradingStore.dll.json")]
     public sealed class Configuration : ConfigurationSingleton<Configuration>
     {
         [Category("Basic")]

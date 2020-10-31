@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.SQLiteL1QuotationStore
 {
-    public sealed class SQLiteL1QuotationStore : IL1QuotationStore, IHaveConfiguration
+    public sealed class SQLiteL1QuotationStore : IL1QuotationStore
     {
         private readonly string _connectionString;
 
@@ -21,8 +21,13 @@ namespace QuantaBasket.Components.SQLiteL1QuotationStore
         private const string _sqlInsert = "INSERT INTO Quatations (ClassCode,SecCode,DateTime,Bid,Ask,Last,LastSize,Volume,DVolume,Changes) " +
             "VALUES(@classCode,@secCode,@dateTime,@bid,@ask,@last,@lastSize,@volume,@dVolume,@changes)";
 
-        private const string _sqlSelect = "SELECT Id,ClassCode,SecCode,DateTime,Bid,Ask,Last,LastSize,Volume,DVolume,Changes FROM Quatations " +
-            "WHERE ClassCode=@classCode AND SecCode=@secCode AND DateTime>=@dateTimeFrom AND DateTime<=@dateTimeTo ORDER BY DateTime,Id";
+        private const string _sqlSelectCount = "SELECT COUNT(*) FROM Quatations";
+
+        private const string _sqlSelectPage = "SELECT Id,ClassCode,SecCode,DateTime,Bid,Ask,Last,LastSize,Volume,DVolume,Changes FROM Quatations " +
+            "LIMIT @limit OFFSET @offset";
+
+        //private const string _sqlSelect = "SELECT Id,ClassCode,SecCode,DateTime,Bid,Ask,Last,LastSize,Volume,DVolume,Changes FROM Quatations " +
+        //    "WHERE ClassCode=@classCode AND SecCode=@secCode AND DateTime>=@dateTimeFrom AND DateTime<=@dateTimeTo ORDER BY DateTime,Id";
 
         public SQLiteL1QuotationStore() : this(true)
         {
@@ -71,9 +76,55 @@ namespace QuantaBasket.Components.SQLiteL1QuotationStore
             }
         }
 
-        public IEnumerable<L1Quotation> Select(L1QuotationFilter filter)
+        public int SelectCount()
         {
-            throw new NotImplementedException();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                var com = connection.CreateCommand();
+                com.CommandText = _sqlSelectCount;
+                return (int)(Int64)com.ExecuteScalar();
+            }
+        }
+
+        public IEnumerable<L1Quotation> SelectPage(int limit, int offset)
+        {
+            var lstQuotes = new List<L1Quotation>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                var com = connection.CreateCommand();
+                com.CommandText = _sqlSelectPage;
+                com.Parameters.AddRange(new[]
+                {
+                    new SQLiteParameter("@limit", limit),
+                    new SQLiteParameter("@offset", offset),
+                });
+                using (var r = com.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        var restaurant = new L1Quotation
+                        {
+                            Security = new SecurityId 
+                            {
+                                ClassCode = r.GetString(1),
+                                SecurityCode = r.GetString(2)
+                            },
+                            DateTime = r.GetDateTime(3),
+                            Bid = r.GetDecimal(4),
+                            Ask = r.GetDecimal(5),
+                            Last = r.GetDecimal(6),
+                            LastSize = r.GetInt64(7),
+                            Volume = r.GetInt64(8),
+                            DVolume = r.GetInt64(9),
+                            Changes = (L1QuotationChangedFlags)r.GetInt32(10)
+                        };
+                        lstQuotes.Add(restaurant);
+                    }
+                }
+            }
+            return lstQuotes;
         }
 
         private void CreateIfNotExists()

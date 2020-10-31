@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.SQLiteTradingStore
 {
-    public sealed class SQLiteTradingStore : ITradingStore, IHaveConfiguration
+    public sealed class SQLiteTradingStore : ITradingStore
     {
         private readonly string _connectionString;
 

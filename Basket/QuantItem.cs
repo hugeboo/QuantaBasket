@@ -16,8 +16,9 @@ namespace QuantaBasket.Basket
         private Action<AMessage> _messageProcessor;
         private readonly BasketEngine _basketEngine;
         private readonly ILogger _logger = LogManager.GetLogger("QuantItem");
-
         private readonly AsyncWorker<AMessage> _worker;
+
+        private bool _stopped;
 
         public IQuant Quant { get; set; }
 
@@ -36,7 +37,11 @@ namespace QuantaBasket.Basket
                          _logger.Error(ex, $"Error processing message by Quant '{Quant.Name}'. Message: {m}");
                      }
                  },
-                 () => SendMessage(new TimerMessage { DateTime = DateTime.Now }), 1000);
+                 () => 
+                 {
+                     if (!_stopped) SendMessage(new TimerMessage { DateTime = _basketEngine.Now });
+                 }, 
+                 1000);
         }
 
         public void Dispose()
@@ -62,6 +67,7 @@ namespace QuantaBasket.Basket
         public void SendMessage(AMessage message)
         {
             _logger.Trace($"Send message to quant '{Quant?.Name}': {message} ");
+            if (message is StopMessage) _stopped = true; else if (message is StartMessage) _stopped = false;
             _worker.AddItem(message);
         }
 

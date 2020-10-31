@@ -79,8 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="SQLiteTradingStore.dll.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Config\SQLiteTradingStore.dll.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

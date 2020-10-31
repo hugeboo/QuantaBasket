@@ -10,7 +10,7 @@ namespace QuantaBasket.Core.Interfaces
     /// <summary>
     /// Провайдер котировок L1
     /// </summary>
-    public interface IL1QuotationProvider : IErrorReporter, IDisposable
+    public interface IL1QuotationProvider : IErrorReporter, IDisposable, IHaveConfiguration
     {
         /// <summary>
         /// Зарегистрировать обработчик потока котировок

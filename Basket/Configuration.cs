@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Basket
 {
-    [Configuration("Basket.dll.json")]
+    [Configuration("Config\\Basket.dll.json")]
     public sealed class Configuration : ConfigurationSingleton<Configuration>
     {
         [Category("Basic")]
@@ -24,8 +24,19 @@ namespace QuantaBasket.Basket
         [DefaultValue("d:\\CSharp\\QuantaRealese")]
         public string ReleaseQuantasPath { get; set; } = "d:\\CSharp\\QuantaRealese";
 
+        [Category("Basic")]
+        [DefaultValue(BasketQuotationMode.Simulator)]
+        [TypeConverter(typeof(EnumConverter))]
+        public BasketQuotationMode QuotationMode { get; set; } = BasketQuotationMode.Simulator;
+
         [Category("Instance")]
         [JsonIgnore]
         public string InstanceType => "BasketEngine";
+    }
+
+    public enum BasketQuotationMode
+    {
+        Production,
+        Simulator
     }
 }

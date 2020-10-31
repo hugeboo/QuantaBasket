@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.TradingSystemMock
 {
-    [Configuration("TradingSystemMock.dll.json")]
+    [Configuration("Config\\TradingSystemMock.dll.json")]
     public sealed class Configuration : ConfigurationSingleton<Configuration>
     {
         [Category("Instance")]

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Core.Interfaces
 {
-    public interface ITradingSystem : IErrorReporter, IDisposable
+    public interface ITradingSystem : IErrorReporter, IDisposable, IHaveConfiguration
     {
         /// <summary>
         /// Зарегистрировать обработчик трейдов

@@ -1,5 +1,6 @@
 ﻿using NLog;
 using QuantaBasket.Components.QLuaL1QuotationProvider;
+using QuantaBasket.Components.SimulL1QuotationProvider;
 using QuantaBasket.Components.SQLiteL1QuotationStore;
 using QuantaBasket.Core.Contracts;
 using QuantaBasket.Core.Extensions;
@@ -15,15 +16,16 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Basket
 {
-    public sealed class BasketEngine : IBasketEngine, IHaveConfiguration, IToQuantMessageSender
+    internal sealed class BasketEngine : IBasketEngine
     {
         private readonly Dictionary<string, QuantItem> _quantas = new Dictionary<string, QuantItem>();
         private readonly ILogger _logger = LogManager.GetLogger("BasketEngine");
 
         private IL1QuotationProvider _quoteProvider;
         private IL1QuotationStore _quoteStore;
-
         private ITradingEngine _tradingEngine;
+
+        private TimeSpan? _realTimeShift;
 
         public bool Started { get; private set; }
 
@@ -32,6 +34,14 @@ namespace QuantaBasket.Basket
         public IL1QuotationStore L1QuotationStore => _quoteStore;
 
         public ITradingEngine TradingEngine => _tradingEngine;
+
+        public DateTime? Now
+        {
+            get
+            {
+                return _realTimeShift.HasValue ? DateTime.Now.Add(_realTimeShift.Value) : (DateTime?)null;
+            }
+        }
 
         public BasketEngine()
         {
@@ -83,12 +93,14 @@ namespace QuantaBasket.Basket
                 _quoteStore = new SQLiteL1QuotationStore();
 
                 _logger.Debug("Create L1QuotationProvider");
-                _quoteProvider = new QLuaL1QuotationProvider(_quoteStore);
+                _quoteProvider = Configuration.Instance.QuotationMode == BasketQuotationMode.Production ?
+                    (IL1QuotationProvider)new QLuaL1QuotationProvider(_quoteStore) :
+                    (IL1QuotationProvider)new SimulL1QutationProvider(_quoteStore);
                 _quoteProvider.RegisterCallback(ProcessQuotation);
                 _quoteProvider.RegisterCallback(ProcessQuotationProviderError);
 
                 _logger.Debug("Creaete TradingEngine");
-                _tradingEngine = new TradingEngine(this);
+                _tradingEngine = new TradingEngine(this, this);
 
                 RegisterQuantas();
                 InitQuantas();
@@ -109,14 +121,19 @@ namespace QuantaBasket.Basket
         private void ProcessQuotation(IEnumerable<L1Quotation> quotations)
         {
             quotations.ForEach(q =>
+            {
+                if (q.DateTime != DateTime.MinValue)
+                {
+                    _realTimeShift = q.DateTime - DateTime.Now;
+                }
                 _quantas.Values.ForEach(item =>
                 {
                     if (item.Quant.Securities.Contains(q.Security))
                     {
                         item.SendMessage(new L1QuotationsMessage() { Quotations = new[] { q } });
                     }
-                })
-            );
+                });
+            });
         }
 
         private void RegisterQuantas()
@@ -178,6 +195,7 @@ namespace QuantaBasket.Basket
             try
             {
                 _logger.Debug("Starting");
+                _realTimeShift = null;
                 if(!_quoteProvider.Connected) _quoteProvider.Connect();
                 _tradingEngine.Start();
                 SendAllQuantas(new StartMessage());

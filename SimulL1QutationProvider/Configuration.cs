@@ -11,17 +11,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantaBasket.Components.SQLiteL1QuotationStore
+namespace QuantaBasket.Components.SimulL1QuotationProvider
 {
-    [Configuration("Config\\SQLiteL1QuotationStore.dll.json")]
+    [Configuration("Config\\SimulL1QuotationProvider.dll.json")]
     public sealed class Configuration : ConfigurationSingleton<Configuration>
     {
-        [Category("Basic")]
-        [DefaultValue("Data Source=d:\\temp\\QuantaBasketL1_v2.db;Version=3;")]
-        public string ConnectionString { get; set; } = "Data Source=d:\\temp\\QuantaBasketL1_v2.db;Version=3;";
-
         [Category("Instance")]
         [JsonIgnore]
-        public string InstanceType => "SQLiteL1QuotationStore";
+        public string InstanceType => "SimulL1QuotationProvider";
     }
 }

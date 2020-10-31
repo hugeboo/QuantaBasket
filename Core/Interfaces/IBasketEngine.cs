@@ -9,7 +9,7 @@ namespace QuantaBasket.Core.Interfaces
     /// <summary>
     /// Основной движок обеспечивающий инциализацию и работу квантов
     /// </summary>
-    public interface IBasketEngine : IDisposable
+    public interface IBasketEngine : IDisposable, IHaveConfiguration, IMessageSender, IClock
     {
         /// <summary>
         /// Старт системы (подклчение к ТС, подписка на котировки и т.д.)

@@ -21,10 +21,11 @@ namespace QuantaBasket.Core.Utils
         {
             var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var filename = Path.Combine(dir, GetFileName(typeof(T)));
-#if DEBUG
-            var json0 = JsonConvert.SerializeObject(new T(), Formatting.Indented);
-            File.WriteAllText(filename, json0);
-#endif
+            if (!File.Exists(filename))
+            {
+                var json0 = JsonConvert.SerializeObject(new T(), Formatting.Indented);
+                File.WriteAllText(filename, json0);
+            }
             var json = File.ReadAllText(filename);
             return JsonConvert.DeserializeObject<T>(json);
         }

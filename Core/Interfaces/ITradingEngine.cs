@@ -9,7 +9,7 @@ namespace QuantaBasket.Core.Interfaces
     /// <summary>
     /// Движок для обработки сигналов и взаимодействия с торговой системой
     /// </summary>
-    public interface ITradingEngine : IDisposable
+    public interface ITradingEngine : IDisposable, IHaveConfiguration
     {
         /// <summary>
         /// Старт системы (подклчение к ТС)

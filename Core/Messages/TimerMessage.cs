@@ -13,8 +13,8 @@ namespace QuantaBasket.Core.Messages
     public sealed class TimerMessage : AMessage
     {
         /// <summary>
-        /// Текущее системное время (не рыночное)
+        /// Текущее BasketTime
         /// </summary>
-        public DateTime DateTime { get; set; }
+        public DateTime? DateTime { get; set; }
     }
 }

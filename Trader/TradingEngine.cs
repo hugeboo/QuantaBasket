@@ -15,11 +15,12 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Trader
 {
-    internal sealed class TradingEngine : ITradingEngine, IHaveConfiguration
+    internal sealed class TradingEngine : ITradingEngine
     {
         private readonly ILogger _logger = LogManager.GetLogger("TradingEngine");
 
-        private readonly IToQuantMessageSender _toQuantMessageSender;
+        private readonly IMessageSender _messageSender;
+        private readonly IClock _clock;
         private ITradingStore _tradingStore;
         private ITradingSystem _tradingSystem;
 
@@ -33,9 +34,10 @@ namespace QuantaBasket.Trader
 
         public ITradingStore TradingStore => _tradingStore;
 
-        public TradingEngine(IToQuantMessageSender toQuantMessageSender)
+        public TradingEngine(IMessageSender messageSender, IClock clock)
         {
-            _toQuantMessageSender = toQuantMessageSender ?? throw new ArgumentNullException(nameof(toQuantMessageSender));
+            _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
+            _clock = clock ?? throw new ArgumentNullException(nameof(clock));
             Init();
         }
 
@@ -46,7 +48,7 @@ namespace QuantaBasket.Trader
             { 
                 Id = id.ToString(), 
                 QuantName = quantName,
-                CreatedTime = DateTime.Now,
+                CreatedTime = _clock.Now.Value,
                 Status = SignalStatus.New
             };
             _logger.Trace($"Signal created: {signal}");
@@ -135,7 +137,7 @@ namespace QuantaBasket.Trader
                 _tradingStore = new SQLiteTradingStore();
 
                 _logger.Debug("Create TradingSystem");
-                _tradingSystem = new TradingSystemMock();
+                _tradingSystem = new TradingSystemMock(_clock);
                 _tradingSystem.RegisterCallback(ProcessError);
                 _tradingSystem.RegisterCallback(ProcessTrade);
                 _tradingSystem.RegisterCallcback(ProcessOrderStatus);
@@ -187,7 +189,7 @@ namespace QuantaBasket.Trader
             };
         }
 
-        public static bool UpdateSignal(SignalDTO signal, OrderStatusDTO orderStatus)
+        public bool UpdateSignal(SignalDTO signal, OrderStatusDTO orderStatus)
         {
             if (orderStatus.SignalId != signal.Id)
                 throw new InvalidOperationException($"orderStatus.SignalId({orderStatus.SignalId}) != Id({signal.Id})");
@@ -210,13 +212,13 @@ namespace QuantaBasket.Trader
             }
             if (updated)
             {
-                signal.LastUpdateTime = DateTime.Now;
+                signal.LastUpdateTime = _clock.Now.Value;
             }
 
             return updated;
         }
 
-        public static void UpdateSignal(SignalDTO signal, TradeDTO trade)
+        public void UpdateSignal(SignalDTO signal, TradeDTO trade)
         {
             if (trade.SignalId != signal.Id)
                 throw new InvalidOperationException($"trade.SignalId({trade.SignalId}) != Id({signal.Id})");
@@ -239,7 +241,7 @@ namespace QuantaBasket.Trader
                 signal.ExecQtty += trade.Qtty;
             }
 
-            signal.LastUpdateTime = DateTime.Now;
+            signal.LastUpdateTime = _clock.Now.Value;
         }
 
         private void ProcessError(ErrorReportCode errorCode, string message)
@@ -277,7 +279,7 @@ namespace QuantaBasket.Trader
         {
             try
             {
-                var signal = _tradingStore.GetSignalByIdAndDate(signalId, DateTime.Now) as SignalDTO;
+                var signal = _tradingStore.GetSignalByIdAndDate(signalId, _clock.Now.Value) as SignalDTO;
 
                 if (signal == null) 
                     throw new InvalidOperationException($"Cannot cancel. Signal with id '{signalId}' not found in store");
@@ -297,7 +299,7 @@ namespace QuantaBasket.Trader
             try
             {
                 signal.Status = SignalStatus.Sent;
-                signal.LastUpdateTime = DateTime.Now;
+                signal.LastUpdateTime = _clock.Now.Value;
                 _tradingStore.Insert(signal);
                 _tradingSystem.SendSignal(signal);
             } 
@@ -332,7 +334,7 @@ namespace QuantaBasket.Trader
                                 TradeDTO = trade
                             };
                             _logger.Debug($"Send trading message to quant '{signal.QuantName}': {message}");
-                            _toQuantMessageSender.SendMessage(signal.QuantName, message);
+                            _messageSender.SendMessage(signal.QuantName, message);
                         }
                         break;
 
@@ -349,7 +351,7 @@ namespace QuantaBasket.Trader
                                 OrderStatusDTO = orderStatus
                             };
                             _logger.Debug($"Send trading message to quant '{signal.QuantName}': {message}");
-                            _toQuantMessageSender.SendMessage(signal.QuantName, message);
+                            _messageSender.SendMessage(signal.QuantName, message);
                         }
                         break;
                 }
@@ -362,7 +364,7 @@ namespace QuantaBasket.Trader
 
         public ISignal GetTodaySignal(string signalId)
         {
-            return _tradingStore?.GetSignalByIdAndDate(signalId, DateTime.Now);
+            return _tradingStore?.GetSignalByIdAndDate(signalId, _clock.Now.Value);
         }
 
         private sealed class CancelSignalAction

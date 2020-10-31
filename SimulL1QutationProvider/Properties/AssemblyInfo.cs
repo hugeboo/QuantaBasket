@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
-[assembly: AssemblyTitle("QuantaBasket.Core")]
-[assembly: AssemblyDescription("Interfaces and contracts for project QuantaBasket")]
+[assembly: AssemblyTitle("SimulL1QutationProvider")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sergey Slepov")]
-[assembly: AssemblyProduct("QuantaBasket")]
-[assembly: AssemblyCopyright("Copyright © Sergey Slepov 2020")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SimulL1QutationProvider")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("d591b630-f0fb-4cbe-b0b3-388528da50da")]
+[assembly: Guid("636eb7c3-8fd9-4bb2-ac9e-d55c7c605c73")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
@@ -32,14 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0")]
-//[assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("QLuaL1QuotationProvider")]
-[assembly: InternalsVisibleTo("SimulL1QutationProvider")]
-[assembly: InternalsVisibleTo("SQLiteL1QuotationStore")]
-[assembly: InternalsVisibleTo("SQLiteTradingStore")]
-[assembly: InternalsVisibleTo("QuantaBasket.Basket")]
-[assembly: InternalsVisibleTo("QuantaBasket.Trader")]
-
-[assembly: AssemblyFileVersion("1.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

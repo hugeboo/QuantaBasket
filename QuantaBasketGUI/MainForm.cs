@@ -15,7 +15,7 @@ namespace QuantaBasketGUI
 {
     public partial class MainForm : Form
     {
-        private BasketEngine _basketEngine;
+        private IBasketEngine _basketEngine;
         private object _selectedBasketTreeObject = null;
         private string _selectedBasketTreeNodeName = null;
 
@@ -33,7 +33,7 @@ namespace QuantaBasketGUI
         {
             try
             {
-                _basketEngine = new BasketEngine();
+                _basketEngine = BasketFactory.CreateBasket();
                 basketTreeControl.SetDataSource(_basketEngine);
             }
             catch (Exception ex)
@@ -81,6 +81,9 @@ namespace QuantaBasketGUI
             
             saveConfigurationToolStripButton.Enabled = !(_basketEngine?.Started ?? false) && 
                 (_selectedBasketTreeObject is IHaveConfiguration);
+
+            var bt = _basketEngine?.Now?.ToString("dd.MM.yy HH.mm.ss") ?? "???";
+            basketTimeToolStripStatusLabel.Text = "Basket Time: " + bt;
         }
 
         private void BasketTreeControl_NodeSelected(object sender, QuantaBasket.Core.Utils.EventArgs<string> e)

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
-    [Configuration("QLuaL1QuotationProvider.dll.json")]
+    [Configuration("Config\\QLuaL1QuotationProvider.dll.json")]
     public sealed class Configuration : ConfigurationSingleton<Configuration>
     {
         [Category("Basic")]

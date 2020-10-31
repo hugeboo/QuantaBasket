@@ -37,6 +37,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.startBasketToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.stopBasketToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.saveConfigurationToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -44,9 +45,10 @@
             this.basketTreeControl = new QuantaBasketGUI.BasketTreeControl();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.configTabPage = new System.Windows.Forms.TabPage();
-            this.saveConfigurationToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.basketTimeToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl.SuspendLayout();
             this.logTabPage.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -91,6 +93,8 @@
             // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.basketTimeToolStripStatusLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 421);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(796, 22);
@@ -128,6 +132,16 @@
             this.stopBasketToolStripButton.Size = new System.Drawing.Size(72, 22);
             this.stopBasketToolStripButton.Text = "Stop Basket";
             this.stopBasketToolStripButton.Click += new System.EventHandler(this.stopBasketToolStripButton_Click);
+            // 
+            // saveConfigurationToolStripButton
+            // 
+            this.saveConfigurationToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.saveConfigurationToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveConfigurationToolStripButton.Image")));
+            this.saveConfigurationToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveConfigurationToolStripButton.Name = "saveConfigurationToolStripButton";
+            this.saveConfigurationToolStripButton.Size = new System.Drawing.Size(112, 22);
+            this.saveConfigurationToolStripButton.Text = "Save Configuration";
+            this.saveConfigurationToolStripButton.Click += new System.EventHandler(this.saveConfigurationToolStripButton_Click);
             // 
             // timer
             // 
@@ -211,15 +225,11 @@
             this.configTabPage.Text = "Configuration";
             this.configTabPage.UseVisualStyleBackColor = true;
             // 
-            // saveConfigurationToolStripButton
+            // basketTimeToolStripStatusLabel
             // 
-            this.saveConfigurationToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.saveConfigurationToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveConfigurationToolStripButton.Image")));
-            this.saveConfigurationToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveConfigurationToolStripButton.Name = "saveConfigurationToolStripButton";
-            this.saveConfigurationToolStripButton.Size = new System.Drawing.Size(112, 22);
-            this.saveConfigurationToolStripButton.Text = "Save Configuration";
-            this.saveConfigurationToolStripButton.Click += new System.EventHandler(this.saveConfigurationToolStripButton_Click);
+            this.basketTimeToolStripStatusLabel.Name = "basketTimeToolStripStatusLabel";
+            this.basketTimeToolStripStatusLabel.Size = new System.Drawing.Size(91, 17);
+            this.basketTimeToolStripStatusLabel.Text = "Basket Time: ???";
             // 
             // MainForm
             // 
@@ -236,6 +246,8 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl.ResumeLayout(false);
             this.logTabPage.ResumeLayout(false);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -270,6 +282,7 @@
         private System.Windows.Forms.TabPage configTabPage;
         private BasketTreeControl basketTreeControl;
         private System.Windows.Forms.ToolStripButton saveConfigurationToolStripButton;
+        private System.Windows.Forms.ToolStripStatusLabel basketTimeToolStripStatusLabel;
     }
 }
 

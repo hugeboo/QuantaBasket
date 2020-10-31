@@ -17,8 +17,8 @@ using QuantaBasket.Core.Utils;
 
 namespace QuantaBasket.Components.QLuaL1QuotationProvider
 {
-    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider, IHaveConfiguration
-    {
+    public sealed class QLuaL1QuotationProvider : IL1QuotationProvider 
+    { 
         private readonly IL1QuotationStore _store;
         private readonly Dictionary<SecurityId, L1Quotation> _dictQuotes = new Dictionary<SecurityId, L1Quotation>();
         private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("En-us");

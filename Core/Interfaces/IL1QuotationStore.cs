@@ -10,17 +10,15 @@ namespace QuantaBasket.Core.Interfaces
     /// <summary>
     /// Хранилище котировок L1 (база данных)
     /// </summary>
-    public interface IL1QuotationStore
+    public interface IL1QuotationStore : IHaveConfiguration
     {
         /// <summary>
         /// Сохранить котировки в БД
         /// </summary>
         void Insert(IEnumerable<L1Quotation> quations);
 
-        /// <summary>
-        /// Выбрать котировки по фильтру
-        /// </summary>
-        /// <param name="filter">Фильтр котировок</param>
-        IEnumerable<L1Quotation> Select(L1QuotationFilter filter);
+        int SelectCount();
+
+        IEnumerable<L1Quotation> SelectPage(int limit, int offset);
     }
 }
